@@ -29,7 +29,7 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
                 target.appendChild(source.childNodes[nt]);
             }
         } else {
-            target.parentNode.replaceChild(target, source);
+            target.parentNode.replaceChild(source, target);
         }
     };
 
