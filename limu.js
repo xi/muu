@@ -1,4 +1,4 @@
-define(['mustache'], function(Mustache) {
+define(['mustache', 'jqlite'], function(Mustache, $) {
     "use strict";
 
     /**
@@ -53,6 +53,28 @@ define(['mustache'], function(Mustache) {
             var all = this.querySelectorAll(selector);
             if (all.length > 0) {
                 return all[0]
+            }
+        };
+
+        this.getModel = function(name) {
+            var attrName = 'data-muu-model';
+
+            if (name === void 0) {
+                var model = {};
+                var selector = '[' + attrName + ']';
+                for (el of this.querySelectorAll(selector)) {
+                    var n = el.getAttribute(attrName);
+                    if (!model.hasOwnProperty(n)) {
+                        model[n] = el.value || el.textContent;
+                    }
+                }
+                return model;
+            } else {
+                var selector = '[' + attrName + '=' + name + ']';
+                var el = this.querySelector(selector);
+                if (el !== void 0) {
+                    return el.value || el.textContent;
+                }
             }
         };
     };
