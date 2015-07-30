@@ -5,5 +5,12 @@ define({
         } else {
             document.addEventListener("DOMContentLoaded", fn);
         }
+    },
+    toArray: function(a) {
+        var tmp = [];
+        for (var i = 0; i < a.length; i++) {
+            tmp.push(a[i]);
+        }
+        return tmp;
     }
 });

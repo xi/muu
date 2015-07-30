@@ -40,5 +40,20 @@ define(['mustache'], function(Mustache) {
 
             updateDOM(element, tmp);
         };
+
+        this.querySelectorAll = function(selector) {
+            var hits = $.toArray(element.querySelectorAll(selector));
+            var isolated = $.toArray(element.querySelectorAll('.muu-isolate ' + selector));
+            return hits.filter(function(e) {
+                return isolated.indexOf(e) < 0;
+            });
+        };
+
+        this.querySelector = function(selector) {
+            var all = this.querySelectorAll(selector);
+            if (all.length > 0) {
+                return all[0]
+            }
+        };
     };
 });
