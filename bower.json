@@ -1,0 +1,22 @@
+{
+  "name": "muu",
+  "version": "0.0.0",
+  "authors": [
+    "Tobias Bengfort <tobias.bengfort@posteo.de>"
+  ],
+  "description": "lightweight JS framework",
+  "main": "muu.js",
+  "license": "GPL2+",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1",
+    "requirejs": "~2.1.20",
+    "mustache": "~2.1.3"
+  }
+}
