@@ -19,14 +19,16 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
                 target.value = source.value;
             }
 
-            for (var i = 0; i < nt && i < ns; i++) {
-                updateDOM(target.childNodes[i], source.childNodes[i]);
-            }
-            for (var i = ns; i < nt; i++) {
-                target.removeChild(target.childNodes[ns]);
-            }
-            for (var i = nt; i < ns; i++) {
-                target.appendChild(source.childNodes[nt]);
+            if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
+                for (var i = 0; i < nt && i < ns; i++) {
+                    updateDOM(target.childNodes[i], source.childNodes[i]);
+                }
+                for (var i = ns; i < nt; i++) {
+                    target.removeChild(target.childNodes[ns]);
+                }
+                for (var i = nt; i < ns; i++) {
+                    target.appendChild(source.childNodes[nt]);
+                }
             }
         } else {
             target.parentNode.replaceChild(source, target);
