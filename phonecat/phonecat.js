@@ -17,7 +17,7 @@ require(['xhr', 'muu', 'dom-helpers'], function(xhr, Muu, $) {
         var template = args[0];
         var phones = args[1];
 
-        new Muu()
+        var muu = new Muu()
             .registerDirective('phonecat', template, function(self) {
                 self.on('filter', function() {
                     var query = self.getModel('query', '').toLowerCase();
@@ -34,12 +34,13 @@ require(['xhr', 'muu', 'dom-helpers'], function(xhr, Muu, $) {
                     });
                 });
 
-                $.ready(function() {
-                    self.update({phones: phones});
-                    self.setModel('query', '');
-                    self.setModel('orderProp', 'age');
-                });
-            })
-            .linkAll(document);
+                self.update({phones: phones});
+                self.setModel('query', '');
+                self.setModel('orderProp', 'age');
+            });
+
+        $.ready(function() {
+            muu.linkAll(document);
+        });
     });
 });

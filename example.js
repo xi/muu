@@ -11,9 +11,7 @@ requirejs.config({
 require(['xhr', 'muu', 'dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMoment) {
     "use strict";
 
-    var muu = new Muu({debug: true});
-
-    muu
+    var muu = new Muu({debug: true})
         .registerModule(muuMoment)
         .registerDirective(
             'test',
@@ -36,9 +34,7 @@ require(['xhr', 'muu', 'dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMo
                     }
                 });
 
-                $.ready(function() {
-                    self.update(data);
-                });
+                self.update(data);
             })
         .registerDirective(
             'calc',
@@ -56,9 +52,10 @@ require(['xhr', 'muu', 'dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMo
                     }
                 });
 
-                $.ready(function() {
-                    self.update(data);
-                });
-            })
-        .linkAll(document);
+                self.update(data);
+            });
+
+    $.ready(function() {
+        muu.linkAll(document);
+    });
 });
