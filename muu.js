@@ -9,7 +9,8 @@ requirejs.config({
 require(['xhr', 'limu', 'jqlite'], function(xhr, Limu, $) {
     "use strict";
 
-    var template = '<ul>{{#elements}}<li>{{name}}</li>{{/elements}}</ul><input/>';
+    var template = '<ul>{{#elements}}<li>{{name}}</li>{{/elements}}</ul>' +
+        '<input name="input" data-onkeydown="push" />';
     var data = {
         elements: [{
             name: 'hugo'
@@ -18,11 +19,13 @@ require(['xhr', 'limu', 'jqlite'], function(xhr, Limu, $) {
 
     var limu = new Limu(document.body.children[0], template);
 
+    window.limu = limu;
+
     $.ready(function() {
         limu.update(data);
     });
-    document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 13 && e.target.nodeName === 'INPUT') {
+    limu.on('push', function(event) {
+        if (event.keyCode === 13) {
             data.elements.push({
                 name: limu.getModel('input') || ''
             });

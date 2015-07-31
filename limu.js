@@ -1,4 +1,4 @@
-define(['mustache', 'jqlite'], function(Mustache, $) {
+define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
     "use strict";
 
     var updateAttributes = function(target, source) {
@@ -50,11 +50,28 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
     };
 
     return function(element, template) {
+        var evmgr = new EvMgr();
+
+        var eventCallback = function(event) {
+            var attrName = 'data-on' + event.type;
+            if (event.target.hasAttribute(attrName)) {
+                var eventName = event.target.getAttribute(attrName)
+                evmgr.trigger(eventName, event);
+            }
+        };
+
         this.update = function(data) {
             var tmp = document.createElement('div');
             tmp.innerHTML = Mustache.render(template, data);
 
             updateDOM(element, tmp);
+
+            for (var eventType of ['keydown', 'click']) {
+                var selector = '[data-on' + eventType + ']';
+                this.querySelectorAll(selector).forEach(function(el) {
+                    el.addEventListener(eventType, eventCallback);
+                });
+            }
         };
 
         this.querySelectorAll = function(selector) {
@@ -113,6 +130,10 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
             } else {
                 el.value = value;
             }
+        };
+
+        this.on = function(eventName, callback) {
+            return evmgr.on(eventName, callback);
         };
     };
 });
