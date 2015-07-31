@@ -1,0 +1,16 @@
+<input type="search" name="query" data-onkeyup="filter" data-onsearch="filter"/>
+
+Sort by:
+<select name="orderProp" data-onchange="filter">
+  <option value="name">Alphabetical</option>
+  <option value="age">Newest</option>
+</select>
+
+<ul>
+    {{#phones}}
+    <li>
+        <span>{{name}}</span>
+        <p>{{snippet}}</p>
+    </li>
+    {{/phones}}
+</ul>
