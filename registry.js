@@ -1,4 +1,6 @@
 define(['limu'], function(Limu) {
+    "use strict";
+
     return function() {
         var directives = {};
 

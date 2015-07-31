@@ -1,55 +1,7 @@
-define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
+define(['mustache', 'jqlite', 'evmgr', 'updateDOM'], function(Mustache, $, EvMgr, updateDOM) {
     "use strict";
 
-    var updateAttributes = function(target, source) {
-        var targetAttrNames = $.toArray(target.attributes).map(function(item) {
-            return item.name;
-        });
-        var sourceAttrNames = $.toArray(source.attributes).map(function(item) {
-            return item.name;
-        });
-
-        for (let name of targetAttrNames) {
-            if (!source.hasAttribute(name)) {
-                target.removeAttribute(name);
-            }
-        }
-        for (let name of sourceAttrNames) {
-            target.setAttribute(name, source.getAttribute(name));
-        }
-    };
-
-    /**
-     * Recreate DOM `source` in `target` by making only small adjustments.
-     */
-    var updateDOM = function(target, source) {
-        var nt = target.childNodes.length;
-        var ns = source.childNodes.length;
-
-        if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
-            if (target.nodeType === 1) {
-                updateAttributes(target, source);
-            } else if (target.nodeType === 3) {
-                target.nodeValue = source.nodeValue;
-            }
-
-            if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
-                for (let i = 0; i < nt && i < ns; i++) {
-                    updateDOM(target.childNodes[i], source.childNodes[i]);
-                }
-                for (let i = ns; i < nt; i++) {
-                    target.removeChild(target.childNodes[ns]);
-                }
-                for (let i = nt; i < ns; i++) {
-                    target.appendChild(source.childNodes[nt]);
-                }
-            }
-        } else {
-            target.parentNode.replaceChild(source, target);
-        }
-    };
-
-    return function(element, template) {
+    return function(root, template) {
         var evmgr = new EvMgr();
 
         var eventCallback = function(event) {
@@ -64,24 +16,24 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
             var tmp = document.createElement('div');
             tmp.innerHTML = Mustache.render(template, data);
 
-            updateDOM(element, tmp);
+            updateDOM(root, tmp);
 
             for (let eventType of ['keydown', 'click']) {
                 var selector = '[data-on' + eventType + ']';
-                this.querySelectorAll(selector).forEach(function(el) {
-                    el.addEventListener(eventType, eventCallback);
+                this.querySelectorAll(selector).forEach(function(element) {
+                    element.addEventListener(eventType, eventCallback);
                 });
             }
         };
 
         this.querySelectorAll = function(selector) {
-            var hits = $.toArray(element.querySelectorAll(selector));
+            var hits = $.toArray(root.querySelectorAll(selector));
 
             // NOTE: querySelectorAll returns all elements in the tree that
             // match the given selector.  findAll does the same with *relative
             // selectors* but does not seem to be available yet.
             var isolated = [];
-            var isolations = $.toArray(element.querySelectorAll('.muu-isolate'));
+            var isolations = $.toArray(root.querySelectorAll('.muu-isolate'));
             for (let isolation of isolations) {
                 isolated = isolated.concat($.toArray(isolation.querySelectorAll(selector)));
             }
@@ -101,43 +53,32 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
         this.getModel = function(name) {
             if (name === void 0) {
                 var model = {};
-                for (el of this.querySelectorAll('[name]')) {
-                    model[el.name] = this.getModel(el.name);
+                for (element of this.querySelectorAll('[name]')) {
+                    model[element.name] = this.getModel(element.name);
                 }
                 return model;
             } else {
-                var el = this.querySelector('[name=' + name + ']');
-                if (el.type === 'checkbox') {
-                    return el.checked;
-                } else if (el.type === 'radio') {
+                var element = this.querySelector('[name=' + name + ']');
+                if (element.type === 'checkbox') {
+                    return element.checked;
+                } else if (element.type === 'radio') {
                     var options = this.querySelectorAll('[name=' + name + ']');
-                    for (let i = 0; i < options.length; i++) {
-                        if (options[i].checked) {
-                            return options[i].value;
-                        }
-                    }
+                    return $.getRadio(options);
                 } else {
-                    return el.value;
+                    return element.value;
                 }
             }
         };
 
         this.setModel = function(name, value) {
-            var el = this.querySelector('[name=' + name + ']');
-            if (el.type === 'checkbox') {
-                el.checked = value;
-            } else if (el.type === 'radio') {
+            var element = this.querySelector('[name=' + name + ']');
+            if (element.type === 'checkbox') {
+                element.checked = value;
+            } else if (element.type === 'radio') {
                 var options = this.querySelectorAll('[name=' + name + ']');
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value === value) {
-                        options[i].checked = true;
-                        return;
-                    } else {
-                        options[i].checked = false;
-                    }
-                }
+                $.setRadio(options, value);
             } else {
-                el.value = value;
+                element.value = value;
             }
         };
 
