@@ -32,9 +32,6 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
             } else if (target.nodeType === 3) {
                 target.nodeValue = source.nodeValue;
             }
-            if (target.nodeName === 'INPUT') {
-                target.value = source.value;
-            }
 
             if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
                 for (var i = 0; i < nt && i < ns; i++) {
@@ -76,24 +73,45 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
         };
 
         this.getModel = function(name) {
-            var attrName = 'data-muu-model';
-
             if (name === void 0) {
                 var model = {};
-                var selector = '[' + attrName + ']';
-                for (el of this.querySelectorAll(selector)) {
-                    var n = el.getAttribute(attrName);
-                    if (!model.hasOwnProperty(n)) {
-                        model[n] = el.value || el.textContent;
-                    }
+                for (el of this.querySelectorAll('[name]')) {
+                    model[el.name] = this.getModel(el.name);
                 }
                 return model;
             } else {
-                var selector = '[' + attrName + '=' + name + ']';
-                var el = this.querySelector(selector);
-                if (el !== void 0) {
-                    return el.value || el.textContent;
+                var el = this.querySelector('[name=' + name + ']');
+                if (el.type === 'checkbox') {
+                    return el.checked;
+                } else if (el.type === 'radio') {
+                    var options = this.querySelectorAll('[name=' + name + ']');
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].checked) {
+                            return options[i].value;
+                        }
+                    }
+                } else {
+                    return el.value;
                 }
+            }
+        };
+
+        this.setModel = function(name, value) {
+            var el = this.querySelector('[name=' + name + ']');
+            if (el.type === 'checkbox') {
+                el.checked = value;
+            } else if (el.type === 'radio') {
+                var options = this.querySelectorAll('[name=' + name + ']');
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i].value === value) {
+                        options[i].checked = true;
+                        return;
+                    } else {
+                        options[i].checked = false;
+                    }
+                }
+            } else {
+                el.value = value;
             }
         };
     };

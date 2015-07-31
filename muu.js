@@ -24,9 +24,10 @@ require(['xhr', 'limu', 'jqlite'], function(xhr, Limu, $) {
     document.addEventListener('keydown', function(e) {
         if (e.keyCode === 13 && e.target.nodeName === 'INPUT') {
             data.elements.push({
-                name: e.target.value
+                name: limu.getModel('input') || ''
             });
             limu.update(data);
+            limu.setModel('input', '');
         }
     });
 });
