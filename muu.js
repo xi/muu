@@ -15,6 +15,11 @@ define(['directive', 'dom-helpers'], function(Directive, $) {
             return self;
         };
 
+        self.registerModule = function(module) {
+            module(self);
+            return self;
+        };
+
         self.link = function(element, type) {
             if (type === void 0) {
                 type = element.getAttribute('type');
