@@ -13,8 +13,12 @@ define(['limu'], function(Limu) {
             var template = directives[name].template;
             var link = directives[name].link;
 
-            var limu = new Limu(element, template);
+            element.innerHTML = '<div></div>';
+
+            var limu = new Limu(element.children[0], template, this);
             link(limu);
+
+            element.classList.add('muu-isolate');
         };
     };
 });

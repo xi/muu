@@ -76,7 +76,16 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
 
         this.querySelectorAll = function(selector) {
             var hits = $.toArray(element.querySelectorAll(selector));
-            var isolated = $.toArray(element.querySelectorAll('.muu-isolate ' + selector));
+
+            // NOTE: querySelectorAll returns all elements in the tree that
+            // match the given selector.  findAll does the same with *relative
+            // selectors* but does not seem to be available yet.
+            var isolated = [];
+            var isolations = $.toArray(element.querySelectorAll('.muu-isolate'));
+            for (let isolation of isolations) {
+                isolated = isolated.concat($.toArray(isolation.querySelectorAll(selector)));
+            }
+
             return hits.filter(function(e) {
                 return isolated.indexOf(e) < 0;
             });
