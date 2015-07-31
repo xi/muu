@@ -9,7 +9,7 @@ requirejs.config({
 require(['xhr', 'registry', 'jqlite'], function(xhr, Registry, $) {
     "use strict";
 
-    var registry = new Registry();
+    var registry = new Registry({debug: true});
     var template = '<ul>{{#elements}}<li><muu type="calc" data-name="{{name}}"></muu></li>{{/elements}}</ul>' +
         '<input name="input" data-onkeydown="push" />';
 

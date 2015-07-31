@@ -1,9 +1,11 @@
 define(['limu', 'jqlite'], function(Limu, $) {
     "use strict";
 
-    return function() {
+    return function(config) {
         var self = this;
         var directives = {};
+
+        self.config = config || {};
 
         self.registerDirective = function(type, template, link) {
             directives[type] = {
@@ -31,6 +33,10 @@ define(['limu', 'jqlite'], function(Limu, $) {
 
             element.classList.add('muu-isolate');
             element.classList.add('muu-initialised');
+
+            if (self.config.debug) {
+                element.limu = limu;
+            }
 
             return limu;
         };
