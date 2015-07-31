@@ -18,7 +18,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
 
             updateDOM(root, tmp);
 
-            for (let eventType of ['keydown', 'keyup', 'click', 'change', 'search']) {
+            for (var eventType of ['keydown', 'keyup', 'click', 'change', 'search']) {
                 var selector = '[data-on' + eventType + ']';
                 this.querySelectorAll(selector).forEach(function(element) {
                     element.addEventListener(eventType, eventCallback);
@@ -36,7 +36,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
             // selectors* but does not seem to be available yet.
             var isolated = [];
             var isolations = $.toArray(root.querySelectorAll('.muu-isolate'));
-            for (let isolation of isolations) {
+            for (var isolation of isolations) {
                 isolated = isolated.concat($.toArray(isolation.querySelectorAll(selector)));
             }
 

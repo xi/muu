@@ -9,12 +9,12 @@ define(['dom-helpers'], function($) {
             return item.name;
         });
 
-        for (let name of targetAttrNames) {
+        for (var name of targetAttrNames) {
             if (!source.hasAttribute(name)) {
                 target.removeAttribute(name);
             }
         }
-        for (let name of sourceAttrNames) {
+        for (var name of sourceAttrNames) {
             target.setAttribute(name, source.getAttribute(name));
         }
     };
@@ -32,7 +32,7 @@ define(['dom-helpers'], function($) {
                     return cls.startsWith('muu-');
                 });
                 updateAttributes(target, source);
-                for (let cls of muuClasses) {
+                for (var cls of muuClasses) {
                     target.classList.add(cls);
                 }
             } else if (target.nodeType === 3) {
@@ -40,13 +40,13 @@ define(['dom-helpers'], function($) {
             }
 
             if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
-                for (let i = 0; i < nt && i < ns; i++) {
+                for (var i = 0; i < nt && i < ns; i++) {
                     updateDOM(target.childNodes[i], source.childNodes[i]);
                 }
-                for (let i = ns; i < nt; i++) {
+                for (var i = ns; i < nt; i++) {
                     target.removeChild(target.childNodes[ns]);
                 }
-                for (let i = nt; i < ns; i++) {
+                for (var i = nt; i < ns; i++) {
                     target.appendChild(source.childNodes[nt]);
                 }
             }
