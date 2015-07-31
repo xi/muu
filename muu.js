@@ -35,5 +35,5 @@ require(['xhr', 'registry', 'jqlite'], function(xhr, Registry, $) {
         });
     });
 
-    registry.linkDirective('test', document.body.children[0]);
+    registry.linkAll(document);
 });

@@ -1,7 +1,7 @@
 define(['mustache', 'jqlite', 'evmgr', 'updateDOM'], function(Mustache, $, EvMgr, updateDOM) {
     "use strict";
 
-    return function(root, template) {
+    return function(root, template, registry) {
         var evmgr = new EvMgr();
 
         var eventCallback = function(event) {
@@ -24,6 +24,8 @@ define(['mustache', 'jqlite', 'evmgr', 'updateDOM'], function(Mustache, $, EvMgr
                     element.addEventListener(eventType, eventCallback);
                 });
             }
+
+            registry.linkAll(this);
         };
 
         this.querySelectorAll = function(selector) {
