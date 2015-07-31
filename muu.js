@@ -12,6 +12,7 @@ define(['directive', 'dom-helpers'], function(Directive, $) {
                 template: template,
                 link: link
             };
+            return self;
         };
 
         self.link = function(element, type) {
