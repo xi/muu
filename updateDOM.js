@@ -1,4 +1,4 @@
-define(['jqlite'], function($) {
+define(['dom-helpers'], function($) {
     "use strict";
 
     var updateAttributes = function(target, source) {

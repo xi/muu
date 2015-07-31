@@ -1,57 +1,52 @@
-requirejs.config({
-    baseUrl: '',
-    paths: {
-        mustache: 'bower_components/mustache/mustache',
-        xhr: 'bower_components/promise-xhr/promise-xhr'
-    }
-});
-
-require(['xhr', 'registry', 'jqlite'], function(xhr, Registry, $) {
+define(['directive', 'dom-helpers'], function(Directive, $) {
     "use strict";
 
-    var registry = new Registry({debug: true});
-    var template = '<ul>{{#elements}}<li><muu type="calc" data-name="{{name}}"></muu></li>{{/elements}}</ul>' +
-        '<input name="input" data-onkeydown="push" />';
+    return function(config) {
+        var self = this;
+        var directives = {};
 
-    registry.registerDirective('test', template, function(self) {
-        var data = {
-            elements: [{
-                name: 'hugo'
-            }]
+        self.config = config || {};
+
+        self.registerDirective = function(type, template, link) {
+            directives[type] = {
+                template: template,
+                link: link
+            };
         };
 
-        self.on('push', function(event) {
-            if (event.keyCode === 13) {
-                data.elements.push({
-                    name: self.getModel('input') || ''
-                });
-                self.update(data);
-                self.setModel('input', '');
+        self.link = function(element, type) {
+            if (type === void 0) {
+                type = element.getAttribute('type');
             }
-        });
 
-        $.ready(function() {
-            self.update(data);
-        });
-    });
+            if (!directives.hasOwnProperty(type)) {
+                throw new Error('Unknown directive type: ' + type);
+            }
 
-    registry.registerDirective('calc', '<input name="input" data-onkeydown="update"/><span>{{result}}</span>', function(self, element) {
-        var data = {
-            name: element.getAttribute('data-name')
+            var template = directives[type].template;
+            var link = directives[type].link;
+
+            element.innerHTML = '<div></div>';
+
+            var directive = new Directive(element.children[0], template, self);
+            link(directive, element);
+
+            element.classList.add('muu-isolate');
+            element.classList.add('muu-initialised');
+
+            if (self.config.debug) {
+                element.directive = directive;
+            }
+
+            return directive;
         };
 
-        self.on('update', function(event) {
-            if (event.keyCode === 13) {
-                var input = self.getModel('input');
-                data.result = eval(input);
-                self.update(data);
-            }
-        });
-
-        $.ready(function() {
-            self.update(data);
-        });
-    });
-
-    registry.linkAll(document);
+        self.linkAll = function(root) {
+            // NOTE: root may be a DOM Node or a directive
+            var elements = $.toArray(root.querySelectorAll('muu:not(.muu-initialised)'));
+            return elements.map(function(element) {
+                return self.link(element);
+            });
+        };
+    };
 });
