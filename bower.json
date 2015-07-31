@@ -17,6 +17,7 @@
   "dependencies": {
     "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1",
     "requirejs": "~2.1.20",
-    "mustache": "~2.1.3"
+    "mustache": "~2.1.3",
+    "lodash": "~3.10.0"
   }
 }

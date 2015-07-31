@@ -2,7 +2,8 @@ requirejs.config({
     baseUrl: '..',
     paths: {
         mustache: '../bower_components/mustache/mustache',
-        xhr: '../bower_components/promise-xhr/promise-xhr'
+        xhr: '../bower_components/promise-xhr/promise-xhr',
+        lodash: '../bower_components/lodash/lodash'
     }
 });
 
