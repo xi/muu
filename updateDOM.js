@@ -28,7 +28,13 @@ define(['jqlite'], function($) {
 
         if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
             if (target.nodeType === 1) {
+                var muuClasses = $.toArray(target.classList).filter(function(cls) {
+                    return cls.startsWith('muu-');
+                });
                 updateAttributes(target, source);
+                for (let cls of muuClasses) {
+                    target.classList.add(cls);
+                }
             } else if (target.nodeType === 3) {
                 target.nodeValue = source.nodeValue;
             }
