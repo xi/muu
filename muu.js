@@ -6,31 +6,34 @@ requirejs.config({
     }
 });
 
-require(['xhr', 'limu', 'jqlite'], function(xhr, Limu, $) {
+require(['xhr', 'registry', 'jqlite'], function(xhr, Registry, $) {
     "use strict";
 
+    var registry = new Registry();
     var template = '<ul>{{#elements}}<li>{{name}}</li>{{/elements}}</ul>' +
         '<input name="input" data-onkeydown="push" />';
-    var data = {
-        elements: [{
-            name: 'hugo'
-        }]
-    };
 
-    var limu = new Limu(document.body.children[0], template);
+    registry.registerDirective('test', template, function(self) {
+        var data = {
+            elements: [{
+                name: 'hugo'
+            }]
+        };
 
-    window.limu = limu;
+        self.on('push', function(event) {
+            if (event.keyCode === 13) {
+                data.elements.push({
+                    name: self.getModel('input') || ''
+                });
+                self.update(data);
+                self.setModel('input', '');
+            }
+        });
 
-    $.ready(function() {
-        limu.update(data);
+        $.ready(function() {
+            self.update(data);
+        });
     });
-    limu.on('push', function(event) {
-        if (event.keyCode === 13) {
-            data.elements.push({
-                name: limu.getModel('input') || ''
-            });
-            limu.update(data);
-            limu.setModel('input', '');
-        }
-    });
+
+    registry.linkDirective('test', document.body.children[0]);
 });
