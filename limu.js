@@ -9,12 +9,12 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
             return item.name;
         });
 
-        for (name of targetAttrNames) {
+        for (let name of targetAttrNames) {
             if (!source.hasAttribute(name)) {
                 target.removeAttribute(name);
             }
         }
-        for (name of sourceAttrNames) {
+        for (let name of sourceAttrNames) {
             target.setAttribute(name, source.getAttribute(name));
         }
     };
@@ -34,13 +34,13 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
             }
 
             if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
-                for (var i = 0; i < nt && i < ns; i++) {
+                for (let i = 0; i < nt && i < ns; i++) {
                     updateDOM(target.childNodes[i], source.childNodes[i]);
                 }
-                for (var i = ns; i < nt; i++) {
+                for (let i = ns; i < nt; i++) {
                     target.removeChild(target.childNodes[ns]);
                 }
-                for (var i = nt; i < ns; i++) {
+                for (let i = nt; i < ns; i++) {
                     target.appendChild(source.childNodes[nt]);
                 }
             }
@@ -55,7 +55,7 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
         var eventCallback = function(event) {
             var attrName = 'data-on' + event.type;
             if (event.target.hasAttribute(attrName)) {
-                var eventName = event.target.getAttribute(attrName)
+                var eventName = event.target.getAttribute(attrName);
                 evmgr.trigger(eventName, event);
             }
         };
@@ -66,7 +66,7 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
 
             updateDOM(element, tmp);
 
-            for (var eventType of ['keydown', 'click']) {
+            for (let eventType of ['keydown', 'click']) {
                 var selector = '[data-on' + eventType + ']';
                 this.querySelectorAll(selector).forEach(function(el) {
                     el.addEventListener(eventType, eventCallback);
@@ -102,7 +102,7 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
                     return el.checked;
                 } else if (el.type === 'radio') {
                     var options = this.querySelectorAll('[name=' + name + ']');
-                    for (var i = 0; i < options.length; i++) {
+                    for (let i = 0; i < options.length; i++) {
                         if (options[i].checked) {
                             return options[i].value;
                         }
@@ -119,7 +119,7 @@ define(['mustache', 'jqlite', 'evmgr'], function(Mustache, $, EvMgr) {
                 el.checked = value;
             } else if (el.type === 'radio') {
                 var options = this.querySelectorAll('[name=' + name + ']');
-                for (var i = 0; i < options.length; i++) {
+                for (let i = 0; i < options.length; i++) {
                     if (options[i].value === value) {
                         options[i].checked = true;
                         return;
