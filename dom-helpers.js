@@ -1,12 +1,14 @@
-define(function() {
+define(['lodash'], function(_) {
     "use strict";
 
     return {
         ready: function(fn) {
+            var _fn = _.once(fn);
             if (document.readyState === "complete") {
-                fn();
+                _fn();
             } else {
-                document.addEventListener("DOMContentLoaded", fn);
+                document.addEventListener("DOMContentLoaded", _fn);
+                window.addEventListener("load", _fn);
             }
         },
         toArray: function(a) {
