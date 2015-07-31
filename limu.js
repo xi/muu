@@ -1,6 +1,24 @@
 define(['mustache', 'jqlite'], function(Mustache, $) {
     "use strict";
 
+    var updateAttributes = function(target, source) {
+        var targetAttrNames = $.toArray(target.attributes).map(function(item) {
+            return item.name;
+        });
+        var sourceAttrNames = $.toArray(source.attributes).map(function(item) {
+            return item.name;
+        });
+
+        for (name of targetAttrNames) {
+            if (!source.hasAttribute(name)) {
+                target.removeAttribute(name);
+            }
+        }
+        for (name of sourceAttrNames) {
+            target.setAttribute(name, source.getAttribute(name));
+        }
+    };
+
     /**
      * Recreate DOM `source` in `target` by making only small adjustments.
      */
@@ -9,10 +27,9 @@ define(['mustache', 'jqlite'], function(Mustache, $) {
         var ns = source.childNodes.length;
 
         if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
-            // FIXME
-            // if (target.nodeType === 1) {
-            //     target.attributes = source.attributes;
-            if (target.nodeType === 3) {
+            if (target.nodeType === 1) {
+                updateAttributes(target, source);
+            } else if (target.nodeType === 3) {
                 target.nodeValue = source.nodeValue;
             }
             if (target.nodeName === 'INPUT') {
