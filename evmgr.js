@@ -1,4 +1,6 @@
 define([], function() {
+    "use strict";
+
     /**
      * Generic event handler with on, off and trigger.
      */
