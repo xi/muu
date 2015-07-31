@@ -18,7 +18,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
 
             updateDOM(root, tmp);
 
-            for (let eventType of ['keydown', 'click']) {
+            for (let eventType of ['keydown', 'keyup', 'click', 'change', 'search']) {
                 var selector = '[data-on' + eventType + ']';
                 this.querySelectorAll(selector).forEach(function(element) {
                     element.addEventListener(eventType, eventCallback);
