@@ -52,7 +52,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
             }
         };
 
-        this.getModel = function(name) {
+        this.getModel = function(name, _default) {
             if (name === void 0) {
                 var model = {};
                 for (element of this.querySelectorAll('[name]')) {
@@ -65,9 +65,9 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
                     return element.checked;
                 } else if (element.type === 'radio') {
                     var options = this.querySelectorAll('[name=' + name + ']');
-                    return $.getRadio(options);
+                    return $.getRadio(options) || _default;
                 } else {
-                    return element.value;
+                    return element.value || _default;
                 }
             }
         };
