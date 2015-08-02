@@ -1,0 +1,26 @@
+{
+	"curly": true,
+	"eqeqeq": true,
+	"es3": true,
+	"forin": true,
+	"freeze": true,
+	"futurehostile": true,
+	"latedef": true,
+	"maxcomplexity": 10,
+	"maxdepth": 3,
+	"maxparams": 3,
+	"noarg": true,
+	"nocomma": true,
+	"nonbsp": true,
+	"nonew": true,
+	"singleGroups": true,
+	"strict": true,
+	"undef": true,
+	"unused": true,
+
+	"browser": true,
+	"globals": {
+		"require": false,
+		"define": false
+	}
+}
