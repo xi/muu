@@ -1,4 +1,4 @@
-define(['mustache', 'dom-helpers', 'lodash', 'evmgr', 'updateDOM'], function(Mustache, $, _, EvMgr, updateDOM) {
+define(['mustache', 'dom-helpers', 'js-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, _, EvMgr, updateDOM) {
     "use strict";
 
     return function(root, template, registry) {

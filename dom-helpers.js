@@ -1,4 +1,4 @@
-define(['lodash'], function(_) {
+define(['js-helpers'], function(_) {
     "use strict";
 
     return {

@@ -1,4 +1,4 @@
-define(['directive', 'lodash'], function(Directive, _) {
+define(['directive', 'js-helpers'], function(Directive, _) {
     "use strict";
 
     return function(config) {
