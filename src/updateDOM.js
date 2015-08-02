@@ -43,10 +43,10 @@ define(['js-helpers'], function(_) {
                 for (var i = 0; i < nt && i < ns; i++) {
                     updateDOM(target.childNodes[i], source.childNodes[i]);
                 }
-                for (var i = ns; i < nt; i++) {
+                for (i = ns; i < nt; i++) {
                     target.removeChild(target.childNodes[ns]);
                 }
-                for (var i = nt; i < ns; i++) {
+                for (i = nt; i < ns; i++) {
                     target.appendChild(source.childNodes[nt]);
                 }
             }

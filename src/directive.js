@@ -46,7 +46,7 @@ define(['mustache', 'dom-helpers', 'js-helpers', 'evmgr', 'updateDOM'], function
         self.querySelector = function(selector) {
             var all = self.querySelectorAll(selector);
             if (all.length > 0) {
-                return all[0]
+                return all[0];
             }
         };
 

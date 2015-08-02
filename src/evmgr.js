@@ -12,7 +12,7 @@ define([], function() {
 
         var getNextID = function() {
             return nextID++;
-        }
+        };
 
         self.on = function(eventName, handler) {
             handlers[eventName] = handlers[eventName] || {};
@@ -22,7 +22,7 @@ define([], function() {
             return function() {
                 self.off(eventName, id);
             };
-        }
+        };
 
         self.off = function(eventName, id) {
             if (eventName === void 0) {
@@ -32,7 +32,7 @@ define([], function() {
             } else {
                 delete handlers[eventName][id];
             }
-        }
+        };
 
         self.trigger = function(eventName, arg) {
             for (var id in handlers[eventName]) {
@@ -41,6 +41,6 @@ define([], function() {
                     handler(arg);
                 }
             }
-        }
-    }
+        };
+    };
 });
