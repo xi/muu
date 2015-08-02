@@ -9,14 +9,14 @@ define(['js-helpers'], function(_) {
             return item.name;
         });
 
-        for (var name of targetAttrNames) {
+        _.forEach(targetAttrNames, function(name) {
             if (!source.hasAttribute(name)) {
                 target.removeAttribute(name);
             }
-        }
-        for (var name of sourceAttrNames) {
+        });
+        _.forEach(sourceAttrNames, function(name) {
             target.setAttribute(name, source.getAttribute(name));
-        }
+        });
     };
 
     /**
@@ -32,9 +32,9 @@ define(['js-helpers'], function(_) {
                     return cls.startsWith('muu-');
                 });
                 updateAttributes(target, source);
-                for (var cls of muuClasses) {
+                _.forEach(muuClasses, function(cls) {
                     target.classList.add(cls);
-                }
+                });
             } else if (target.nodeType === 3) {
                 target.nodeValue = source.nodeValue;
             }
