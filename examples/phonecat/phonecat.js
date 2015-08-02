@@ -6,7 +6,7 @@ requirejs.config({
     }
 });
 
-require(['xhr', 'muu', 'dom-helpers'], function(xhr, Muu, $) {
+require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
     "use strict";
 
     Promise.all([

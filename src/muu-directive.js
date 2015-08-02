@@ -1,4 +1,4 @@
-define(['mustache', 'dom-helpers', 'js-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, _, EvMgr, updateDOM) {  // jshint ignore:line
+define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-evmgr', 'muu-update-dom'], function(Mustache, $, _, EvMgr, updateDOM) {  // jshint ignore:line
     "use strict";
 
     return function(root, template, registry) {

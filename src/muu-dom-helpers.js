@@ -1,4 +1,4 @@
-define(['js-helpers'], function(_) {
+define(['muu-js-helpers'], function(_) {
     "use strict";
 
     return {

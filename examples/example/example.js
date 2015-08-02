@@ -7,7 +7,7 @@ requirejs.config({
     }
 });
 
-require(['xhr', 'muu', 'dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMoment) {
+require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMoment) {
     "use strict";
 
     var muu = new Muu({debug: true})

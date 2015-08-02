@@ -1,4 +1,4 @@
-define(['directive', 'js-helpers'], function(Directive, _) {
+define(['muu-directive', 'muu-js-helpers'], function(Directive, _) {
     "use strict";
 
     return function(config) {
