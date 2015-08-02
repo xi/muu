@@ -3,8 +3,7 @@ requirejs.config({
     paths: {
         mustache: 'bower_components/mustache/mustache',
         xhr: 'bower_components/promise-xhr/promise-xhr',
-        moment: 'bower_components/moment/moment',
-        'js-helpers': 'bower_components/lodash/lodash'
+        moment: 'bower_components/moment/moment'
     }
 });
 
