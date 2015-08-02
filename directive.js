@@ -2,6 +2,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
     "use strict";
 
     return function(root, template, registry) {
+        var self = this;
         var evmgr = new EvMgr();
 
         var eventCallback = function(event) {
@@ -12,7 +13,7 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
             }
         };
 
-        this.update = function(data) {
+        self.update = function(data) {
             var tmp = document.createElement('div');
             tmp.innerHTML = Mustache.render(template, data);
 
@@ -20,15 +21,15 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
 
             for (var eventType of ['keydown', 'keyup', 'click', 'change', 'search']) {
                 var selector = '[data-on' + eventType + ']';
-                this.querySelectorAll(selector).forEach(function(element) {
+                self.querySelectorAll(selector).forEach(function(element) {
                     element.addEventListener(eventType, eventCallback);
                 });
             }
 
-            registry.linkAll(this);
+            registry.linkAll(self);
         };
 
-        this.querySelectorAll = function(selector) {
+        self.querySelectorAll = function(selector) {
             var hits = $.toArray(root.querySelectorAll(selector));
 
             // NOTE: querySelectorAll returns all elements in the tree that
@@ -45,26 +46,26 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
             });
         };
 
-        this.querySelector = function(selector) {
-            var all = this.querySelectorAll(selector);
+        self.querySelector = function(selector) {
+            var all = self.querySelectorAll(selector);
             if (all.length > 0) {
                 return all[0]
             }
         };
 
-        this.getModel = function(name, _default) {
+        self.getModel = function(name, _default) {
             if (name === void 0) {
                 var model = {};
-                for (element of this.querySelectorAll('[name]')) {
-                    model[element.name] = this.getModel(element.name);
+                for (element of self.querySelectorAll('[name]')) {
+                    model[element.name] = self.getModel(element.name);
                 }
                 return model;
             } else {
-                var element = this.querySelector('[name=' + name + ']');
+                var element = self.querySelector('[name=' + name + ']');
                 if (element.type === 'checkbox') {
                     return element.checked;
                 } else if (element.type === 'radio') {
-                    var options = this.querySelectorAll('[name=' + name + ']');
+                    var options = self.querySelectorAll('[name=' + name + ']');
                     return $.getRadio(options) || _default;
                 } else {
                     return element.value || _default;
@@ -72,19 +73,19 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
             }
         };
 
-        this.setModel = function(name, value) {
-            var element = this.querySelector('[name=' + name + ']');
+        self.setModel = function(name, value) {
+            var element = self.querySelector('[name=' + name + ']');
             if (element.type === 'checkbox') {
                 element.checked = value;
             } else if (element.type === 'radio') {
-                var options = this.querySelectorAll('[name=' + name + ']');
+                var options = self.querySelectorAll('[name=' + name + ']');
                 $.setRadio(options, value);
             } else {
                 element.value = value;
             }
         };
 
-        this.on = function(eventName, callback) {
+        self.on = function(eventName, callback) {
             return evmgr.on(eventName, callback);
         };
     };
