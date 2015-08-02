@@ -1,4 +1,4 @@
-define(['directive', 'dom-helpers'], function(Directive, $) {
+define(['directive', 'lodash'], function(Directive, _) {
     "use strict";
 
     return function(config) {
@@ -49,8 +49,8 @@ define(['directive', 'dom-helpers'], function(Directive, $) {
 
         self.linkAll = function(root) {
             // NOTE: root may be a DOM Node or a directive
-            var elements = $.toArray(root.querySelectorAll('muu:not(.muu-initialised)'));
-            return elements.map(function(element) {
+            var elements = root.querySelectorAll('muu:not(.muu-initialised)');
+            return _.map(elements, function(element) {
                 return self.link(element);
             });
         };

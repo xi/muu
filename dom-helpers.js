@@ -11,13 +11,6 @@ define(['lodash'], function(_) {
                 window.addEventListener("load", _fn);
             }
         },
-        toArray: function(a) {
-            var tmp = [];
-            for (var i = 0; i < a.length; i++) {
-                tmp.push(a[i]);
-            }
-            return tmp;
-        },
         getRadio: function(options) {
             for (var i = 0; i < options.length; i++) {
                 if (options[i].checked) {

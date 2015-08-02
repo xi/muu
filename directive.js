@@ -1,4 +1,4 @@
-define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, EvMgr, updateDOM) {
+define(['mustache', 'dom-helpers', 'lodash', 'evmgr', 'updateDOM'], function(Mustache, $, _, EvMgr, updateDOM) {
     "use strict";
 
     return function(root, template, registry) {
@@ -19,31 +19,28 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
 
             updateDOM(root, tmp);
 
-            for (var eventType of ['keydown', 'keyup', 'click', 'change', 'search']) {
+            _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';
-                self.querySelectorAll(selector).forEach(function(element) {
+                _.forEach(self.querySelectorAll(selector), function(element) {
                     element.addEventListener(eventType, eventCallback);
                 });
-            }
+            });
 
             registry.linkAll(self);
         };
 
         self.querySelectorAll = function(selector) {
-            var hits = $.toArray(root.querySelectorAll(selector));
+            var hits = root.querySelectorAll(selector);
 
             // NOTE: querySelectorAll returns all elements in the tree that
             // match the given selector.  findAll does the same with *relative
             // selectors* but does not seem to be available yet.
-            var isolated = [];
-            var isolations = $.toArray(root.querySelectorAll('.muu-isolate'));
-            for (var isolation of isolations) {
-                isolated = isolated.concat($.toArray(isolation.querySelectorAll(selector)));
-            }
+            var isolations = root.querySelectorAll('.muu-isolate');
+            var isolated = _.union(_.map(isolations, function(isolation) {
+                return isolation.querySelectorAll(selector);
+            }));
 
-            return hits.filter(function(e) {
-                return isolated.indexOf(e) < 0;
-            });
+            return _.difference(hits, isolated);
         };
 
         self.querySelector = function(selector) {
@@ -56,9 +53,9 @@ define(['mustache', 'dom-helpers', 'evmgr', 'updateDOM'], function(Mustache, $, 
         self.getModel = function(name, _default) {
             if (name === void 0) {
                 var model = {};
-                for (element of self.querySelectorAll('[name]')) {
+                _.forEach(self.querySelectorAll('[name]'), function(element) {
                     model[element.name] = self.getModel(element.name);
-                }
+                });
                 return model;
             } else {
                 var element = self.querySelector('[name=' + name + ']');

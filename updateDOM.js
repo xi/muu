@@ -1,11 +1,11 @@
-define(['dom-helpers'], function($) {
+define(['lodash'], function(_) {
     "use strict";
 
     var updateAttributes = function(target, source) {
-        var targetAttrNames = $.toArray(target.attributes).map(function(item) {
+        var targetAttrNames = _.map(target.attributes, function(item) {
             return item.name;
         });
-        var sourceAttrNames = $.toArray(source.attributes).map(function(item) {
+        var sourceAttrNames = _.map(source.attributes, function(item) {
             return item.name;
         });
 
@@ -28,7 +28,7 @@ define(['dom-helpers'], function($) {
 
         if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
             if (target.nodeType === 1) {
-                var muuClasses = $.toArray(target.classList).filter(function(cls) {
+                var muuClasses = _.filter(target.classList, function(cls) {
                     return cls.startsWith('muu-');
                 });
                 updateAttributes(target, source);
