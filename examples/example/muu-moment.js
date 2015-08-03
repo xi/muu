@@ -9,10 +9,9 @@ define(['moment', 'muu-dom-helpers'], function(moment, $) {
                     human: moment().format('llll')
                 });
             };
-            $.ready(function() {
-                update();
-                window.setInterval(update, 60000);
-            });
+
+            update();
+            var intervalID = window.setInterval(update, 60000);
         })
     };
 });
