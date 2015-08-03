@@ -62,7 +62,7 @@ define(function() {
         var results = [];
         for (var i = 0; i < array.length; i++) {
             if (fn(array[i])) {
-                return results.push(array[i]);
+                results.push(array[i]);
             }
         }
         return results;
