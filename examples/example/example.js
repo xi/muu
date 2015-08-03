@@ -24,7 +24,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                 };
 
                 element.addEventListener('muu-push', function(event) {
-                    if (event.originalEvent.keyCode === 13) {
+                    if (event.detail.keyCode === 13) {
                         data.elements.push({
                             name: self.getModel('input') || ''
                         });
@@ -44,7 +44,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                 };
 
                 element.addEventListener('muu-update', function(event) {
-                    if (event.originalEvent.keyCode === 13) {
+                    if (event.detail.keyCode === 13) {
                         var input = self.getModel('input');
                         data.result = eval(input);
                         self.update(data);

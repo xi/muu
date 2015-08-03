@@ -11,7 +11,7 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], func
             if (originalEvent.target.hasAttribute(attrName)) {
                 var eventName = originalEvent.target.getAttribute(attrName);
                 var event = new CustomEvent('muu-' + eventName, {
-                    originalEvent: originalEvent
+                    detail: originalEvent
                 });
                 root.dispatchEvent(event);
             }
