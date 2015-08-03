@@ -12,6 +12,10 @@ define(['moment', 'muu-dom-helpers'], function(moment, $) {
 
             update();
             var intervalID = window.setInterval(update, 60000);
+
+            return function() {
+                window.clearInterval(intervalID);
+            };
         })
     };
 });
