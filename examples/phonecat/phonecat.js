@@ -17,8 +17,8 @@ require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
         var phones = args[1];
 
         var muu = new Muu()
-            .registerDirective('phonecat', template, function(self) {
-                self.on('filter', function() {
+            .registerDirective('phonecat', template, function(self, element) {
+                element.addEventListener('muu-filter', function() {
                     var query = self.getModel('query', '').toLowerCase();
                     var orderProp = self.getModel('orderProp');
 

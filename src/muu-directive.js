@@ -1,17 +1,19 @@
-define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-evmgr', 'muu-update-dom'], function(Mustache, $, _, EvMgr, updateDOM) {  // jshint ignore:line
+define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function(Mustache, $, _, updateDOM) {  // jshint ignore:line
     "use strict";
 
     return function(root, template, registry) {
         var self = this;
-        var evmgr = new EvMgr();
 
         root.innerHTML = '<div></div>'
 
-        var eventCallback = function(event) {
-            var attrName = 'data-on' + event.type;
-            if (event.target.hasAttribute(attrName)) {
-                var eventName = event.target.getAttribute(attrName);
-                evmgr.trigger(eventName, event);
+        var eventCallback = function(originalEvent) {
+            var attrName = 'data-on' + originalEvent.type;
+            if (originalEvent.target.hasAttribute(attrName)) {
+                var eventName = originalEvent.target.getAttribute(attrName);
+                var event = new CustomEvent('muu-' + eventName, {
+                    originalEvent: originalEvent
+                });
+                root.dispatchEvent(event);
             }
         };
 
@@ -82,10 +84,6 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-evmgr', 'muu-updat
             } else {
                 element.value = value;
             }
-        };
-
-        self.on = function(eventName, callback) {
-            return evmgr.on(eventName, callback);
         };
     };
 });

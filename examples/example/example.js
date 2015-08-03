@@ -16,15 +16,15 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
             'test',
             '<ul>{{#elements}}<li>{{name}}</li>{{/elements}}</ul>' +
                 '<input name="input" data-onkeydown="push" />',
-            function(self) {
+            function(self, element) {
                 var data = {
                     elements: [{
                         name: 'hugo'
                     }]
                 };
 
-                self.on('push', function(event) {
-                    if (event.keyCode === 13) {
+                element.addEventListener('muu-push', function(event) {
+                    if (event.originalEvent.keyCode === 13) {
                         data.elements.push({
                             name: self.getModel('input') || ''
                         });
@@ -43,8 +43,8 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                     name: element.getAttribute('data-name')
                 };
 
-                self.on('update', function(event) {
-                    if (event.keyCode === 13) {
+                element.addEventListener('muu-update', function(event) {
+                    if (event.originalEvent.keyCode === 13) {
                         var input = self.getModel('input');
                         data.result = eval(input);
                         self.update(data);
