@@ -5,6 +5,8 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-evmgr', 'muu-updat
         var self = this;
         var evmgr = new EvMgr();
 
+        root.innerHTML = '<div></div>'
+
         var eventCallback = function(event) {
             var attrName = 'data-on' + event.type;
             if (event.target.hasAttribute(attrName)) {
@@ -17,7 +19,7 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-evmgr', 'muu-updat
             var tmp = document.createElement('div');
             tmp.innerHTML = Mustache.render(template, data);
 
-            updateDOM(root, tmp);
+            updateDOM(root.children[0], tmp);
 
             _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';

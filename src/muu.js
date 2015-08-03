@@ -32,9 +32,7 @@ define(['muu-directive', 'muu-js-helpers'], function(Directive, _) {
             var template = directives[type].template;
             var link = directives[type].link;
 
-            element.innerHTML = '<div></div>';
-
-            var directive = new Directive(element.children[0], template, self);
+            var directive = new Directive(element, template, self);
             link(directive, element);
 
             element.classList.add('muu-isolate');
