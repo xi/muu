@@ -2,6 +2,12 @@ define(['muu-js-helpers'], function(_) {
     "use strict";
 
     return {
+        on: function(element, eventName, callback) {
+            element.addEventListener(eventName, callback);
+            return function() {
+                element.removeEventListener(eventName, callback);
+            }
+        },
         ready: function(fn) {
             var _fn = _.once(fn);
             if (document.readyState === "complete") {
