@@ -33,13 +33,20 @@ define(['muu-directive', 'muu-js-helpers'], function(Directive, _) {
             var link = directives[type].link;
 
             var directive = new Directive(element, template, self);
-            link(directive, element);
-
+            var unlink = link(directive, element);
             element.classList.add('muu-isolate');
             element.classList.add('muu-initialised');
 
             if (self.config.debug) {
                 element.directive = directive;
+            }
+
+            if (unlink !== void 0) {
+                var destroy = function() {
+                    unlink();
+                    element.removeEventListener('DOMNodeRemovedFromDocument', destroy);
+                };
+                element.addEventListener('DOMNodeRemovedFromDocument', destroy);
             }
 
             return directive;
