@@ -1,9 +1,10 @@
 requirejs.config({
     baseUrl: '../../src/',
     paths: {
-        mustache: '../../bower_components/mustache/mustache',
-        xhr: '../../bower_components/promise-xhr/promise-xhr',
-        moment: '../../bower_components/moment/moment'
+        mustache: '../bower_components/mustache/mustache',
+        xhr: '../bower_components/promise-xhr/promise-xhr',
+        moment: '../bower_components/moment/moment',
+        'muu-moment': '../examples/example/muu-moment'
     }
 });
 
@@ -14,7 +15,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
         .registerModule(muuMoment)
         .registerDirective(
             'test',
-            '<ul>{{#elements}}<li>{{name}}</li>{{/elements}}</ul>' +
+            '<ul>{{#elements}}<li>{{name}}</li><muu type="moment"></muu>{{/elements}}</ul>' +
                 '<input name="input" data-onkeydown="push" />',
             function(self, element) {
                 var data = {
