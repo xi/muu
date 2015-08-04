@@ -57,7 +57,7 @@ define(function() {
     loc.hash = function(value, replace) {
         if (value === void 0) {
             if (location.hash) {
-                return location.hash.slice(1);;
+                return location.hash.slice(1);
             } else {
                 return '';
             }

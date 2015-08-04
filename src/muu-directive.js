@@ -4,7 +4,7 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], func
     return function(root, template, registry) {
         var self = this;
 
-        root.innerHTML = '<div></div>'
+        root.innerHTML = '<div></div>';
 
         var eventCallback = function(originalEvent) {
             var attrName = 'data-on' + originalEvent.type;
