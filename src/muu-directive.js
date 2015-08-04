@@ -30,6 +30,12 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
                 });
             });
 
+            var updateEvent = new Event('muu-parent-update');
+            var subDirectives = this.querySelectorAll('muu.muu-initialised');
+            _.forEach(subDirectives, function(element) {
+                element.dispatchEvent(updateEvent);
+            });
+
             registry.linkAll(self);
         };
 
