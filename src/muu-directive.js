@@ -1,4 +1,4 @@
-define(['muu-template', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function(render, $, _, updateDOM) {  // jshint ignore:line
+define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
     "use strict";
 
     return function(root, template, registry) {
@@ -19,7 +19,7 @@ define(['muu-template', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], 
 
         self.update = function(data) {
             var tmp = document.createElement('div');
-            tmp.innerHTML = render(template, data);
+            tmp.innerHTML = registry.renderer(template, data);
 
             updateDOM(root.children[0], tmp);
 

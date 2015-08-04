@@ -1,4 +1,4 @@
-define(['muu-directive', 'muu-js-helpers'], function(Directive, _) {
+define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate, Directive, _) {
     "use strict";
 
     return function(config) {
@@ -6,6 +6,7 @@ define(['muu-directive', 'muu-js-helpers'], function(Directive, _) {
         var directives = {};
 
         self.config = config || {};
+        self.renderer = self.config.renderer || muuTemplate;
 
         self.registerDirective = function(type, template, link) {
             directives[type] = {
