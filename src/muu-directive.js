@@ -1,4 +1,4 @@
-define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function(Mustache, $, _, updateDOM) {  // jshint ignore:line
+define(['muu-template', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function(render, $, _, updateDOM) {  // jshint ignore:line
     "use strict";
 
     return function(root, template, registry) {
@@ -19,7 +19,7 @@ define(['mustache', 'muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], func
 
         self.update = function(data) {
             var tmp = document.createElement('div');
-            tmp.innerHTML = Mustache.render(template, data);
+            tmp.innerHTML = render(template, data);
 
             updateDOM(root.children[0], tmp);
 

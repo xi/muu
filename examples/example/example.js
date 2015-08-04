@@ -1,7 +1,6 @@
 requirejs.config({
     baseUrl: '../../src/',
     paths: {
-        mustache: '../bower_components/mustache/mustache',
         xhr: '../bower_components/promise-xhr/promise-xhr',
         moment: '../bower_components/moment/moment',
         'muu-moment': '../examples/example/muu-moment'
