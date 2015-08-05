@@ -102,10 +102,6 @@ define([], function() {
                         return item;
                     } else if (isFunction(item)) {
                         return item(data);
-                    } else if (isArray(item)) {
-                        return concat(item)(data);
-                    } else {
-                        throw new Error('unexpected item in concat: ' + item);
                     }
                 }).join('');
             };
@@ -127,7 +123,7 @@ define([], function() {
             var tmp = template.slice(openIndex);
 
             var closeIndex = tmp.indexOf(closeTag) + 2;
-            if (closeIndex === -1) {
+            if (closeIndex === 1) {
                 throw new Error('unclosed tag: ' + tmp);
             }
             var tag = tmp.slice(0, closeIndex);
