@@ -17,5 +17,10 @@
   "dependencies": {
     "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1",
     "requirejs": "~2.1.20"
+  },
+  "devDependencies": {
+    "blanket": "~1.1.7",
+    "chai": "~3.2.0",
+    "mocha": "~2.2.5"
   }
 }
