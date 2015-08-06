@@ -1,4 +1,4 @@
-/* global define, describe, it, beforeEach, afterEach, expect */
+/* global define, describe, it, beforeEach, afterEach, expect, sinon */
 define(['muu-js-helpers'], function(_) {
     "use strict";
 
@@ -24,29 +24,24 @@ define(['muu-js-helpers'], function(_) {
     describe('muuJsHelpers', function() {
         describe('once', function() {
             it ('executes the wrapped function only once', function() {
-                var sideEffect = 0;
-                var fn = _.once(function() {
-                    sideEffect += 1;
-                    return sideEffect;
-                });
+                var inner = sinon.spy();
+                var fn = _.once(inner);
 
-                expect(sideEffect).to.equal(0);
+                expect(inner).to.have.callCount(0);
                 fn();
-                expect(sideEffect).to.equal(1);
+                expect(inner).to.have.callCount(1);
                 fn();
-                expect(sideEffect).to.equal(1);
+                expect(inner).to.have.callCount(1);
                 fn();
-                expect(sideEffect).to.equal(1);
+                expect(inner).to.have.callCount(1);
             });
             it ('returns a constant function', function() {
-                var sideEffect = 0;
-                var fn = _.once(function() {
-                    sideEffect += 1;
-                    return sideEffect;
-                });
+                var inner = sinon.stub().returns(1);
+                var fn = _.once(inner);
 
                 expect(fn()).to.equal(1);
-                expect(fn()).to.equal(1);
+
+                inner.returns(2);
                 expect(fn()).to.equal(1);
             });
         });
