@@ -29,7 +29,7 @@ define(['muu-js-helpers'], function(_) {
         if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
             if (target.nodeType === 1) {
                 var muuClasses = _.filter(target.classList, function(cls) {
-                    return cls.startsWith('muu-');
+                    return cls.lastIndexOf('muu-', 0) === 0;
                 });
                 updateAttributes(target, source);
                 _.forEach(muuClasses, function(cls) {
