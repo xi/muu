@@ -28,7 +28,6 @@ define(['muu-js-helpers'], function(_) {
             for (var i = 0; i < options.length; i++) {
                 if (options[i].value === value) {
                     options[i].checked = true;
-                    return;
                 } else {
                     options[i].checked = false;
                 }
