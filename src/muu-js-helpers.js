@@ -6,16 +6,18 @@ define(function() {
 
     var _ = {};
 
-    _.isString = function(s) {
-        return s !== void 0 && s.trim !== void 0;
+    var objToString = function(value) {
+        return Object.prototype.toString.call(value);
     };
 
-    _.isArray = function(a) {
-        return a !== void 0 && a.push !== void 0;
+    _.isString = function(value) {
+        return typeof value === 'string' || objToString(value) === '[object String]';
     };
 
-    _.isFunction = function(f) {
-        return f !== void 0 && f.call !== void 0;
+    _.isArray = Array.isArray;
+
+    _.isFunction = function(value) {
+        return typeof value === 'function';
     };
 
     _.once = function(fn) {
