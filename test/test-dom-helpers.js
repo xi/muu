@@ -11,6 +11,14 @@ define(['muu-dom-helpers'], function($) {
             return option;
         };
 
+        describe('escapeHtml', function() {
+            it('escapes all relevant HTML entities', function() {
+                var source = ';/><script>alert("XSS!")</script>';
+                var expected = ';&#x2F;&gt;&lt;script&gt;alert(&quot;XSS!&quot;)&lt;&#x2F;script&gt;';
+                expect($.escapeHtml(source)).to.equal(expected);
+            });
+        });
+
         describe('on', function() {
             var element;
             var callback;
