@@ -21,7 +21,105 @@ define(['muu-js-helpers'], function(_) {
         });
     };
 
+    function functionDeclaration() {}
+    var functionExpression = function() {};
+
     describe('muuJsHelpers', function() {
+        describe('isString', function() {
+            it('returns `true` for string', function() {
+                expect(_.isString('a')).to.be.ok();
+            });
+
+            it('returns `true` for empty string', function() {
+                expect(_.isString('')).to.be.ok();
+            });
+
+            it('returns `true` for string object', function() {
+                expect(_.isString(Object('a'))).to.be.ok();
+            });
+
+            it('returns `true` for empty string object', function() {
+                expect(_.isString(Object(''))).to.be.ok();
+            });
+
+            it('returns `false` for non-strings', function() {
+                expect(_.isString()).not.to.be.ok();
+                expect(_.isString(0)).not.to.be.ok();
+                expect(_.isString(false)).not.to.be.ok();
+                expect(_.isString(NaN)).not.to.be.ok();
+                expect(_.isString(null)).not.to.be.ok();
+                expect(_.isString(undefined)).not.to.be.ok();
+
+                expect(_.isString([1, 2, 3])).not.to.be.ok();
+                expect(_.isString(true)).not.to.be.ok();
+                expect(_.isString(new Date)).not.to.be.ok();
+                expect(_.isString(new Error)).not.to.be.ok();
+                expect(_.isString(_)).not.to.be.ok();
+                expect(_.isString(functionDeclaration)).not.to.be.ok();
+                expect(_.isString(functionExpression)).not.to.be.ok();
+                expect(_.isString({ '0': 1, 'length': 1 })).not.to.be.ok();
+                expect(_.isString(1)).not.to.be.ok();
+                expect(_.isString(/x/)).not.to.be.ok();
+            });
+        });
+
+        describe('isArray', function() {
+            it('returns `true` for arrays', function() {
+                expect(_.isArray([1, 2, 3])).to.be.ok();
+                expect(_.isArray([])).to.be.ok();
+            });
+
+            it('returns `false` for non-arrays', function() {
+                expect(_.isArray()).not.to.be.ok();
+                expect(_.isArray('')).not.to.be.ok();
+                expect(_.isArray(0)).not.to.be.ok();
+                expect(_.isArray(false)).not.to.be.ok();
+                expect(_.isArray(NaN)).not.to.be.ok();
+                expect(_.isArray(null)).not.to.be.ok();
+                expect(_.isArray(undefined)).not.to.be.ok();
+
+                expect(_.isArray(true)).not.to.be.ok();
+                expect(_.isArray(new Date)).not.to.be.ok();
+                expect(_.isArray(new Error)).not.to.be.ok();
+                expect(_.isArray(_)).not.to.be.ok();
+                expect(_.isString(functionDeclaration)).not.to.be.ok();
+                expect(_.isString(functionExpression)).not.to.be.ok();
+                expect(_.isArray({ '0': 1, 'length': 1 })).not.to.be.ok();
+                expect(_.isArray(1)).not.to.be.ok();
+                expect(_.isArray(/x/)).not.to.be.ok();
+                expect(_.isArray('a')).not.to.be.ok();
+            });
+        });
+
+        describe('isFunction', function() {
+            it('returns `true` for function declaration', function() {
+                expect(_.isFunction(functionDeclaration)).to.be.ok();
+            });
+            it('returns `true` for function expression', function() {
+                expect(_.isFunction(functionExpression)).to.be.ok();
+            });
+            it('returns `false` for non-functions', function() {
+                expect(_.isFunction()).not.to.be.ok();
+                expect(_.isFunction('')).not.to.be.ok();
+                expect(_.isFunction(0)).not.to.be.ok();
+                expect(_.isFunction(false)).not.to.be.ok();
+                expect(_.isFunction(NaN)).not.to.be.ok();
+                expect(_.isFunction(null)).not.to.be.ok();
+                expect(_.isFunction(undefined)).not.to.be.ok();
+
+                expect(_.isFunction([1, 2, 3])).not.to.be.ok();
+                expect(_.isFunction(true)).not.to.be.ok();
+                expect(_.isFunction(new Date)).not.to.be.ok();
+                expect(_.isFunction(new Error)).not.to.be.ok();
+                expect(_.isFunction({ 'a': 1 })).not.to.be.ok();
+                expect(_.isFunction(1)).not.to.be.ok();
+                expect(_.isFunction(/x/)).not.to.be.ok();
+                expect(_.isFunction('a')).not.to.be.ok();
+
+                expect(_.isFunction(document.getElementsByTagName('body'))).not.to.be.ok();
+            });
+        });
+
         describe('once', function() {
             it ('executes the wrapped function only once', function() {
                 var inner = sinon.spy();
