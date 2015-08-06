@@ -31,8 +31,8 @@
         require({
             baseUrl: '../src/'
         }, [
-            "test-js-helpers.js",
-            "test-template.js"
+            '../test/test-js-helpers.js',
+            '../test/test-template.js'
         ], function () {
             mocha.checkLeaks();
             mocha.run();
