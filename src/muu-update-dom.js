@@ -40,14 +40,14 @@ define(['muu-js-helpers'], function(_) {
             }
 
             if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
-                for (var i = 0; i < nt && i < ns; i++) {
-                    updateDOM(target.childNodes[i], source.childNodes[i]);
-                }
-                for (i = ns; i < nt; i++) {
+                for (var i = ns; i < nt; i++) {
                     target.removeChild(target.childNodes[ns]);
                 }
                 for (i = nt; i < ns; i++) {
                     target.appendChild(source.childNodes[nt]);
+                }
+                for (i = 0; i < nt && i < ns; i++) {
+                    updateDOM(target.childNodes[i], source.childNodes[i]);
                 }
             }
         } else {
