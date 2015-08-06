@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: '../../src/',
     paths: {
-        xhr: '../bower_components/promise-xhr/promise-xhr'
+        xhr: '../lib/promise-xhr/promise-xhr'
     }
 });
 

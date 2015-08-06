@@ -10,11 +10,11 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "lib",
+    "test"
   ],
   "dependencies": {
+    "moment": "~2.10.6",
     "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1",
     "requirejs": "~2.1.20"
   },
