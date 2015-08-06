@@ -41,9 +41,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             var attrName = 'data-on' + originalEvent.type;
             if (originalEvent.target.hasAttribute(attrName)) {
                 var eventName = originalEvent.target.getAttribute(attrName);
-                var event = new CustomEvent('muu-' + eventName, {
-                    detail: originalEvent
-                });
+                var event = $.createEvent('muu-' + eventName, originalEvent);
                 root.dispatchEvent(event);
             }
         };
@@ -69,7 +67,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
                 });
             });
 
-            var updateEvent = new Event('muu-parent-update');
+            var updateEvent = $.createEvent('muu-parent-update');
             var subDirectives = this.querySelectorAll('muu.muu-initialised');
             _.forEach(subDirectives, function(element) {
                 element.dispatchEvent(updateEvent);

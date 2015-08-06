@@ -28,6 +28,24 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
+     * @param {string} type
+     * @param {*} detail
+     * @return {DOMEvent}
+     */
+    $.createEvent = function(type, detail) {
+        // see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+        if (typeof CustomEvent === 'function') {
+            return new CustomEvent(type, {
+                detail: detail
+            });
+        } else {
+            var event = document.createEvent('CustomEvent');
+            event.initCustomEvent(type, false, true, detail);
+            return event;
+        }
+    };
+
+    /**
      * @param {DOMElement} element
      * @param {string} eventName
      * @param {function} callback

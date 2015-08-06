@@ -19,6 +19,17 @@ define(['muu-dom-helpers'], function($) {
             });
         });
 
+        describe('createEvent', function() {
+            it('creates an event with specified type', function() {
+                var event = $.createEvent('foobar');
+                expect(event.type).to.equal('foobar');
+            });
+            it('creates an event with specified details', function() {
+                var event = $.createEvent('foobar', 37);
+                expect(event.detail).to.equal(37);
+            });
+        });
+
         describe('on', function() {
             var element;
             var callback;
@@ -31,23 +42,23 @@ define(['muu-dom-helpers'], function($) {
             });
 
             it('calls callback when the event is triggered', function() {
-                element.dispatchEvent(new Event('click'));
+                element.dispatchEvent($.createEvent('click'));
                 expect(callback.callCount).to.be.greaterThan(0);
             });
             it('calls callback each time the event is triggered', function() {
-                element.dispatchEvent(new Event('click'));
+                element.dispatchEvent($.createEvent('click'));
                 expect(callback.callCount).to.be(1);
 
-                element.dispatchEvent(new Event('click'));
+                element.dispatchEvent($.createEvent('click'));
                 expect(callback.callCount).to.be(2);
             });
             it('does not call callback on other event', function() {
-                element.dispatchEvent(new Event('not-click'));
+                element.dispatchEvent($.createEvent('not-click'));
                 expect(callback.callCount).to.be(0);
             });
             it('does not call callback anymore once unregister has been called', function() {
                 unregister();
-                element.dispatchEvent(new Event('click'));
+                element.dispatchEvent($.createEvent('click'));
                 expect(callback.callCount).to.be(0);
             });
         });
