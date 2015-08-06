@@ -6,6 +6,18 @@ define(function() {
 
     var _ = {};
 
+    _.isString = function(s) {
+        return s !== void 0 && s.trim !== void 0;
+    };
+
+    _.isArray = function(a) {
+        return a !== void 0 && a.push !== void 0;
+    };
+
+    _.isFunction = function(f) {
+        return f !== void 0 && f.call !== void 0;
+    };
+
     _.once = function(fn) {
         var result;
         var called = false;

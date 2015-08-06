@@ -1,7 +1,21 @@
 define(['muu-js-helpers'], function(_) {
     "use strict";
 
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;'
+    };
+
     return {
+        escapeHtml: function(string) {
+            return String(string).replace(/[&<>"'\/]/g, function(s) {
+                return entityMap[s];
+            });
+        },
         on: function(element, eventName, callback) {
             element.addEventListener(eventName, callback);
             return function() {
