@@ -32,23 +32,23 @@ define(['muu-dom-helpers'], function($) {
 
             it('calls callback when the event is triggered', function() {
                 element.dispatchEvent(new Event('click'));
-                expect(callback).to.have.been.called();
+                expect(callback.callCount).to.be.greaterThan(0);
             });
             it('calls callback each time the event is triggered', function() {
                 element.dispatchEvent(new Event('click'));
-                expect(callback).to.have.been.calledOnce();
+                expect(callback.callCount).to.be(1);
 
                 element.dispatchEvent(new Event('click'));
-                expect(callback).to.have.been.calledTwice();
+                expect(callback.callCount).to.be(2);
             });
             it('does not call callback on other event', function() {
                 element.dispatchEvent(new Event('not-click'));
-                expect(callback).not.to.have.been.called();
+                expect(callback.callCount).to.be(0);
             });
             it('does not call callback anymore once unregister has been called', function() {
                 unregister();
                 element.dispatchEvent(new Event('click'));
-                expect(callback).not.to.have.been.called();
+                expect(callback.callCount).to.be(0);
             });
         });
 
@@ -77,11 +77,11 @@ define(['muu-dom-helpers'], function($) {
                     createRadioBox(1),
                     createRadioBox(2)
                 ];
-                expect($.getRadio(options)).not.to.exist();
+                expect($.getRadio(options)).to.be(undefined);
             });
             it('returns undefined if the passed array is empty', function() {
                 var options = [];
-                expect($.getRadio(options)).not.to.exist();
+                expect($.getRadio(options)).to.be(undefined);
             });
         });
 

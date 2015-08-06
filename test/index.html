@@ -16,9 +16,7 @@
     <div id="mocha"></div>
 
     <script src="../lib/mocha/mocha.js"></script>
-    <script src="../lib/chai/chai.js"></script>
-    <script src="../lib/dirty-chai/lib/dirty-chai.js"></script>
-    <script src="../lib/sinon-chai/lib/sinon-chai.js"></script>
+    <script src="../lib/expect.js/index.js"></script>
     <script src="../lib/sinon-js/sinon.js"></script>
     <script src="../lib/requirejs/require.js"></script>
     <script
@@ -28,7 +26,6 @@
     </script>
 
     <script>
-        window.expect = chai.expect;
         mocha.setup('bdd');
 
         if (location.search.indexOf('coverage=no') === -1) {

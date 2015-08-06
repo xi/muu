@@ -48,21 +48,21 @@ define(['muu-template'], function(muuTemplate) {
             var fn = function() {
                 return muuTemplate(template, {loop: [1,2,3]});
             };
-            expect(fn).to.throw('unclosed loop: loop');
+            expect(fn).to.throwError('unclosed loop: loop');
         });
         it('fails on unexpected closing loop', function() {
             var template = 'test{{/loop}}';
             var fn = function() {
                 return muuTemplate(template, {loop: [1,2,3]});
             };
-            expect(fn).to.throw('unexpected closing loop: {{/loop}}');
+            expect(fn).to.throwError('unexpected closing loop: {{/loop}}');
         });
         it('fails on unclosed tag', function() {
             var template = '{{asd}';
             var fn = function() {
                 return muuTemplate(template, {asd: 'huhu'});
             };
-            expect(fn).to.throw('unclosed tag: {{asd}');
+            expect(fn).to.throwError('unclosed tag: {{asd}');
         });
     });
 });
