@@ -31,7 +31,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                         self.update(data);
                         self.setModel('input', '');
                     }
-                });
+                }, false);
 
                 self.update(data);
             })
@@ -49,7 +49,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                         data.result = eval(input);
                         self.update(data);
                     }
-                });
+                }, false);
 
                 self.update(data);
             });

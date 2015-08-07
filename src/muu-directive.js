@@ -26,7 +26,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';
                 _.forEach(self.querySelectorAll(selector), function(element) {
-                    element.addEventListener(eventType, eventCallback);
+                    element.addEventListener(eventType, eventCallback, false);
                 });
             });
 
