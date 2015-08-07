@@ -102,15 +102,15 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             var tag = tmp.slice(0, closeIndex);
             var afterTag = tmp.slice(closeIndex);
 
-            if (tag.startsWith('{{#')) {
+            if (tag.lastIndexOf('{{#', 0) === 0) {
                 var v = parseLoopTemplate(tag, afterTag);
                 var loop = v[0];
                 var after = parseTemplate(v[1], loopName);
                 return concat([beforeTag, loop, after]);
-            } else if (tag.startsWith('{{!')) {
+            } else if (tag.lastIndexOf('{{!', 0) === 0) {
                 var after = parseTemplate(afterTag, loopName);
                 return concat([beforeTag, after]);
-            } else if (tag.startsWith('{{/')) {
+            } else if (tag.lastIndexOf('{{/', 0) === 0) {
                 if (tag.slice(3, -2) === loopName) {
                     var render = function() {
                         return beforeTag;

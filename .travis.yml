@@ -1,0 +1,20 @@
+sudo: false
+language: node_js
+install:
+  - npm list -g --depth=0 grunt-cli bower || npm install -g grunt-cli bower
+  - npm list --depth=0 grunt grunt-contrib-connect || npm install grunt grunt-contrib-connect
+  - npm list --depth=0 grunt-saucelabs || npm install https://github.com/xi/grunt-saucelabs/archive/feature-custom-on-progress.tar.gz
+  - bower install
+cache:
+  directories:
+    - lib
+    - node_modules
+    - $HOME/.nvm
+script:
+  - grunt
+notifications:
+  email: false
+env:
+  global:
+    - secure: Pk5ZS8QMS47X2NFvxBN96vDIw6WeRD0EtWKu0U219II/ibWXDidDCdoa+u1D5tr33i5DPzgfGyQugyAmsQHYpuLpdP7EwEj7DA5BVDVSvFZW9yrPybJKQdd0MndSH5S0mhO6XAnfpTUTx51ZoHWxgZ2uN4+J1wa89YU3hmKwM2A03SLBE/LVISTtzYZlxUiTinzs1kpsoJ6Six0woNkB3u7TsuYHq2XEsszXVENyqHDwOC0RO0xOiMjU6srh5Ye99acxO0MSA5LuqCMTzbSiGWlsICgoRYlT0JoEpoxG+FjK8IcpIwNW4jg3qBk8ivVa2j3/287hs5r9nKZQEXhtQhkPgjbbUAwf+lpmNoYD/A1AB37aarEiiucWkHXJz/ebAJahiUMfQUUjfgRpIsFsyjiRZ7IvJ8OajU5NvVqSol+ZVzjL7nmAgxe9q8PWEqi7Jgfd7GgtgIKBXTkruvSU2HNoBcMWznY96NGesbGau6oGV4B8E+VLM1jRphXewMeRthh4VpdoWM2FKDdT2TxAeiKHXtVFDRtXr/HvBz1BFNP7kwjojqCbToNZDzVsV++uHaxRlBJ1JVWeNnYo4bAt6TZDfJA9tsrA88UTJMmoh7dmTgp4olIhPVOuK3Vo9ejJb6XtJ+4hGY3gvd/aahui9p5N0IcW5HS/jIOTJZ80KKM=
+    - secure: KmzyfTb1rYWueq9aGhnXDPbRfjCC0crFmyNxjvxRpsvif28YmFCdvwWXPtO3hNgEYRPfV1PXo55DMHm9SGsHR3yA/hBJUzs6lLk32yzNOzFNeuYWWEhzZw4iGZ+0ZbJ0PgTbUJRJwwXIZwzjjjH7IDXp7ToCVngO+DsfYn+aaffuD0gkVWduYtqETlj3zkM7XeE/SO3WK8ZPjq6uwn4JXJCjgTxYUb5Z8ZWYI/dbdIJDRgfJGxMTxYtpM4Nkufb87aDXhPTJZ7igSYWLwU3PhIDCefYtrDwl4tyGTHs9oIhlKa34gMucyC92CCptoNsXaL2UlCwqXoDwKcvsjd+2lYg+tG1DDeTm1BzWDZabBkftOlJ+yVCITR8mBAr+UvD2r00ONi//umIdg3hzfZtRpEUDKZxaCQ+uOzZR4httt7cp2yTffbogQgh7naTAr/qkW23zsDIivHBHwWG4Yh+jW2N0drre9F0W9+naU96Z+svb7rQhTbG8/6kg09rZzvz1wDkswWdIuDHTwo6HEgv02jWsDlBoE2s73eKI4dyX5IqQth88qgHVQIyK52a5kwoyyPcWtxu+oa/YjhbWw3lBl4jWn9m+HY3leyKgaAgJJ0bVEZZnUd+G4H0ApoFBPSaS74XjFdig5/fxzYMybL5imZrBTKSl8jOB/hRe+RohjBY=

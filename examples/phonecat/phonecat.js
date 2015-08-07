@@ -30,7 +30,7 @@ require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
                                 return a[orderProp] > b[orderProp];
                             })
                     });
-                });
+                }, false);
 
                 self.update({phones: phones});
                 self.setModel('query', '');

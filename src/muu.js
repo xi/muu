@@ -45,9 +45,9 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
             if (unlink !== void 0) {
                 var destroy = function() {
                     unlink();
-                    element.removeEventListener('DOMNodeRemovedFromDocument', destroy);
+                    element.removeEventListener('DOMNodeRemovedFromDocument', destroy, false);
                 };
-                element.addEventListener('DOMNodeRemovedFromDocument', destroy);
+                element.addEventListener('DOMNodeRemovedFromDocument', destroy, false);
             }
 
             return directive;

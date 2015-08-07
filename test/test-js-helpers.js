@@ -125,13 +125,13 @@ define(['muu-js-helpers'], function(_) {
                 var inner = sinon.spy();
                 var fn = _.once(inner);
 
-                expect(inner).to.have.callCount(0);
+                expect(inner.callCount).to.be(0);
                 fn();
-                expect(inner).to.have.callCount(1);
+                expect(inner.callCount).to.be(1);
                 fn();
-                expect(inner).to.have.callCount(1);
+                expect(inner.callCount).to.be(1);
                 fn();
-                expect(inner).to.have.callCount(1);
+                expect(inner.callCount).to.be(1);
             });
             it ('returns a constant function', function() {
                 var inner = sinon.stub().returns(1);

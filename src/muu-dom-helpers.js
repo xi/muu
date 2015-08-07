@@ -17,9 +17,9 @@ define(['muu-js-helpers'], function(_) {
             });
         },
         on: function(element, eventName, callback) {
-            element.addEventListener(eventName, callback);
+            element.addEventListener(eventName, callback, false);
             return function() {
-                element.removeEventListener(eventName, callback);
+                element.removeEventListener(eventName, callback, false);
             };
         },
         ready: function(fn) {
@@ -27,8 +27,8 @@ define(['muu-js-helpers'], function(_) {
             if (document.readyState === "complete") {
                 _fn();
             } else {
-                document.addEventListener("DOMContentLoaded", _fn);
-                window.addEventListener("load", _fn);
+                document.addEventListener("DOMContentLoaded", _fn, false);
+                window.addEventListener("load", _fn, false);
             }
         },
         getRadio: function(options) {

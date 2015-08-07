@@ -69,7 +69,7 @@ define(function() {
 
     loc.addEventListener = function(eventName, fn) {
         if (eventName === 'change') {
-            window.addEventListener('popstate', fn);
+            window.addEventListener('popstate', fn, false);
         }
     };
 
