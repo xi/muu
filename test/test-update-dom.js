@@ -2,6 +2,13 @@
 define(['muu-update-dom'], function(updateDOM) {
     "use strict";
 
+    var n = function(s) {
+        return s
+            .toLowerCase()
+            .replace(/\s+/g, ' ')
+            .replace(/=([^"][^> ]*)/g, '="$1"');
+    };
+
     describe('muuUpdateDom', function() {
         var target;
         var source;
@@ -17,65 +24,65 @@ define(['muu-update-dom'], function(updateDOM) {
             expect(target.innerHTML).to.equal('Hallo');
         });
         it('adds new elements', function() {
-            source.innerHTML = '<span>Hallo</span> <span>World</span>';
-            target.innerHTML = '<span>Hallo</span>';
+            source.innerHTML = '<span>hallo</span> <span>world</span>';
+            target.innerHTML = '<span>hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<span>Hallo</span> <span>World</span>');
+            expect(n(target.innerHTML)).to.equal('<span>hallo</span> <span>world</span>');
         });
         it('removes existing elements', function() {
-            source.innerHTML = '<span>Hallo</span>';
-            target.innerHTML = '<span>Hallo</span> <span>World</span>';
+            source.innerHTML = '<span>hallo</span>';
+            target.innerHTML = '<span>hallo</span> <span>world</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<span>Hallo</span>');
+            expect(n(target.innerHTML)).to.equal('<span>hallo</span>');
         });
         it('replaces elements by text nodes', function() {
-            source.innerHTML = 'Hallo';
-            target.innerHTML = '<span>Hallo</span>';
+            source.innerHTML = 'hallo';
+            target.innerHTML = '<span>hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('Hallo');
+            expect(n(target.innerHTML)).to.equal('hallo');
         });
         it('replaces elements by other elements', function() {
-            source.innerHTML = '<div>Hallo</div>';
-            target.innerHTML = '<span class="muu-test">Hallo</span>';
+            source.innerHTML = '<div>hallo</div>';
+            target.innerHTML = '<span class="muu-test">hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<div>Hallo</div>');
+            expect(n(target.innerHTML)).to.equal('<div>hallo</div>');
         });
         it('can replace and add elements in the same parent', function() {
             source.innerHTML = '<div>1</div> <div>2</div>';
             target.innerHTML = '<span>1</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<div>1</div> <div>2</div>');
+            expect(n(target.innerHTML)).to.equal('<div>1</div> <div>2</div>');
         });
         it('can replace and remove elements in the same parent', function() {
             source.innerHTML = '<div>1</div>';
             target.innerHTML = '<span>1</span> <div>2</div>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<div>1</div>');
+            expect(n(target.innerHTML)).to.equal('<div>1</div>');
         });
         it('adds new attributes', function() {
-            source.innerHTML = '<span class="test">Hallo</span>';
-            target.innerHTML = '<span>Hallo</span>';
+            source.innerHTML = '<span class="test">hallo</span>';
+            target.innerHTML = '<span>hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<span class="test">Hallo</span>');
+            expect(n(target.innerHTML)).to.equal('<span class="test">hallo</span>');
         });
         it('removes existing attributes', function() {
-            source.innerHTML = '<span>Hallo</span>';
-            target.innerHTML = '<span class="test">Hallo</span>';
+            source.innerHTML = '<span>hallo</span>';
+            target.innerHTML = '<span class="test">hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<span>Hallo</span>');
+            expect(n(target.innerHTML)).to.equal('<span>hallo</span>');
         });
         it('preserves all classes prefixed with "muu-"', function() {
-            source.innerHTML = '<span class="test">Hallo</span>';
-            target.innerHTML = '<span class="muu-test">Hallo</span>';
+            source.innerHTML = '<span class="test">hallo</span>';
+            target.innerHTML = '<span class="muu-test">hallo</span>';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<span class="test muu-test">Hallo</span>');
+            expect(n(target.innerHTML)).to.equal('<span class="test muu-test">hallo</span>');
         });
         it('preserves input value', function() {
             source.innerHTML = '<input class="test">';
             target.innerHTML = '<input>';
             target.querySelector('input').value = '1';
             updateDOM(target, source);
-            expect(target.innerHTML).to.equal('<input class="test">');
+            expect(n(target.innerHTML)).to.equal('<input class="test">');
             expect(target.querySelector('input').value).to.equal('1');
         });
         it('preserves input value', function() {
@@ -83,7 +90,7 @@ define(['muu-update-dom'], function(updateDOM) {
             target.innerHTML = '<input type="checkbox">';
             target.querySelector('input').checked = true;
             updateDOM(target, source);
-            expect(target.innerHTML).to.contain('class="test"');
+            expect(n(target.innerHTML)).to.contain('class="test"');
             expect(target.querySelector('input').checked).to.be.ok();
         });
     });
