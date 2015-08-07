@@ -1,0 +1,45 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="../bower_components/mocha/mocha.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <script src="../bower_components/mocha/mocha.js"></script>
+    <script src="../bower_components/chai/chai.js"></script>
+    <script src="../bower_components/dirty-chai/lib/dirty-chai.js"></script>
+    <script src="../bower_components/sinon-chai/lib/sinon-chai.js"></script>
+    <script src="../bower_components/sinon-js/sinon.js"></script>
+    <script src="../bower_components/requirejs/require.js"></script>
+    <script
+        src="../bower_components/blanket/dist/qunit/blanket.js"
+        data-cover-adapter="../bower_components/blanket/src/adapters/mocha-blanket.js"
+        data-cover-flags="branchTracking">
+    </script>
+
+    <script>
+        window.expect = chai.expect;
+        mocha.setup('bdd');
+
+        if (location.search.indexOf('coverage=no') === -1) {
+            blanket.options('filter', 'muu');
+        } else {
+            blanket.options('filter', 'nonexistent');
+        }
+
+        require({
+            baseUrl: '../src/'
+        }, [
+            '../test/test-dom-helpers',
+            '../test/test-js-helpers.js',
+            '../test/test-template.js',
+            '../test/test-update-dom'
+        ], function () {
+            mocha.checkLeaks();
+            mocha.run();
+        });
+    </script>
+</body>
+</html>

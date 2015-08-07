@@ -1,42 +1,15 @@
-define([], function() {
+define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     "use strict";
 
     var openTag = '{{';
     var closeTag = '}}';
-
-    var entityMap = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-        '/': '&#x2F;'
-    };
-
-    var isString = function(s) {
-        return s.trim !== void 0;
-    };
-
-    var isArray = function(a) {
-        return a.push !== void 0;
-    };
-
-    var isFunction = function(f) {
-        return f.call !== void 0;
-    };
-
-    var escapeHtml = function(string) {
-        return String(string).replace(/[&<>"'\/]/g, function(s) {
-            return entityMap[s];
-        });
-    };
 
     var parseVariableTemplate = function(template) {
         var content = template.slice(2, -2);
 
         if (template.indexOf(':') === -1) {
             return function(data) {
-                return escapeHtml(data[content] || '');
+                return $.escapeHtml(data[content] || '');
             };
         } else {
             var pairs = content.split(',').map(function(pair) {
@@ -58,7 +31,7 @@ define([], function() {
                     }
                 }
 
-                return escapeHtml(results.join(' '));
+                return $.escapeHtml(results.join(' '));
             };
         }
     };
@@ -71,7 +44,7 @@ define([], function() {
         var afterLoop = v[1];
 
         var render = function(data) {
-            if (isArray(data[tagName])) {
+            if (_.isArray(data[tagName])) {
                 var result = '';
                 for (var i = 0; i < data[tagName].length; i++) {
                     result += inner(data[tagName][i]);
@@ -90,7 +63,7 @@ define([], function() {
     var concat = function(a) {
         var last = a.pop();
 
-        if (isArray(last)) {
+        if (_.isArray(last)) {
             a.push(last[0]);
             return [concat(a), last[1]];
         } else {
@@ -98,14 +71,10 @@ define([], function() {
 
             return function(data) {
                 return a.map(function(item) {
-                    if (isString(item)) {
+                    if (_.isString(item)) {
                         return item;
-                    } else if (isFunction(item)) {
+                    } else if (_.isFunction(item)) {
                         return item(data);
-                    } else if (isArray(item)) {
-                        return concat(item)(data);
-                    } else {
-                        throw new Error('unexpected item in concat: ' + item);
                     }
                 }).join('');
             };
@@ -127,7 +96,7 @@ define([], function() {
             var tmp = template.slice(openIndex);
 
             var closeIndex = tmp.indexOf(closeTag) + 2;
-            if (closeIndex === -1) {
+            if (closeIndex === 1) {
                 throw new Error('unclosed tag: ' + tmp);
             }
             var tag = tmp.slice(0, closeIndex);

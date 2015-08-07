@@ -1,7 +1,21 @@
 define(['muu-js-helpers'], function(_) {
     "use strict";
 
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;'
+    };
+
     return {
+        escapeHtml: function(string) {
+            return String(string).replace(/[&<>"'\/]/g, function(s) {
+                return entityMap[s];
+            });
+        },
         on: function(element, eventName, callback) {
             element.addEventListener(eventName, callback);
             return function() {
@@ -28,7 +42,6 @@ define(['muu-js-helpers'], function(_) {
             for (var i = 0; i < options.length; i++) {
                 if (options[i].value === value) {
                     options[i].checked = true;
-                    return;
                 } else {
                     options[i].checked = false;
                 }

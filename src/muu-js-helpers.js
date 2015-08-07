@@ -6,6 +6,20 @@ define(function() {
 
     var _ = {};
 
+    var objToString = function(value) {
+        return Object.prototype.toString.call(value);
+    };
+
+    _.isString = function(value) {
+        return typeof value === 'string' || objToString(value) === '[object String]';
+    };
+
+    _.isArray = Array.isArray;
+
+    _.isFunction = function(value) {
+        return typeof value === 'function';
+    };
+
     _.once = function(fn) {
         var result;
         var called = false;
