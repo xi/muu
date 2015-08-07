@@ -51,7 +51,7 @@ module.exports = function (grunt) {
         platform: 'linux'
     }, {
         browserName: 'safari',
-        platform: 'OS X'
+        platform: 'OS X 10.11'
     }, {
         browserName: 'googlechrome'
     }, {
