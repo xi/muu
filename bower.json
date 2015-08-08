@@ -5,7 +5,7 @@
     "Tobias Bengfort <tobias.bengfort@posteo.de>"
   ],
   "description": "lightweight JS framework",
-  "main": "muu.js",
+  "main": "src/muu.js",
   "license": "GPL2+",
   "ignore": [
     "**/.*",
