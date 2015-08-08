@@ -1,3 +1,9 @@
+/**
+ * Recreate DOM `source` in `target` by making only small adjustments.
+ * @module muu-update-dom
+ * @param {DOMElement} target
+ * @param {DOMElement} source
+ */
 define(['muu-js-helpers'], function(_) {
     "use strict";
 
@@ -19,9 +25,6 @@ define(['muu-js-helpers'], function(_) {
         });
     };
 
-    /**
-     * Recreate DOM `source` in `target` by making only small adjustments.
-     */
     var updateDOM = function(target, source) {
         var nt = target.childNodes.length;
         var ns = source.childNodes.length;

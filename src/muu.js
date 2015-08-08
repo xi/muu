@@ -1,14 +1,28 @@
+/**
+ * Exports the {@link Registry} class.
+ * @module muu
+ */
 define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate, Directive, _) {
     "use strict";
 
-    return function(config) {
+    /**
+     * @constructs Registry
+     * @param {{?debug: boolean, ?renderer: function}} config
+     */
+    var Registry = function(config) {
         var self = this;
         var directives = {};
 
-        self.config = config || {};
-        self.renderer = self.config.renderer || muuTemplate;
+        this.config = config || {};
+        this.renderer = self.config.renderer || muuTemplate;
 
-        self.registerDirective = function(type, template, link) {
+        /**
+         * @param {string} type
+         * @param {string} template
+         * @param {Function(DOMElement, string): Directive} link
+         * @return {Registry} this
+         */
+        this.registerDirective = function(type, template, link) {
             directives[type] = {
                 template: template,
                 link: link
@@ -16,12 +30,21 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
             return self;
         };
 
-        self.registerModule = function(module) {
+        /**
+         * @param {Function(Registry)} module
+         * @return {Registry} this
+         */
+        this.registerModule = function(module) {
             module(self);
             return self;
         };
 
-        self.link = function(element, type) {
+        /**
+         * @param {DOMElement} element
+         * @param {string} type
+         * @return {Directive}
+         */
+        this.link = function(element, type) {
             if (type === void 0) {
                 type = element.getAttribute('type');
             }
@@ -53,7 +76,11 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
             return directive;
         };
 
-        self.linkAll = function(root) {
+        /**
+         * @param {DOMElement} root
+         * @return {Directive[]}
+         */
+        this.linkAll = function(root) {
             // NOTE: root may be a DOM Node or a directive
             var elements = root.querySelectorAll('muu:not(.muu-initialised)');
             return _.map(elements, function(element) {
@@ -61,4 +88,6 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
             });
         };
     };
+
+    return Registry;
 });

@@ -1,3 +1,10 @@
+/**
+ * minimal mustache insipred templating
+ * @module muu-template
+ * @param {string} template
+ * @param {object} data
+ * @return {string}
+ */
 define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     "use strict";
 

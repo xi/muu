@@ -1,7 +1,17 @@
+/**
+ * Exports the {@link Directive} class.
+ * @module muu-directive
+ */
 define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
     "use strict";
 
-    return function(root, template, registry) {
+    /**
+     * @constructs Directive
+     * @param {DOMElement} root
+     * @param {string} template
+     * @param {Muu} registry
+     */
+    var Directive = function (root, template, registry) {
         var self = this;
 
         root.innerHTML = '<div></div>';
@@ -17,7 +27,10 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             }
         };
 
-        self.update = function(data) {
+        /**
+         * @param {Object.<string, *>} data
+         */
+        this.update = function(data) {
             var tmp = document.createElement('div');
             tmp.innerHTML = registry.renderer(template, data);
 
@@ -39,7 +52,14 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             registry.linkAll(self);
         };
 
-        self.querySelectorAll = function(selector) {
+        /**
+         * querySelectorAll
+         *
+         * @param {string} selector
+         * @return {DOMElement[]} All child elements that match the given
+         *     selector and are not isolated.
+         */
+        this.querySelectorAll = function(selector) {
             var hits = root.querySelectorAll(selector);
 
             // NOTE: querySelectorAll returns all elements in the tree that
@@ -53,14 +73,25 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             return _.difference(hits, isolated);
         };
 
-        self.querySelector = function(selector) {
+        /**
+         * @param {String} selector
+         * @return {DOMElement}
+         */
+        this.querySelector = function(selector) {
             var all = self.querySelectorAll(selector);
             if (all.length > 0) {
                 return all[0];
             }
         };
 
-        self.getModel = function(name, _default) {
+        /**
+         * @return {Object.<string, string|number|boolean>}
+         *//**
+         * @param {string} name
+         * @param {*} [_default]
+         * @return {string|number|boolean|*}
+         */
+        this.getModel = function(name, _default) {
             if (name === void 0) {
                 var model = {};
                 _.forEach(self.querySelectorAll('[name]'), function(element) {
@@ -80,7 +111,11 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             }
         };
 
-        self.setModel = function(name, value) {
+        /**
+         * @param {string} name
+         * @param {string|number|boolean} value
+         */
+        this.setModel = function(name, value) {
             var element = self.querySelector('[name=' + name + ']');
             if (element.type === 'checkbox') {
                 element.checked = value;
@@ -92,4 +127,6 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             }
         };
     };
+
+    return Directive;
 });
