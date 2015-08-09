@@ -1,0 +1,130 @@
+/* defaults */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #fcfcfc;
+    color: #333;
+    line-height: 1.4;
+    font-size: small;
+}
+
+a {
+    color: #28b;
+}
+
+
+/* layout */
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width: 50em) {
+    body {
+        margin-left: 18em;
+    }
+    nav {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 18em;
+        overflow-y: auto;
+    }
+}
+
+#main,
+nav {
+    padding: 5px;
+}
+
+#main {
+    margin: 0 auto;
+    max-width: 50em;
+}
+
+
+/* else */
+.clear,
+table.params thead,
+.details {
+    display: none;
+}
+
+nav {
+    background: #333;
+    color: #fff;
+}
+nav a {
+    color: #aaa;
+    text-decoration: none;
+}
+nav ul {
+    padding-left: 1em;
+}
+nav li {
+    list-style: none;
+    margin-bottom: 0.3em;
+}
+
+footer {
+    text-align: center;
+    color: #aaa;
+    padding-top: 1em;
+    margin: 2em auto;
+    max-width: 50em;
+    border-top: 1px solid;
+}
+
+h1, h2, h3 {
+    font-family: serif;
+}
+h1 {
+    border-bottom: 0.2em solid #28b;
+    padding: 0 5px;
+    margin-left: -5px;
+    margin-right: -5px;
+}
+h3 {
+    font-size: 200%;
+    margin-top: 1.5em;
+}
+
+h4 {
+    background: #eef;
+    border-top: 3px solid #28b;
+    padding: 0 5px;
+    line-height: 1.8;
+    margin-top: 1.8em;
+    margin-left: -5px;
+    margin-right: -5px;
+    font-size: 120%;
+}
+h4 .type-signature {
+    color: #aaa;
+}
+h4 .signature {
+    color: #28c;
+}
+h4 .signature-attributes {
+    color: #aaa;
+    font-size: small;
+    vertical-align: bottom;
+}
+h5 {
+    font-size: smaller;
+    margin-bottom: 0;
+    color: #28b;
+}
+
+td.name code {
+    font-family: inherit;
+    font-weight: bold;
+}
+td.attributes,
+.param-type {
+    font-style: italic;
+}
