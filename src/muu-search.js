@@ -52,7 +52,11 @@ define(['muu-js-helpers'], function(_) {
                 a = a.concat(unparseItem(key, q[key]));
             }
         }
-        return '?' + a.join('&');
+        if (a.length > 0) {
+            return '?' + a.join('&');
+        } else {
+            return '';
+        }
     };
 
     return q;
