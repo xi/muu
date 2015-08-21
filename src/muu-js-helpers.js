@@ -155,5 +155,21 @@ define(function() {
         return results;
     };
 
+    /**
+     * @param {array} a
+     * @return {array}
+     */
+    _.flatten = function(a) {
+        var o = [];
+        _.forEach(a, function(item) {
+            if (_.isArray(item)) {
+                o = o.concat(_.flatten(item));
+            } else {
+                o.push(item);
+            }
+        });
+        return o;
+    };
+
     return _;
 });

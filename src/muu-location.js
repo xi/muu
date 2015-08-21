@@ -2,7 +2,7 @@
  * angular inspired location service.
  * @module muu-location
  */
-define(function() {
+define(['search'], function(q) {
     "use strict";
 
     /** @lends module:muu-location */
@@ -71,24 +71,45 @@ define(function() {
         }
     };
 
-    // TODO: decode/encode
-    // TODO: set single values
-    // NOTE: no value => get true
-    // NOTE: set null value => delete
-    /**
-     * @return {string}
-     *//**
-     * @param {string} value
-     * @param {boolean} [replace]
-     * @return {muu-location}
-     */
-    loc.search = function(value, replace) {
+    var _search = function(value, replace) {
         if (value === void 0) {
             return location.search;
         } else {
+            if (value && value[0] !== '?') {
+                value = '?' + value;
+            }
+            if (value.length === 1) {
+                value = '';
+            }
+
             var url = location.pathname + value + location.hash;
             loc.url(url, replace);
             return loc;
+        }
+    };
+
+    /**
+     * @return {object}
+     *//**
+     * @param {string|object} value
+     * @return {muu-location}
+     *//**
+     * @param {string} key
+     * @param {*} value
+     * @param {boolean} [replace]
+     * @return {muu-location}
+     */
+    loc.search = function(key, value, replace) {
+        if (key !== void 0) {
+            if (value !== void 0) {
+                var search = q.parse(_search());
+                search[key] = value;
+                return _search(q.unparse(search), replace);
+            } else {
+                return _search(q.unparse(key), replace);
+            }
+        } else {
+            return q.parse(_search());
         }
     };
 
