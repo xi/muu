@@ -215,5 +215,20 @@ define(['muu-js-helpers'], function(_) {
                 expect(_.difference([1,1,2,3], [3,4])).to.eql([1,1,2]);
             });
         });
+
+        describe('flatten', function() {
+            it('returns a flat list from an arbitrarily nested list', function() {
+                var input = [
+                    [1, 2, 3],
+                    [
+                        [4, 5],
+                        [6]
+                    ],
+                    7
+                ];
+                var output = [1, 2, 3, 4, 5, 6, 7];
+                expect(_.flatten(input)).to.eql(output);
+            });
+        });
     });
 });
