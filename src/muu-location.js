@@ -20,6 +20,7 @@ define(function() {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
+     * @return {muu-location}
      */
     loc.url = function(value, replace) {
         if (value === void 0) {
@@ -29,6 +30,7 @@ define(function() {
         } else {
             history.pushState(null, null, value);
         }
+        return loc;
     };
 
     /**
@@ -57,6 +59,7 @@ define(function() {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
+     * @return {muu-location}
      */
     loc.path = function(value, replace) {
         if (value === void 0) {
@@ -64,6 +67,7 @@ define(function() {
         } else {
             var url = value + location.search + location.hash;
             loc.url(url, replace);
+            return loc;
         }
     };
 
@@ -76,6 +80,7 @@ define(function() {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
+     * @return {muu-location}
      */
     loc.search = function(value, replace) {
         if (value === void 0) {
@@ -83,6 +88,7 @@ define(function() {
         } else {
             var url = location.pathname + value + location.hash;
             loc.url(url, replace);
+            return loc;
         }
     };
 
@@ -91,6 +97,7 @@ define(function() {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
+     * @return {muu-location}
      */
     loc.hash = function(value, replace) {
         if (value === void 0) {
@@ -102,27 +109,32 @@ define(function() {
         } else {
             var url = location.pathname + location.search + '#' + value;
             loc.url(url, replace);
+            return loc;
         }
     };
 
     /**
      * @param {string} eventName
      * @param {function} fn
+     * @return {muu-location}
      */
     loc.addEventListener = function(eventName, fn) {
         if (eventName === 'change') {
             window.addEventListener('popstate', fn, false);
         }
+        return loc;
     };
 
     /**
      * @param {string} eventName
      * @param {function} fn
+     * @return {muu-location}
      */
     loc.removeEventListener = function(eventName, fn) {
         if (eventName === 'change') {
             window.removeEventListener('popstate', fn);
         }
+        return loc;
     };
 
     return loc;
