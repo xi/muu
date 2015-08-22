@@ -8,7 +8,7 @@
 	"latedef": true,
 	"maxcomplexity": 10,
 	"maxdepth": 3,
-	"maxparams": 3,
+	"maxparams": 4,
 	"noarg": true,
 	"nocomma": true,
 	"nonbsp": true,
