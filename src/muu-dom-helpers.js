@@ -55,7 +55,7 @@ define(['muu-js-helpers'], function(_) {
      * @param {DOMElement} element
      * @param {string} eventName
      * @param {function} callback
-     * @returns {Function()} An unregister function
+     * @return {Function()} An unregister function
      */
     $.on = function(element, eventName, callback) {
         element.addEventListener(eventName, callback, false);
@@ -66,6 +66,7 @@ define(['muu-js-helpers'], function(_) {
 
     /**
      * @param {function} fn
+     * @return {Function()} An unregister function
      */
     $.ready = function(fn) {
         var _fn = _.once(fn);
@@ -82,6 +83,13 @@ define(['muu-js-helpers'], function(_) {
         }
     };
 
+    /**
+     * Execute a function when `element` is removed from the DOM.
+     *
+     * @param {DOMElement} element
+     * @param {function} fn
+     * @return {Function()} An unregister function
+     */
     $.destroy = function(element, fn) {
         return $.on(element, 'DOMNodeRemovedFromDocument', fn);
     };
