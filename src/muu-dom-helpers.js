@@ -17,6 +17,8 @@ define(['muu-js-helpers'], function(_) {
     /** @lends module:muu-dom-helpers */
     var $ = {};
 
+    $.DELAY = 1000;
+
     /**
      * @param {string} string
      * @return {string} - escaped HTML
@@ -97,7 +99,7 @@ define(['muu-js-helpers'], function(_) {
     $.destroy = function(element, fn) {
         var unregister;
 
-        if (!!window.MutationObserver) {
+        if (false) {
             var observer = new MutationObserver(function() {
                 if (!$.isDescendant(element, document)) {
                     fn();
@@ -120,7 +122,7 @@ define(['muu-js-helpers'], function(_) {
                     fn();
                     unregister();
                 }
-            }, 100);
+            }, $.DELAY);
 
             unregister = function() {
                 clearInterval(intervalID);
