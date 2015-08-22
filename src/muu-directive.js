@@ -138,13 +138,15 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
                 return model;
             } else {
                 var element = self.querySelector('[name=' + name + ']');
-                if (element.type === 'checkbox') {
+                if (element === void 0) {
+                    return _default;
+                } else if (element.type === 'checkbox') {
                     return element.checked;
                 } else if (element.type === 'radio') {
                     var options = self.querySelectorAll('[name=' + name + ']');
                     return $.getRadio(options) || _default;
                 } else {
-                    return element.value || _default;
+                    return element.value;
                 }
             }
         };
