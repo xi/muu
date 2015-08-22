@@ -69,16 +69,21 @@ define(['muu-js-helpers'], function(_) {
      */
     $.ready = function(fn) {
         var _fn = _.once(fn);
-        if (document.readyState === "complete") {
+        if (document.readyState === 'complete') {
             _fn();
+            return function() {};
         } else {
-            document.addEventListener("DOMContentLoaded", _fn, false);
-            window.addEventListener("load", _fn, false);
+            var u1 = $.on(document, 'DOMContentLoaded', _fn);
+            var u2 = $.on(window, 'load', _fn);
+            return function() {
+                u1();
+                u2();
+            };
         }
     };
 
     $.destroy = function(element, fn) {
-        element.addEventListener('DOMNodeRemovedFromDocument', fn, false);
+        return $.on(element, 'DOMNodeRemovedFromDocument', fn);
     };
 
     /**
