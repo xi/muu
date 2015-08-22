@@ -32,7 +32,8 @@ define(['muu-js-helpers'], function(_) {
      *
      * See https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
      *
-     * *Note*: IE does not seem it if you use existing event names with this.
+     * *Note*: IE does not seem to like it when you use existing event names
+     * with this.
      *
      * @param {string} type
      * @param {*} detail
