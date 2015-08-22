@@ -38,18 +38,18 @@ define(['muu-dom-helpers'], function($) {
             beforeEach(function() {
                 element = document.createElement('div');
                 callback = sinon.spy();
-                unregister = $.on(element, 'click', callback);
+                unregister = $.on(element, 'x-click', callback);
             });
 
             it('calls callback when the event is triggered', function() {
-                element.dispatchEvent($.createEvent('click'));
+                element.dispatchEvent($.createEvent('x-click'));
                 expect(callback.callCount).to.be.greaterThan(0);
             });
             it('calls callback each time the event is triggered', function() {
-                element.dispatchEvent($.createEvent('click'));
+                element.dispatchEvent($.createEvent('x-click'));
                 expect(callback.callCount).to.be(1);
 
-                element.dispatchEvent($.createEvent('click'));
+                element.dispatchEvent($.createEvent('x-click'));
                 expect(callback.callCount).to.be(2);
             });
             it('does not call callback on other event', function() {
@@ -58,7 +58,7 @@ define(['muu-dom-helpers'], function($) {
             });
             it('does not call callback anymore once unregister has been called', function() {
                 unregister();
-                element.dispatchEvent($.createEvent('click'));
+                element.dispatchEvent($.createEvent('x-click'));
                 expect(callback.callCount).to.be(0);
             });
         });

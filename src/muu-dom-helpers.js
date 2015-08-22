@@ -28,12 +28,17 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
+     * Cross browser custom events.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+     *
+     * *Note*: IE does not seem it if you use existing event names with this.
+     *
      * @param {string} type
      * @param {*} detail
      * @return {DOMEvent}
      */
     $.createEvent = function(type, detail) {
-        // see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
         if (typeof CustomEvent === 'function') {
             return new CustomEvent(type, {
                 detail: detail
