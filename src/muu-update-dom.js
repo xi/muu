@@ -38,7 +38,9 @@ define(['muu-js-helpers'], function(_) {
             }
         });
         _.forEach(sourceAttrNames, function(name) {
-            target.setAttribute(name, source.getAttribute(name));
+            if (target.getAttribute(name) !== source.getAttribute(name)) {
+                target.setAttribute(name, source.getAttribute(name));
+            }
         });
     };
 
@@ -46,7 +48,7 @@ define(['muu-js-helpers'], function(_) {
         var nt = target.childNodes.length;
         var ns = source.childNodes.length;
 
-        if (target.nodeType === source.nodeType && target.nodeName === source.nodeName) {
+        if (target.nodeType === source.nodeType && target.nodeName === source.nodeName && target.type === source.type) {
             if (target.nodeType === 1) {
                 var muuClasses = _.filter(target.classList, function(cls) {
                     return cls.lastIndexOf('muu-', 0) === 0;
