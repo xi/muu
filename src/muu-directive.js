@@ -32,7 +32,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
      * @param {string} template
      * @param {Muu} registry
      */
-    var Directive = function (root, template, registry) {
+    var Directive = function(root, template, registry) {
         var self = this;
 
         root.innerHTML = '<div></div>';

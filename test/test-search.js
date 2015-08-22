@@ -13,7 +13,7 @@ define(['muu-search'], function(q) {
             it('parses multi-items to arrays', function() {
                 expect(q.parse('?foo=1&foo=2&foo=3')).to.eql({foo: [1,2,3]});
             });
-            it('can parses empty values to empty strings', function() {
+            it('parses empty values to empty strings', function() {
                 expect(q.parse('?foo=')).to.eql({foo: ''});
             });
             it('parses empty string to empty object', function() {
