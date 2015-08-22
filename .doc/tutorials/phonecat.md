@@ -109,7 +109,7 @@ Next, we can register a handler for the new `muu-filter` event in the link
 function:
 
     registry.registerDirective('phonecat', template, function(self, element) {
-        element.addEventListener('nuu-filter', function() {
+        element.addEventListener('muu-filter', function() {
             var query = self.getModel('query', '');
             self.update({
                 phones: phones.filter(function(phone) {
@@ -141,7 +141,7 @@ own directive.
         '</ul>' +
         '<input type="search" name="query" data-onsearch="filter" />';
     registry.registerDirective('phonecat', listTemplate, function(self, element) {
-        element.addEventListener('nuu-filter', function() {
+        element.addEventListener('muu-filter', function() {
             var query = self.getModel('query', '');
             self.update({
                 phones: phones.filter(function(phone) {

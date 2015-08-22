@@ -57,7 +57,7 @@ This is an experiment, not an actual framework for use in production. So the
 main objective is to learn something from it.
 
 Then again, this whole thing is so little that it is more of a concept or
-methodology that a software. I guess it is ok to use a framework if it is tiny
+methodology than a software. I guess it is ok to use a framework if it is tiny
 and does not force you tu do everything in a specific way.
 
 ## Why the name
