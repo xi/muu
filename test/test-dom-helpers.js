@@ -66,7 +66,7 @@ define(['muu-dom-helpers'], function($) {
         describe('ready', function() {});
 
         describe('destroy', function() {
-            it('calls the passed function when the element is directly removed from the DOM', function() {
+            it('calls the passed function when the element is directly removed from the DOM', function(done) {
                 var element = document.createElement('div');
                 document.body.appendChild(element);
 
@@ -75,9 +75,13 @@ define(['muu-dom-helpers'], function($) {
 
                 expect(spy.called).to.be(false);
                 document.body.removeChild(element);
-                expect(spy.called).to.be(true);
+
+                setTimeout(function() {
+                    expect(spy.called).to.be(true);
+                    done();
+                }, 10);
             });
-            it('calls the passed function when the element is removed from the DOM as part of a subtree', function() {
+            it('calls the passed function when the element is removed from the DOM as part of a subtree', function(done) {
                 var element = document.createElement('div');
                 var wrapper = document.createElement('div');
                 document.body.appendChild(wrapper);
@@ -88,10 +92,14 @@ define(['muu-dom-helpers'], function($) {
 
                 expect(spy.called).to.be(false);
                 wrapper.innerHTML = '';
-                expect(spy.called).to.be(true);
 
-                // cleanup
-                document.body.removeChild(wrapper);
+                setTimeout(function() {
+                    expect(spy.called).to.be(true);
+
+                    // cleanup
+                    document.body.removeChild(wrapper);
+                    done();
+                }, 10);
             });
         });
 

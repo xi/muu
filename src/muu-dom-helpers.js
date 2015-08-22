@@ -91,7 +91,35 @@ define(['muu-js-helpers'], function(_) {
      * @return {Function()} An unregister function
      */
     $.destroy = function(element, fn) {
-        return $.on(element, 'DOMNodeRemovedFromDocument', fn);
+        if (!!window.MutationObserver) {
+            var isDescendant = function(desc, root) {
+                 return !!desc && (desc === root || isDescendant(desc.parentNode, root));
+            };
+
+            var observer = new MutationObserver(function() {
+                if (!isDescendant(element, document)) {
+                    fn();
+
+                    // allow garbage collection
+                    observer.disconnect();
+                    observer = undefined;
+                }
+            });
+
+            observer.observe(document, {
+                 childList: true,
+                 subtree: true
+            });
+
+            return function() {
+                if (observer !== void 0) {
+                    observer.disconnect();
+                    observer = undefined;
+                }
+            };
+        } else {
+            return $.on(element, 'DOMNodeRemovedFromDocument', fn);
+        }
     };
 
     /**
