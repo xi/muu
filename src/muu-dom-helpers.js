@@ -17,6 +17,8 @@ define(['muu-js-helpers'], function(_) {
     /** @lends module:muu-dom-helpers */
     var $ = {};
 
+    $.DELAY = 1000;
+
     /**
      * @param {string} string
      * @return {string} - escaped HTML
@@ -83,6 +85,10 @@ define(['muu-js-helpers'], function(_) {
         }
     };
 
+    $.isDescendant = function(desc, root) {
+         return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
+    };
+
     /**
      * Execute a function when `element` is removed from the DOM.
      *
@@ -91,7 +97,39 @@ define(['muu-js-helpers'], function(_) {
      * @return {Function()} An unregister function
      */
     $.destroy = function(element, fn) {
-        return $.on(element, 'DOMNodeRemovedFromDocument', fn);
+        var unregister;
+
+        if (false) {
+            var observer = new MutationObserver(function() {
+                if (!$.isDescendant(element, document)) {
+                    fn();
+                    unregister();
+                }
+            });
+
+            observer.observe(document, {
+                 childList: true,
+                 subtree: true
+            });
+
+            unregister = _.once(function() {
+                observer.disconnect();
+                observer = undefined;
+            });
+        } else {
+            var intervalID = setInterval(function() {
+                if (!$.isDescendant(element, document)) {
+                    fn();
+                    unregister();
+                }
+            }, $.DELAY);
+
+            unregister = function() {
+                clearInterval(intervalID);
+            };
+        }
+
+        return unregister;
     };
 
     /**

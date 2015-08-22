@@ -37,6 +37,7 @@
         require({
             baseUrl: '../src/'
         }, [
+            'muu-dom-helpers',
             '../test/test-dom-helpers',
             '../test/test-js-helpers.js',
             '../test/test-template.js',
@@ -44,7 +45,9 @@
             '../test/test-search',
             '../test/test-directive',
             '../test/test-registry'
-        ], function () {
+        ], function ($) {
+            $.DELAY = 5;
+
             mocha.checkLeaks();
             mocha.globals(['mochaResulsts']);
             var runner = mocha.run();

@@ -95,13 +95,17 @@ define(['muu', 'muu-directive', 'muu-js-helpers'], function(Registry, Directive,
                 registry.link(element, 'test');
                 expect(element.directive).to.be(undefined);
             });
-            it('calls unlink when the element is directly removed from the DOM', function() {
+            it('calls unlink when the element is directly removed from the DOM', function(done) {
                 document.body.appendChild(element);
                 registry.link(element, 'test');
                 expect(unlink.called).to.be(false);
 
                 document.body.removeChild(element);
-                expect(unlink.called).to.be(true);
+
+                setTimeout(function() {
+                    expect(unlink.called).to.be(true);
+                    done();
+                }, 10);
             });
         });
 
