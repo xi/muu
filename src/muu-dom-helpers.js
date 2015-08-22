@@ -83,6 +83,10 @@ define(['muu-js-helpers'], function(_) {
         }
     };
 
+    $.isDescendant = function(desc, root) {
+         return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
+    };
+
     /**
      * Execute a function when `element` is removed from the DOM.
      *
@@ -91,18 +95,13 @@ define(['muu-js-helpers'], function(_) {
      * @return {Function()} An unregister function
      */
     $.destroy = function(element, fn) {
+        var unregister;
+
         if (!!window.MutationObserver) {
-            var isDescendant = function(desc, root) {
-                 return !!desc && (desc === root || isDescendant(desc.parentNode, root));
-            };
-
             var observer = new MutationObserver(function() {
-                if (!isDescendant(element, document)) {
+                if (!$.isDescendant(element, document)) {
                     fn();
-
-                    // allow garbage collection
-                    observer.disconnect();
-                    observer = undefined;
+                    unregister();
                 }
             });
 
@@ -111,15 +110,24 @@ define(['muu-js-helpers'], function(_) {
                  subtree: true
             });
 
-            return function() {
-                if (observer !== void 0) {
-                    observer.disconnect();
-                    observer = undefined;
-                }
-            };
+            unregister = _.once(function() {
+                observer.disconnect();
+                observer = undefined;
+            });
         } else {
-            return $.on(element, 'DOMNodeRemovedFromDocument', fn);
+            var intervalID = setInterval(function() {
+                if (!$.isDescendant(element, document)) {
+                    fn();
+                    unregister();
+                }
+            }, 100);
+
+            unregister = function() {
+                clearInterval(intervalID);
+            };
         }
+
+        return unregister;
     };
 
     /**

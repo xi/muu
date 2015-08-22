@@ -105,7 +105,7 @@ define(['muu', 'muu-directive', 'muu-js-helpers'], function(Registry, Directive,
                 setTimeout(function() {
                     expect(unlink.called).to.be(true);
                     done();
-                }, 10);
+                }, 150);
             });
         });
 

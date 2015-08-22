@@ -79,7 +79,7 @@ define(['muu-dom-helpers'], function($) {
                 setTimeout(function() {
                     expect(spy.called).to.be(true);
                     done();
-                }, 10);
+                }, 150);
             });
             it('calls the passed function when the element is removed from the DOM as part of a subtree', function(done) {
                 var element = document.createElement('div');
@@ -99,7 +99,7 @@ define(['muu-dom-helpers'], function($) {
                     // cleanup
                     document.body.removeChild(wrapper);
                     done();
-                }, 10);
+                }, 150);
             });
         });
 
