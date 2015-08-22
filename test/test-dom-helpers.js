@@ -65,6 +65,36 @@ define(['muu-dom-helpers'], function($) {
 
         describe('ready', function() {});
 
+        describe('destroy', function() {
+            it('calls the passed function when the element is directly removed from the DOM', function() {
+                var element = document.createElement('div');
+                document.body.appendChild(element);
+
+                var spy = sinon.spy();
+                $.destroy(element, spy);
+
+                expect(spy.called).to.be(false);
+                document.body.removeChild(element);
+                expect(spy.called).to.be(true);
+            });
+            it('calls the passed function when the element is removed from the DOM as part of a subtree', function() {
+                var element = document.createElement('div');
+                var wrapper = document.createElement('div');
+                document.body.appendChild(wrapper);
+                wrapper.appendChild(element);
+
+                var spy = sinon.spy();
+                $.destroy(element, spy);
+
+                expect(spy.called).to.be(false);
+                wrapper.innerHTML = '';
+                expect(spy.called).to.be(true);
+
+                // cleanup
+                document.body.removeChild(wrapper);
+            });
+        });
+
         describe('getRadio', function() {
             it('returns the value of the checked element from the given array', function() {
                 var options = [

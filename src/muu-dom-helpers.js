@@ -77,6 +77,10 @@ define(['muu-js-helpers'], function(_) {
         }
     };
 
+    $.destroy = function(element, fn) {
+        element.addEventListener('DOMNodeRemovedFromDocument', fn, false);
+    };
+
     /**
      * @param {DOMElement[]} options
      * @return {string}

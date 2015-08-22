@@ -103,19 +103,6 @@ define(['muu', 'muu-directive', 'muu-js-helpers'], function(Registry, Directive,
                 document.body.removeChild(element);
                 expect(unlink.called).to.be(true);
             });
-            it('calls unlink when the element is removed from the DOM as part of a subtree', function() {
-                var wrapper = document.createElement('div');
-                document.body.appendChild(wrapper);
-                wrapper.appendChild(element);
-                registry.link(element, 'test');
-                expect(unlink.called).to.be(false);
-
-                wrapper.innerHTML = '';
-                expect(unlink.called).to.be(true);
-
-                // cleanup
-                document.body.removeChild(wrapper);
-            });
         });
 
         describe('linkAll', function() {

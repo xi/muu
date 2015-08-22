@@ -2,7 +2,7 @@
  * Exports the {@link Registry} class.
  * @module muu
  */
-define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate, Directive, _) {
+define(['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, Directive, _, $) {
     "use strict";
 
     /**
@@ -106,11 +106,7 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
             }
 
             if (unlink !== void 0) {
-                var destroy = function() {
-                    unlink();
-                    element.removeEventListener('DOMNodeRemovedFromDocument', destroy, false);
-                };
-                element.addEventListener('DOMNodeRemovedFromDocument', destroy, false);
+                $.destroy(element, unlink);
             }
 
             return directive;
