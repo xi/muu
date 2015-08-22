@@ -33,7 +33,8 @@ define(['muu-js-helpers'], function(_) {
         });
 
         _.forEach(targetAttrNames, function(name) {
-            if (!source.hasAttribute(name)) {
+            // NOTE: ie8.js creates some attribute
+            if (!source.hasAttribute(name) && name.substr(0, 7) !== '__IE8__') {
                 target.removeAttribute(name);
             }
         });
