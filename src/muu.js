@@ -7,7 +7,13 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
 
     /**
      * @constructs Registry
-     * @param {{?debug: boolean, ?renderer: function}} config
+     * @param {object} config The config object may have following properties:
+     *
+     * - **debug** - `{boolean}` - Enable debug mode. In debug mode,
+     *   directive objects are available as properties from the DOM as
+     *   `element.directive`.
+     * - **renderer** - `{Function(string, object)}` - The template renderer
+     *   to be used. Defaults to {@link module:muu-template}.
      */
     var Registry = function(config) {
         var self = this;
@@ -17,9 +23,21 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
         this.renderer = self.config.renderer || muuTemplate;
 
         /**
+         * Register a new type of {@link Directive}
+         *
          * @param {string} type
          * @param {string} template
-         * @param {Function(DOMElement, string): Directive} link
+         * @param {Function(Directive, DOMElement): function} link The link
+         *   function is called with an instance of {@link Directive} and a
+         *   DOMElement when {@link Registry#link} is executed.
+         *
+         *   It is the only place where you can access a directive and
+         *   therefore the place where you define its behavior.
+         *
+         *   This typically means to make an initial call to {@link
+         *   Directive#update} and to add some event listeners. You should also
+         *   return an *unlink* function that clears all external references in
+         *   order to avoid memory leaks.
          * @return {Registry} this
          */
         this.registerDirective = function(type, template, link) {
@@ -31,7 +49,27 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
         };
 
         /**
-         * @param {Function(Registry)} module
+         * Shortcut for wrapping calls to {@link Registry} in a function.
+         *
+         * This can be esepcially helpful if that function is defined in a
+         * different module.
+         *
+         * ```.js
+         * define('foobar', [], function() {
+         *   return function(registry) {
+         *     registry
+         *        .registerDirective('foo', '...', function() {...})
+         *        .registerDirective('bar', '...', function() {...});
+         *   };
+         * });
+         *
+         * require(['foobar'], function(foobar) {
+         *   var registry = new Registry();
+         *   registry.registerModule(foobar);
+         * });
+         * ```
+         *
+         * @param {Function(Registry)}
          * @return {Registry} this
          */
         this.registerModule = function(module) {
@@ -40,6 +78,8 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
         };
 
         /**
+         * Create and initialise a {@link Directive} for `element`.
+         *
          * @param {DOMElement} element
          * @param {string} type
          * @return {Directive}
@@ -77,6 +117,8 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers'], function(muuTemplate
         };
 
         /**
+         * Link all directives that can be found inside `root`.
+         *
          * @param {DOMElement} root
          * @return {Directive[]}
          */

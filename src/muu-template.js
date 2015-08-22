@@ -1,5 +1,39 @@
 /**
  * minimal mustache insipred templating
+ *
+ * ## Variables
+ *
+ * Variables are created with a `{{name}}` tag. These are always escaped.
+ *
+ * ## Loops
+ *
+ * Loops render blocks of text a number of times, depending on the value of
+ * the key in the current context.
+ *
+ * A loop begins with a pound and ends with a slash. That is, {{#person}}
+ * begins a "person" section while {{/person}} ends it.
+ *
+ * If the value is an array, the block is repeated for each item in that array.
+ * In any other case, the block is rendered with the outer scope, but only if
+ * the value is truthy.
+ *
+ * ## Comments
+ *
+ * Comments begin with a bang and are ignored.
+ *
+ * ## Pairs
+ *
+ * Pairs look like JSON objects. The result is a space separated list of all
+ * keys with truthy values.
+ *
+ * ```
+ * muuTemplate('{{foo: var1, bar: var2, baz: var3}}', {
+ *   var1: true,
+ *   var2: false,
+ *   var3: true
+ * });  // 'foo baz'
+ * ```
+ *
  * @module muu-template
  * @param {string} template
  * @param {object} data

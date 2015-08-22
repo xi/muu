@@ -6,6 +6,27 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
     "use strict";
 
     /**
+     * A directive is linked to a DOMElement and manages the DOM tree below
+     * that element (excluding any isolated subtrees, e.g. those managed by
+     * subdirectives).
+     *
+     * It provides a set of methods to interact with the managed part of the
+     * DOM. This is separated into three distinct parts:
+     *
+     * - You can push data to the DOM using the {@link Directive#update}
+     *   method. The DOM will than be updated using the template that was
+     *   provided at construction.
+     * - You can get data from the DOM using the {@link Directive#getModel}
+     *   method. This is however restricted to form field by design.
+     * - You can react to DOM events by specifying an alias for them. In the
+     *   template, you might for example add the attribute
+     *   `data-onclick="custom"` to an element. When there is `click` event on
+     *   that element, a `muu-custom` event will be triggered on the
+     *   directive's root element.
+     *
+     * Directives are typically not created directly but via {@link
+     * Registry#link}.
+     *
      * @constructs Directive
      * @param {DOMElement} root
      * @param {string} template
@@ -28,6 +49,11 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         };
 
         /**
+         * Rerender `template` with `data` and push the changes to the DOM.
+         *
+         * See {@link module:muu-update-dom} for details. The templating system
+         * can be defined in the {@link Registry}.
+         *
          * @param {Object.<string, *>} data
          */
         this.update = function(data) {
@@ -53,8 +79,10 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         };
 
         /**
-         * querySelectorAll
+         * A variant of `querySelectorAll` that returns only elements from
+         * the managed part of the DOM.
          *
+         * @private
          * @param {string} selector
          * @return {DOMElement[]} All child elements that match the given
          *     selector and are not isolated.
@@ -74,8 +102,13 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         };
 
         /**
+         * A variant of `querySelector` that returns only elements from the
+         * managed part of the DOM.
+         *
+         * @private
          * @param {String} selector
-         * @return {DOMElement}
+         * @return {DOMElement} First child element that matches the given
+         *     selector and is not isolated.
          */
         this.querySelector = function(selector) {
             var all = self.querySelectorAll(selector);
@@ -85,8 +118,15 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         };
 
         /**
+         * Get all model data as a flat object.
+         *
          * @return {Object.<string, string|number|boolean>}
          *//**
+         * Get the value of a form input by name.
+         *
+         * In case of a checkbox, returns `boolean`.
+         * In case of radioboxes, returns the value of the selected box.
+         *
          * @param {string} name
          * @param {*} [_default]
          * @return {string|number|boolean|*}
@@ -112,6 +152,11 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         };
 
         /**
+         * Set the value of a form input by name.
+         *
+         * In case of a checkbox, sets `element.checked`.
+         * In case of radioboxes, selects the box with matching value.
+         *
          * @param {string} name
          * @param {string|number|boolean} value
          */
