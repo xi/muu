@@ -57,7 +57,7 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
             });
             it('triggers the "muu-parent-update" event on child directives', function() {
                 var element = document.createElement('div');
-                var template = '<muu class="muu-initialised">';
+                var template = '<muu class="muu-initialised"></muu>';
                 var directive = new Directive(element, template, registry);
                 directive.update({});
 
