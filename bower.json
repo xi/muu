@@ -14,18 +14,21 @@
     "test"
   ],
   "dependencies": {
-    "es5-shim": "~4.1.10",
-    "ie8": "~0.2.7",
-    "moment": "~2.10.6",
-    "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1",
-    "requirejs": "~2.1.20",
-    "dom4": "~1.4.8"
   },
   "devDependencies": {
+    "requirejs": "~2.1.20",
+
+    "mocha": "~2.2.5",
     "blanket": "~1.1.7",
     "expect.js": "~0.3.1",
-    "mocha": "~2.2.5",
     "sinon-js": "~1.15.4",
-    "html5shiv": "~3.7.3"
+
+    "ie8": "~0.2.7",
+    "dom4": "~1.4.8",
+    "es5-shim": "~4.1.10",
+    "html5shiv": "~3.7.3",
+
+    "moment": "~2.10.6",
+    "promise-xhr": "wildlyinaccurate/promise-xhr#~0.0.1"
   }
 }
