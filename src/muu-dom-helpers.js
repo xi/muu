@@ -84,6 +84,11 @@ define(['muu-js-helpers'], function(_) {
         }
     };
 
+    /**
+     * @param {DOMNode} desc
+     * @param {DOMNode} root
+     * @return {boolean}
+     */
     $.isDescendant = function(desc, root) {
          return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
     };
