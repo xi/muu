@@ -49,10 +49,9 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
         /**
          * Rerender `template` with `data` and push the changes to the DOM.
          *
-         * See {@link module:muu-update-dom} for details. The templating system
-         * can be defined in the {@link Registry}.
-         *
          * @param {Object.<string, *>} data
+         * @see {@link module:muu-update-dom} for details.
+         * @see The templating system can be defined in the {@link Registry}.
          */
         this.update = function(data) {
             var tmp = document.createElement('div');

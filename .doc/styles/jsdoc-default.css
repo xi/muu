@@ -49,9 +49,15 @@ nav {
 
 /* else */
 .clear,
-table.params thead,
-.details {
+table.params thead {
     display: none;
+}
+
+.details dt {
+    display: none;
+}
+.details dd {
+    margin-left: 0;
 }
 
 nav {
@@ -135,6 +141,7 @@ pre.source {
     padding: 0.5em;
     border: 1px solid #aaa;
     border-left: 0.2em solid #28b;
-    max-height: 25em;
+    max-height: 40em;
+    max-height: 80vh;
     overflow: auto;
 }
