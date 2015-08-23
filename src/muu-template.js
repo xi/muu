@@ -17,6 +17,11 @@
  * In any other case, the block is rendered with the outer scope, but only if
  * the value is truthy.
  *
+ * ## Inverted loops
+ *
+ * Inverted loops render blocks of test if the value of the key is falsy. They
+ * begin with a caret.
+ *
  * ## Comments
  *
  * Comments begin with a bang and are ignored.
@@ -77,7 +82,7 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
         }
     };
 
-    var parseLoopTemplate = function(tag, afterTag) {
+    var parseLoopTemplate = function(tag, afterTag, inverted) {
         var tagName = tag.slice(3, -2);
 
         var v = parseTemplate(afterTag, tagName);
@@ -85,16 +90,24 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
         var afterLoop = v[1];
 
         var render = function(data) {
-            if (_.isArray(data[tagName])) {
-                var result = '';
-                for (var i = 0; i < data[tagName].length; i++) {
-                    result += inner(data[tagName][i]);
+            if (inverted) {
+                if (data[tagName]) {
+                    return '';
+                } else {
+                    return inner(data);
                 }
-                return result;
-            } else if (data[tagName]) {
-                return inner(data);
             } else {
-                return '';
+                if (_.isArray(data[tagName])) {
+                    var result = '';
+                    for (var i = 0; i < data[tagName].length; i++) {
+                        result += inner(data[tagName][i]);
+                    }
+                    return result;
+                } else if (data[tagName]) {
+                    return inner(data);
+                } else {
+                    return '';
+                }
             }
         };
 
@@ -145,6 +158,11 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
 
             if (tag.lastIndexOf('{{#', 0) === 0) {
                 var v = parseLoopTemplate(tag, afterTag);
+                var loop = v[0];
+                var after = parseTemplate(v[1], loopName);
+                return concat([beforeTag, loop, after]);
+            } else if (tag.lastIndexOf('{{^', 0) === 0) {
+                var v = parseLoopTemplate(tag, afterTag, true);
                 var loop = v[0];
                 var after = parseTemplate(v[1], loopName);
                 return concat([beforeTag, loop, after]);

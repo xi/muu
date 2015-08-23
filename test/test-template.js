@@ -23,6 +23,11 @@ define(['muu-template'], function(muuTemplate) {
             var result = muuTemplate(template, {truthy: true, falsy: false});
             expect(result).to.equal('test1 ');
         });
+        it('does inverted if', function() {
+            var template = '{{^truthy}}test1{{/truthy}} {{^falsy}}test2{{/falsy}}';
+            var result = muuTemplate(template, {truthy: true, falsy: false});
+            expect(result).to.equal(' test2');
+        });
         it('does pairs', function() {
             var template = '{{str1: key1, str2: key2, str3: key3}}';
             var result = muuTemplate(template, {key1: true, key2: false, key3: true});
