@@ -38,6 +38,9 @@ define(['muu-template'], function(muuTemplate) {
             var result = muuTemplate(template, {});
             expect(result).to.equal('foo  bar');
         });
+        it('allows to refer to the full context as `this`', function() {
+            expect(muuTemplate('{{#this}}{{this}}{{/this}}', [1, 2])).to.equal('12');
+        });
         it('escapes HTML in variables', function() {
             var template = '{{asd}}';
             var result = muuTemplate(template, {asd: '<"&>'});

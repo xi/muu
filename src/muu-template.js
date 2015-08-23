@@ -39,6 +39,23 @@
  * });  // 'foo baz'
  * ```
  *
+ * ## Special variable `this`
+ *
+ * `this` always refers to the current context. So the following expressions
+ * are equivalent:
+ *
+ * ```
+ * muuTemplate('{{#items}}{{content}}{{/items}}', {
+ *   item: [{
+ *     content: 1
+ *   }, {
+ *     content: 2
+ *   }]
+ * });
+ *
+ * muuTemplate('{{#this}}{{this}}{{/this}}', [1, 2]);
+ * ```
+ *
  * @module muu-template
  * @param {string} template
  * @param {object} data
@@ -50,12 +67,16 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     var openTag = '{{';
     var closeTag = '}}';
 
+    var getValue = function(key, data) {
+        return key === 'this' ? data : data[key];
+    };
+
     var parseVariableTemplate = function(template) {
         var content = template.slice(2, -2);
 
         if (template.indexOf(':') === -1) {
             return function(data) {
-                return $.escapeHtml(data[content] || '');
+                return $.escapeHtml(getValue(content, data) || '');
             };
         } else {
             var pairs = content.split(',').map(function(pair) {
@@ -72,7 +93,7 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
                     var key = pairs[i][0];
                     var value = pairs[i][1];
 
-                    if (data[value]) {
+                    if (getValue(value, data)) {
                         results.push(key);
                     }
                 }
@@ -91,19 +112,19 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
 
         var render = function(data) {
             if (inverted) {
-                if (data[tagName]) {
+                if (getValue(tagName, data)) {
                     return '';
                 } else {
                     return inner(data);
                 }
             } else {
-                if (_.isArray(data[tagName])) {
+                if (_.isArray(getValue(tagName, data))) {
                     var result = '';
-                    for (var i = 0; i < data[tagName].length; i++) {
-                        result += inner(data[tagName][i]);
+                    for (var i = 0; i < getValue(tagName, data).length; i++) {
+                        result += inner(getValue(tagName, data)[i]);
                     }
                     return result;
-                } else if (data[tagName]) {
+                } else if (getValue(tagName, data)) {
                     return inner(data);
                 } else {
                     return '';
