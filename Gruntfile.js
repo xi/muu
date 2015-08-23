@@ -96,7 +96,7 @@ module.exports = function (grunt) {
                     testname: process.env.TRAVIS_REPO_SLUG + '/' + process.env.TRAVIS_JOB_NUMBER,
                     throttled: 3,
                     sauceConfig: {
-                        'max-duration': 25,
+                        'max-duration': 50,
                         'video-upload-on-pass': false
                     },
                     onProgress: reportProgress
