@@ -91,6 +91,10 @@ define(['muu-js-helpers'], function(_) {
     /**
      * Execute a function when `element` is removed from the DOM.
      *
+     * *Note*: The callback is not executed directly when (or even before) the
+     * element is removed but with a slight delay. So the only way to test this
+     * is to use a timeout in the test.
+     *
      * @param {DOMElement} element
      * @param {function} fn
      * @return {Function()} An unregister function
