@@ -10,8 +10,8 @@
  * Loops render blocks of text a number of times, depending on the value of
  * the key in the current context.
  *
- * A loop begins with a pound and ends with a slash. That is, {{#person}}
- * begins a "person" section while {{/person}} ends it.
+ * A loop begins with a pound and ends with a slash. That is, `{{#person}}`
+ * begins a "person" section while `{{/person}}` ends it.
  *
  * If the value is an array, the block is repeated for each item in that array.
  * In any other case, the block is rendered with the outer scope, but only if
