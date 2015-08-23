@@ -82,7 +82,7 @@ define(['muu-update-dom'], function(updateDOM) {
             target.innerHTML = '<input>';
             target.querySelector('input').value = '1';
             updateDOM(target, source);
-            expect(n(target.innerHTML)).to.equal('<input class="test">');
+            expect(n(target.innerHTML)).to.contain('class="test"');
             expect(target.querySelector('input').value).to.equal('1');
         });
         it('preserves input checked on checkbox', function() {

@@ -54,7 +54,8 @@ define(['muu', 'muu-directive', 'muu-js-helpers'], function(Registry, Directive,
                 expect(Directive.prototype.isPrototypeOf(directive)).to.be(true);
             });
             it('uses the registered template', function() {
-                sinon.spy(registry, 'renderer');
+                var originalRenderer = registry.renderer;
+                registry.renderer = sinon.spy(originalRenderer);
 
                 var directive = registry.link(element, 'test');
                 directive.update();

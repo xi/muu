@@ -120,7 +120,9 @@ define(['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], f
          */
         this.linkAll = function(root) {
             // NOTE: root may be a DOM Node or a directive
-            var elements = root.querySelectorAll('muu:not(.muu-initialised)');
+            var elements = _.filter(root.querySelectorAll('muu'), function(element) {
+                return !element.classList.contains('muu-initialised');
+            });
             return _.map(elements, function(element) {
                 return self.link(element);
             });

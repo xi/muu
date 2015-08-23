@@ -37,7 +37,7 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
 
                 var button = element.querySelector('.button');
                 var spy = sinon.spy();
-                element.addEventListener('muu-test', spy);
+                element.addEventListener('muu-test', spy, false);
 
                 expect(spy.callCount).to.equal(0);
                 button.dispatchEvent($.createEvent('click'));
@@ -57,13 +57,13 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
             });
             it('triggers the "muu-parent-update" event on child directives', function() {
                 var element = document.createElement('div');
-                var template = '<muu class="muu-initialised">';
+                var template = '<muu class="muu-initialised"></muu>';
                 var directive = new Directive(element, template, registry);
                 directive.update({});
 
                 var subdirective = element.querySelector('muu');
                 var spy = sinon.spy();
-                subdirective.addEventListener('muu-parent-update', spy);
+                subdirective.addEventListener('muu-parent-update', spy, false);
 
                 expect(spy.callCount).to.equal(0);
                 directive.update({});
