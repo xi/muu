@@ -1,5 +1,5 @@
 /**
- * Recreate DOM `source` in `target` by making only small adjustments.
+ * Recreate children of `source` in `target` by making only small adjustments.
  *
  * *The following section explains details about the current implementation.
  * These are likely to change in the future.*
@@ -49,32 +49,34 @@ define(['muu-js-helpers'], function(_) {
         var nt = target.childNodes.length;
         var ns = source.childNodes.length;
 
-        if (target.nodeType === source.nodeType && target.nodeName === source.nodeName && target.type === source.type) {
-            if (target.nodeType === 1) {
-                var muuClasses = _.filter(target.classList, function(cls) {
-                    return cls.lastIndexOf('muu-', 0) === 0;
-                });
-                updateAttributes(target, source);
-                _.forEach(muuClasses, function(cls) {
-                    target.classList.add(cls);
-                });
-            } else if (target.nodeType === 3) {
-                target.nodeValue = source.nodeValue;
-            }
+        for (var i = ns; i < nt; i++) {
+            target.removeChild(target.childNodes[ns]);
+        }
+        for (i = nt; i < ns; i++) {
+            target.appendChild(source.childNodes[nt]);
+        }
+        for (i = 0; i < nt && i < ns; i++) {
+            var tchild = target.childNodes[i];
+            var schild = source.childNodes[i];
 
-            if (target.nodeType !== 1 || !target.classList.contains('muu-isolate')) {
-                for (var i = ns; i < nt; i++) {
-                    target.removeChild(target.childNodes[ns]);
+            if (tchild.nodeType === schild.nodeType && tchild.nodeName === schild.nodeName && tchild.type === schild.type) {
+                if (tchild.nodeType === 1) {
+                    var muuClasses = _.filter(tchild.classList, function(cls) {
+                        return cls.lastIndexOf('muu-', 0) === 0;
+                    });
+                    updateAttributes(tchild, schild);
+                    _.forEach(muuClasses, function(cls) {
+                        tchild.classList.add(cls);
+                    });
+                } else if (tchild.nodeType === 3) {
+                    tchild.nodeValue = schild.nodeValue;
                 }
-                for (i = nt; i < ns; i++) {
-                    target.appendChild(source.childNodes[nt]);
+                if (tchild.nodeType !== 3 && !tchild.classList.contains('muu-isolate')) {
+                    updateDOM(tchild, schild);
                 }
-                for (i = 0; i < nt && i < ns; i++) {
-                    updateDOM(target.childNodes[i], source.childNodes[i]);
-                }
+            } else {
+                tchild.parentNode.replaceChild(schild, tchild);
             }
-        } else {
-            target.parentNode.replaceChild(source, target);
         }
     };
 
