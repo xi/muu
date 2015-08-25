@@ -35,7 +35,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
     var Directive = function(root, template, registry) {
         var self = this;
 
-        root.innerHTML = '<div></div>';
+        root.innerHTML = '';
 
         var eventCallback = function(originalEvent) {
             var attrName = 'data-on' + originalEvent.type;
@@ -57,7 +57,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
             var tmp = document.createElement('div');
             tmp.innerHTML = registry.renderer(template, data);
 
-            updateDOM(root.children[0], tmp);
+            updateDOM(root, tmp);
 
             _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';
