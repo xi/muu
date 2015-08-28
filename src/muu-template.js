@@ -209,7 +209,12 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
         }
     };
 
+    var cache = {};
+
     return function(template, data) {
-        return parseTemplate(template).render(data);
+        if (cache[template] === undefined) {
+            cache[template] = parseTemplate(template);
+        }
+        return cache[template].render(data);
     };
 });
