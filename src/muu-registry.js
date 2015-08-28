@@ -1,6 +1,7 @@
 /**
  * Exports the {@link Registry} class.
  * @module muu-registry
+ * @ignore
  */
 define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, Directive, _, $) {
     "use strict";

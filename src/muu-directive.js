@@ -1,6 +1,7 @@
 /**
  * Exports the {@link Directive} class.
  * @module muu-directive
+ * @ignore
  */
 define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
     "use strict";
