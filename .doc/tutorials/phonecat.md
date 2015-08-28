@@ -8,13 +8,12 @@ only muu related object you will ever have to create yourself is a *{@link
 Registry}*.  It will take care of creating directives for you. Here is how it
 is done:
 
-    require(['muu'], function(Muu) {
-        var registry = new Muu();
+    require(['muu'], function(muu) {
+        var registry = new muu.Registry();
     });
 
 *For simplicaty, the calls to require will be left out of all following
-examples. `Muu` always refers to the `muu` module, `_` to `muu-js-helpers` and
-`$` to `muu-dom-helpers`.*
+examples.*
 
 Once you have a registry, you can register *directives* with it. In order to do
 that, you will need a *name*, a *template*, and a *link* function.
