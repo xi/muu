@@ -84,6 +84,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @param {string} selector
          * @return {Array.<Element>} All child elements that match the given
          *     selector and are not isolated.
+         * @nosideeffects
          */
         this.querySelectorAll = function(selector) {
             var hits = root.querySelectorAll(selector);
@@ -107,6 +108,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @param {String} selector
          * @return {Element} First child element that matches the given
          *     selector and is not isolated.
+         * @nosideeffects
          * @suppress {missingReturn}
          */
         this.querySelector = function(selector) {
@@ -129,6 +131,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @param {string} name
          * @param {*} [_default]
          * @return {string|number|boolean|*}
+         * @nosideeffects
          */
         this.getModel = function(name, _default) {
             if (name === undefined) {

@@ -22,6 +22,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     /**
      * @param {string} string
      * @return {string} - escaped HTML
+     * @nosideeffects
      */
     $.escapeHtml = function(string) {
         return String(string).replace(/[&<>"'\/]/g, function(s) {
@@ -39,6 +40,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
      * @param {*} detail
      * @return {Event}
      * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+     * @nosideeffects
      */
     $.createEvent = function(type, detail) {
         if (typeof CustomEvent === 'function') {
@@ -88,6 +90,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
      * @param {Node} desc
      * @param {Node} root
      * @return {boolean}
+     * @nosideeffects
      */
     $.isDescendant = function(desc, root) {
          return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
@@ -144,6 +147,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
      * @param {Array.<Element>} options
      * @return {string}
      * @suppress {missingReturn}
+     * @nosideeffects
      */
     $.getRadio = function(options) {
         for (var i = 0; i < options.length; i++) {

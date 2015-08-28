@@ -11,6 +11,7 @@ define('muu-js-helpers', [], function() {
     /**
      * @param {Object} value
      * @return {string}
+     * @nosideeffects
      */
     var objToString = function(value) {
         return Object.prototype.toString.call(value);
@@ -19,6 +20,7 @@ define('muu-js-helpers', [], function() {
     /**
      * @param {*} value
      * @return {boolean}
+     * @nosideeffects
      */
     _.isString = function(value) {
         return typeof value === 'string' || objToString(value) === '[object String]';
@@ -28,12 +30,14 @@ define('muu-js-helpers', [], function() {
      * @function
      * @param {*} value
      * @return {boolean}
+     * @nosideeffects
      */
     _.isArray = Array.isArray;
 
     /**
      * @param {*} value
      * @return {boolean}
+     * @nosideeffects
      */
     _.isFunction = function(value) {
         return typeof value === 'function';
@@ -42,6 +46,7 @@ define('muu-js-helpers', [], function() {
     /**
      * @param {Function} fn
      * @return {Function}
+     * @nosideeffects
      */
     _.once = function(fn) {
         var result;
@@ -60,6 +65,7 @@ define('muu-js-helpers', [], function() {
      * @param {Array} array
      * @param {*} value
      * @return {number}
+     * @nosideeffects
      */
     _.indexOf = function(array, value) {
         if ('indexOf' in array) {
@@ -92,6 +98,7 @@ define('muu-js-helpers', [], function() {
      * @param {Array} array
      * @param {Function} fn
      * @return {Array}
+     * @nosideeffects
      */
     _.map = function(array, fn) {
         if ('map' in array) {
@@ -109,6 +116,7 @@ define('muu-js-helpers', [], function() {
      * @param {Array} array
      * @param {Function} fn
      * @return {Array}
+     * @nosideeffects
      */
     _.filter = function(array, fn) {
         if ('filter' in array) {
@@ -127,6 +135,7 @@ define('muu-js-helpers', [], function() {
     /**
      * @param {Array.<Array>} arrays
      * @return {Array}
+     * @nosideeffects
      */
     _.union = function(arrays) {
         var results = [];
@@ -144,6 +153,7 @@ define('muu-js-helpers', [], function() {
      * @param {Array} a
      * @param {Array} b
      * @return {Array}
+     * @nosideeffects
      */
     _.difference = function(a, b) {
         var results = [];
@@ -158,6 +168,7 @@ define('muu-js-helpers', [], function() {
     /**
      * @param {Array} a
      * @return {Array}
+     * @nosideeffects
      */
     _.flatten = function(a) {
         var o = [];

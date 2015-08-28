@@ -130,6 +130,7 @@
                  * @param {string} selector
                  * @return {Array.<Element>} All child elements that match the given
                  *     selector and are not isolated.
+                 * @nosideeffects
                  */
                 this.querySelectorAll = function(selector) {
                     var hits = root.querySelectorAll(selector);
@@ -153,6 +154,7 @@
                  * @param {String} selector
                  * @return {Element} First child element that matches the given
                  *     selector and is not isolated.
+                 * @nosideeffects
                  * @suppress {missingReturn}
                  */
                 this.querySelector = function(selector) {
@@ -175,6 +177,7 @@
                  * @param {string} name
                  * @param {*} [_default]
                  * @return {string|number|boolean|*}
+                 * @nosideeffects
                  */
                 this.getModel = function(name, _default) {
                     if (name === undefined) {
@@ -246,6 +249,7 @@
             /**
              * @param {string} string
              * @return {string} - escaped HTML
+             * @nosideeffects
              */
             $.escapeHtml = function(string) {
                 return String(string).replace(/[&<>"'\/]/g, function(s) {
@@ -263,6 +267,7 @@
              * @param {*} detail
              * @return {Event}
              * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+             * @nosideeffects
              */
             $.createEvent = function(type, detail) {
                 if (typeof CustomEvent === 'function') {
@@ -312,6 +317,7 @@
              * @param {Node} desc
              * @param {Node} root
              * @return {boolean}
+             * @nosideeffects
              */
             $.isDescendant = function(desc, root) {
                  return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
@@ -368,6 +374,7 @@
              * @param {Array.<Element>} options
              * @return {string}
              * @suppress {missingReturn}
+             * @nosideeffects
              */
             $.getRadio = function(options) {
                 for (var i = 0; i < options.length; i++) {

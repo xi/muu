@@ -130,6 +130,7 @@
                  * @param {string} selector
                  * @return {Array.<Element>} All child elements that match the given
                  *     selector and are not isolated.
+                 * @nosideeffects
                  */
                 this.querySelectorAll = function(selector) {
                     var hits = root.querySelectorAll(selector);
@@ -153,6 +154,7 @@
                  * @param {String} selector
                  * @return {Element} First child element that matches the given
                  *     selector and is not isolated.
+                 * @nosideeffects
                  * @suppress {missingReturn}
                  */
                 this.querySelector = function(selector) {
@@ -175,6 +177,7 @@
                  * @param {string} name
                  * @param {*} [_default]
                  * @return {string|number|boolean|*}
+                 * @nosideeffects
                  */
                 this.getModel = function(name, _default) {
                     if (name === undefined) {
@@ -246,6 +249,7 @@
             /**
              * @param {string} string
              * @return {string} - escaped HTML
+             * @nosideeffects
              */
             $.escapeHtml = function(string) {
                 return String(string).replace(/[&<>"'\/]/g, function(s) {
@@ -263,6 +267,7 @@
              * @param {*} detail
              * @return {Event}
              * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+             * @nosideeffects
              */
             $.createEvent = function(type, detail) {
                 if (typeof CustomEvent === 'function') {
@@ -312,6 +317,7 @@
              * @param {Node} desc
              * @param {Node} root
              * @return {boolean}
+             * @nosideeffects
              */
             $.isDescendant = function(desc, root) {
                  return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
@@ -368,6 +374,7 @@
              * @param {Array.<Element>} options
              * @return {string}
              * @suppress {missingReturn}
+             * @nosideeffects
              */
             $.getRadio = function(options) {
                 for (var i = 0; i < options.length; i++) {
@@ -406,6 +413,7 @@
             /**
              * @param {Object} value
              * @return {string}
+             * @nosideeffects
              */
             var objToString = function(value) {
                 return Object.prototype.toString.call(value);
@@ -414,6 +422,7 @@
             /**
              * @param {*} value
              * @return {boolean}
+             * @nosideeffects
              */
             _.isString = function(value) {
                 return typeof value === 'string' || objToString(value) === '[object String]';
@@ -423,12 +432,14 @@
              * @function
              * @param {*} value
              * @return {boolean}
+             * @nosideeffects
              */
             _.isArray = Array.isArray;
 
             /**
              * @param {*} value
              * @return {boolean}
+             * @nosideeffects
              */
             _.isFunction = function(value) {
                 return typeof value === 'function';
@@ -437,6 +448,7 @@
             /**
              * @param {Function} fn
              * @return {Function}
+             * @nosideeffects
              */
             _.once = function(fn) {
                 var result;
@@ -455,6 +467,7 @@
              * @param {Array} array
              * @param {*} value
              * @return {number}
+             * @nosideeffects
              */
             _.indexOf = function(array, value) {
                 if ('indexOf' in array) {
@@ -487,6 +500,7 @@
              * @param {Array} array
              * @param {Function} fn
              * @return {Array}
+             * @nosideeffects
              */
             _.map = function(array, fn) {
                 if ('map' in array) {
@@ -504,6 +518,7 @@
              * @param {Array} array
              * @param {Function} fn
              * @return {Array}
+             * @nosideeffects
              */
             _.filter = function(array, fn) {
                 if ('filter' in array) {
@@ -522,6 +537,7 @@
             /**
              * @param {Array.<Array>} arrays
              * @return {Array}
+             * @nosideeffects
              */
             _.union = function(arrays) {
                 var results = [];
@@ -539,6 +555,7 @@
              * @param {Array} a
              * @param {Array} b
              * @return {Array}
+             * @nosideeffects
              */
             _.difference = function(a, b) {
                 var results = [];
@@ -553,6 +570,7 @@
             /**
              * @param {Array} a
              * @return {Array}
+             * @nosideeffects
              */
             _.flatten = function(a) {
                 var o = [];
@@ -580,6 +598,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              */
             loc.absUrl = function() {
                 return location.href;
@@ -587,6 +606,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              *//**
              * @param {string} value
              * @param {boolean} [replace]
@@ -605,6 +625,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              */
             loc.protocol = function() {
                 return location.protocol;
@@ -612,6 +633,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              */
             loc.host = function() {
                 return location.host;
@@ -619,6 +641,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              */
             loc.port = function() {
                 return location.port;
@@ -626,6 +649,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              *//**
              * @param {string} value
              * @param {boolean} [replace]
@@ -660,6 +684,7 @@
 
             /**
              * @return {Object}
+             * @nosideeffects
              *//**
              * @param {string|object} value
              * @return {muu-location}
@@ -685,6 +710,7 @@
 
             /**
              * @return {string}
+             * @nosideeffects
              *//**
              * @param {string} value
              * @param {boolean} [replace]
@@ -989,6 +1015,7 @@
          * @param {string} template
          * @param {Object} data
          * @return {string}
+         * @nosideeffects
          */
         _define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             "use strict";

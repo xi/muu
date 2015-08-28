@@ -60,6 +60,7 @@
  * @param {string} template
  * @param {Object} data
  * @return {string}
+ * @nosideeffects
  */
 define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     "use strict";

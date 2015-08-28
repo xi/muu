@@ -10,6 +10,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.absUrl = function() {
         return location.href;
@@ -17,6 +18,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
@@ -35,6 +37,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.protocol = function() {
         return location.protocol;
@@ -42,6 +45,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.host = function() {
         return location.host;
@@ -49,6 +53,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.port = function() {
         return location.port;
@@ -56,6 +61,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
@@ -90,6 +96,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {Object}
+     * @nosideeffects
      *//**
      * @param {string|object} value
      * @return {muu-location}
@@ -115,6 +122,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
