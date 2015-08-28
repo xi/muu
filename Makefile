@@ -1,4 +1,10 @@
-dist/muu.min.js: dist/muu.js node_modules/closure-compiler-jar/compiler.jar .build/externs.js
+dist/muu.js: JS := src/*.js
+dist/muu-core.js: LODASH := 1
+dist/muu-core.js: JS := src/muu-directive.js src/muu-dom-helpers.js src/muu.js src/muu-registry.js src/muu-update-dom.js
+
+all: dist/muu.min.js dist/muu-core.min.js
+
+dist/%.min.js: dist/%.js node_modules/closure-compiler-jar/compiler.jar .build/externs.js
 	java -jar node_modules/closure-compiler-jar/compiler.jar \
 		--compilation_level SIMPLE_OPTIMIZATIONS \
 		--use_types_for_optimization \
@@ -9,11 +15,12 @@ dist/muu.min.js: dist/muu.js node_modules/closure-compiler-jar/compiler.jar .bui
 		--js $< \
 		--js_output_file $@
 
-dist/muu.js: .build/template.js src/*.js
+dist/%.js: .build/template.js src/*.js
 	mkdir -p dist
 	head -n -3 $< > .build/head.js
+	if [ -z ${LODASH} ]; then sed -i "s/'lodash'//g" .build/head.js; fi
 	tail -n 4 $< > .build/tail.js
-	cat src/*.js |\
+	cat ${JS} |\
 		sed 's/^/        /g' |\
 		sed 's/ *$$//g' |\
 		sed 's/define(/_define(/g' > .build/modules.js

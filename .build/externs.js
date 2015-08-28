@@ -1,6 +1,12 @@
 /** @type {Object} */
 var history;
 
+var _ = {
+    once: function(fn) {},
+    difference: function(a, b) {},
+    union: function(a) {}
+};
+
 /**
  * @param {string} name
  * @param {Array.<string>} deps

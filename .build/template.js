@@ -5,10 +5,14 @@
         if (typeof define === 'function' && define.amd) {
             define(name, ['lodash'], factory);
         } else {
-            window[name] = factory(_);
+            window[name] = factory(window._);
         }
-    })(function() {
+    })(function(lodash) {
         var modules = {};
+
+        modules['muu-js-helpers'] = {
+            instance: lodash
+        };
 
         var map = function(a, fn) {
             var b = [];
