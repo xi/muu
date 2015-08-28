@@ -1,4 +1,4 @@
-define(['moment', 'muu-dom-helpers'], function(moment, $) {
+define(['moment'], function(moment) {
     "use strict";
 
     return function(muu) {
