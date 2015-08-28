@@ -131,7 +131,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @return {string|number|boolean|*}
          */
         this.getModel = function(name, _default) {
-            if (name === void 0) {
+            if (name === undefined) {
                 var model = {};
                 _.forEach(self.querySelectorAll('[name]'), function(element) {
                     model[element.name] = self.getModel(element.name);
@@ -139,7 +139,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
                 return model;
             } else {
                 var element = self.querySelector('[name=' + name + ']');
-                if (element === void 0) {
+                if (element === undefined) {
                     return _default;
                 } else if (element.type === 'checkbox') {
                     return element.checked;

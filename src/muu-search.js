@@ -28,7 +28,7 @@ define('muu-search', ['muu-js-helpers'], function(_) {
     };
 
     var unparseItem = function(key, value) {
-        if (value === void 0 || value === null || value === false) {
+        if (value === undefined || value === null || value === false) {
             return [];
         } else if (_.isArray(value)) {
             return _.flatten(_.map(value, function(v) {

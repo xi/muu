@@ -86,7 +86,7 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
          * @return {Directive}
          */
         this.link = function(element, type) {
-            if (type === void 0) {
+            if (type === undefined) {
                 type = element.getAttribute('type');
             }
 
@@ -106,7 +106,7 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
                 element.directive = directive;
             }
 
-            if (unlink !== void 0) {
+            if (unlink !== undefined) {
                 $.destroy(element, unlink);
             }
 

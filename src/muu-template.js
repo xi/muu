@@ -159,7 +159,7 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     var parseTemplate = function(template, loopName) {
         var openIndex = template.indexOf(openTag);
         if (openIndex === -1) {
-            if (loopName === void 0) {
+            if (loopName === undefined) {
                 return function() {
                     return template;
                 };
