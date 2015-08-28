@@ -35,7 +35,7 @@ defines the name of the directive that should be used.
     <muu type="hello"></muu>
 
 Now you can call `registry.linkAll(document)`. This will automatically link all
-directives that can be found in th whole document. "Hello World" should now be
+directives that can be found in the whole document. "Hello World" should now be
 written on your screen.
 
 # Static template
