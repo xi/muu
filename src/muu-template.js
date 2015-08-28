@@ -68,19 +68,28 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     var openTag = '{{';
     var closeTag = '}}';
 
+    /**
+     * @param {string} key
+     * @param {Object} data
+     * @return {*}
+     * @nosideeffects
+     */
     var getValue = function(key, data) {
         return key === 'this' ? data : data[key];
     };
 
-    var parseVariableTemplate = function(template) {
-        var content = template.slice(2, -2);
-
-        if (template.indexOf(':') === -1) {
+    /**
+     * @param {string} tag
+     * @return {function(*): string}
+     * @nosideeffects
+     */
+    var parseVariable = function(tag) {
+        if (tag.indexOf(':') === -1) {
             return function(data) {
-                return $.escapeHtml(getValue(content, data) || '');
+                return $.escapeHtml(getValue(tag, data) || '');
             };
         } else {
-            var pairs = content.split(',').map(function(pair) {
+            var pairs = _.map(tag.split(','), function(pair) {
                 var v = pair.split(':');
                 var key = v[0].trim();
                 var value = v.slice(1).join(':').trim();
@@ -88,81 +97,65 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             });
 
             return function(data) {
-                var results = [];
-
-                for (var i = 0; i < pairs.length; i++) {
-                    var key = pairs[i][0];
-                    var value = pairs[i][1];
-
-                    if (getValue(value, data)) {
-                        results.push(key);
-                    }
-                }
+                var results = _.map(_.filter(pairs, function(pair) {
+                    return getValue(pair[1], data);
+                }), function(pair) {
+                    return pair[0];
+                });
 
                 return $.escapeHtml(results.join(' '));
             };
         }
     };
 
-    var parseLoopTemplate = function(tag, afterTag, inverted) {
-        var tagName = tag.slice(3, -2);
+    /**
+     * @param {string} tag
+     * @param {string} afterTag
+     * @param {boolean} [inverted]
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
+    var parseLoop = function(tag, afterTag, inverted) {
+        var inner = parseTemplate(afterTag, tag);
 
-        var v = parseTemplate(afterTag, tagName);
-        var inner = v[0];
-        var afterLoop = v[1];
+        return {
+            render: function(data) {
+                var value = getValue(tag, data);
+                var result = '';
 
-        var render = function(data) {
-            if (inverted) {
-                if (getValue(tagName, data)) {
-                    return '';
-                } else {
-                    return inner(data);
-                }
-            } else {
-                if (_.isArray(getValue(tagName, data))) {
-                    var result = '';
-                    for (var i = 0; i < getValue(tagName, data).length; i++) {
-                        result += inner(getValue(tagName, data)[i]);
+                if (inverted) {
+                    if (!value) {
+                        result += inner.render(data);
                     }
-                    return result;
-                } else if (getValue(tagName, data)) {
-                    return inner(data);
                 } else {
-                    return '';
+                    if (_.isArray(value)) {
+                        for (var i = 0; i < value.length; i++) {
+                            result += inner.render(value[i]);
+                        }
+                    } else if (value) {
+                        result += inner.render(data);
+                    }
                 }
-            }
+
+                return result;
+            },
+            afterBlock: inner.afterBlock
         };
-
-        return [render, afterLoop];
     };
 
-    var concat = function(a) {
-        var last = a.pop();
-
-        if (_.isArray(last)) {
-            a.push(last[0]);
-            return [concat(a), last[1]];
-        } else {
-            a.push(last);
-
-            return function(data) {
-                return a.map(function(item) {
-                    if (_.isString(item)) {
-                        return item;
-                    } else if (_.isFunction(item)) {
-                        return item(data);
-                    }
-                }).join('');
-            };
-        }
-    };
-
+    /**
+     * @param {string} template
+     * @param {string} [loopName]
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
     var parseTemplate = function(template, loopName) {
         var openIndex = template.indexOf(openTag);
         if (openIndex === -1) {
             if (loopName === undefined) {
-                return function() {
-                    return template;
+                return {
+                    render: function() { return template; },
+                    afterBlock: ''
                 };
             } else {
                 throw new Error('unclosed loop: ' + loopName);
@@ -171,44 +164,57 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             var beforeTag = template.slice(0, openIndex);
             var tmp = template.slice(openIndex);
 
-            var closeIndex = tmp.indexOf(closeTag) + 2;
-            if (closeIndex === 1) {
+            var closeIndex = tmp.indexOf(closeTag);
+            if (closeIndex === -1) {
                 throw new Error('unclosed tag: ' + tmp);
             }
-            var tag = tmp.slice(0, closeIndex);
-            var afterTag = tmp.slice(closeIndex);
+            var tag = tmp.slice(openTag.length, closeIndex);
+            var afterTag = tmp.slice(closeIndex + closeTag.length);
 
-            if (tag.lastIndexOf('{{#', 0) === 0) {
-                var v = parseLoopTemplate(tag, afterTag);
-                var loop = v[0];
-                var after = parseTemplate(v[1], loopName);
-                return concat([beforeTag, loop, after]);
-            } else if (tag.lastIndexOf('{{^', 0) === 0) {
-                var v = parseLoopTemplate(tag, afterTag, true);
-                var loop = v[0];
-                var after = parseTemplate(v[1], loopName);
-                return concat([beforeTag, loop, after]);
-            } else if (tag.lastIndexOf('{{!', 0) === 0) {
-                var after = parseTemplate(afterTag, loopName);
-                return concat([beforeTag, after]);
-            } else if (tag.lastIndexOf('{{/', 0) === 0) {
-                if (tag.slice(3, -2) === loopName) {
-                    var render = function() {
-                        return beforeTag;
-                    };
-                    return [render, afterTag];
-                } else {
+            var loadNext = true;
+            var current = {
+                render: function() { return ''; },
+                afterBlock: afterTag
+            };
+
+            if (tag.lastIndexOf('#', 0) === 0) {
+                current = parseLoop(tag.substr(1), afterTag);
+            } else if (tag.lastIndexOf('^', 0) === 0) {
+                current = parseLoop(tag.substr(1), afterTag, true);
+            } else if (tag.lastIndexOf('/', 0) === 0) {
+                loadNext = false;
+                if (tag.substr(1) !== loopName) {
                     throw new Error('unexpected closing loop: ' + tag);
                 }
+            } else if (tag.lastIndexOf('!', 0) !== 0) {
+                current.render = parseVariable(tag);
+            }
+
+            if (loadNext) {
+                var next = parseTemplate(current.afterBlock, loopName);
+                return {
+                    render: function(data) {
+                        return beforeTag + current.render(data) + next.render(data);
+                    },
+                    afterBlock: next.afterBlock
+                };
             } else {
-                var render = parseVariableTemplate(tag);
-                var after = parseTemplate(afterTag, loopName);
-                return concat([beforeTag, render, after]);
+                return {
+                    render: function(data) {
+                        return beforeTag + current.render(data);
+                    },
+                    afterBlock: current.afterBlock
+                };
             }
         }
     };
 
+    var cache = {};
+
     return function(template, data) {
-        return parseTemplate(template)(data);
+        if (cache[template] === undefined) {
+            cache[template] = parseTemplate(template);
+        }
+        return cache[template].render(data);
     };
 });
