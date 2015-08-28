@@ -1,11 +1,11 @@
 requirejs.config({
-    baseUrl: '../../src/',
     paths: {
-        xhr: '../lib/promise-xhr/promise-xhr'
+        muu: '../../dist/muu.min',
+        xhr: '../../lib/promise-xhr/promise-xhr'
     }
 });
 
-require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
+require(['xhr', 'muu'], function(xhr, muu) {
     "use strict";
 
     Promise.all([
@@ -15,7 +15,7 @@ require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
         var template = args[0];
         var phones = args[1];
 
-        var muu = new Muu()
+        var registry = new muu.Registry()
             .registerDirective('phonecat', template, function(self, element) {
                 element.addEventListener('muu-filter', function() {
                     var query = self.getModel('query', '').toLowerCase();
@@ -37,8 +37,8 @@ require(['xhr', 'muu', 'muu-dom-helpers'], function(xhr, Muu, $) {
                 self.setModel('orderProp', 'age');
             });
 
-        $.ready(function() {
-            muu.linkAll(document);
+        muu.$.ready(function() {
+            registry.linkAll(document);
         });
     });
 });

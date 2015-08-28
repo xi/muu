@@ -2,7 +2,7 @@
  * angular inspired location service.
  * @module muu-location
  */
-define(['muu-search'], function(q) {
+define('muu-location', ['muu-search'], function(q) {
     "use strict";
 
     /** @lends module:muu-location */
@@ -10,6 +10,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.absUrl = function() {
         return location.href;
@@ -17,13 +18,14 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
      * @return {muu-location}
      */
     loc.url = function(value, replace) {
-        if (value === void 0) {
+        if (value === undefined) {
             return location.pathname + location.search + location.hash;
         } else if (replace) {
             history.replaceState(null, null, value);
@@ -35,6 +37,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.protocol = function() {
         return location.protocol;
@@ -42,6 +45,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.host = function() {
         return location.host;
@@ -49,6 +53,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      */
     loc.port = function() {
         return location.port;
@@ -56,13 +61,14 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
      * @return {muu-location}
      */
     loc.path = function(value, replace) {
-        if (value === void 0) {
+        if (value === undefined) {
             return location.pathname;
         } else {
             var url = value + location.search + location.hash;
@@ -72,7 +78,7 @@ define(['muu-search'], function(q) {
     };
 
     var _search = function(value, replace) {
-        if (value === void 0) {
+        if (value === undefined) {
             return location.search;
         } else {
             if (value && value[0] !== '?') {
@@ -89,7 +95,8 @@ define(['muu-search'], function(q) {
     };
 
     /**
-     * @return {object}
+     * @return {Object}
+     * @nosideeffects
      *//**
      * @param {string|object} value
      * @return {muu-location}
@@ -100,8 +107,8 @@ define(['muu-search'], function(q) {
      * @return {muu-location}
      */
     loc.search = function(key, value, replace) {
-        if (key !== void 0) {
-            if (value !== void 0) {
+        if (key !== undefined) {
+            if (value !== undefined) {
                 var search = q.parse(_search());
                 search[key] = value;
                 return _search(q.unparse(search), replace);
@@ -115,13 +122,14 @@ define(['muu-search'], function(q) {
 
     /**
      * @return {string}
+     * @nosideeffects
      *//**
      * @param {string} value
      * @param {boolean} [replace]
      * @return {muu-location}
      */
     loc.hash = function(value, replace) {
-        if (value === void 0) {
+        if (value === undefined) {
             if (location.hash) {
                 return location.hash.slice(1);
             } else {
@@ -136,7 +144,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @param {string} eventName
-     * @param {function} fn
+     * @param {Function} fn
      * @return {muu-location}
      */
     loc.addEventListener = function(eventName, fn) {
@@ -148,7 +156,7 @@ define(['muu-search'], function(q) {
 
     /**
      * @param {string} eventName
-     * @param {function} fn
+     * @param {Function} fn
      * @return {muu-location}
      */
     loc.removeEventListener = function(eventName, fn) {

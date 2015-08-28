@@ -1,12 +1,13 @@
 /**
  * Exports the {@link Directive} class.
  * @module muu-directive
+ * @ignore
  */
-define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
+define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
     "use strict";
 
     /**
-     * A directive is linked to a DOMElement and manages the DOM tree below
+     * A directive is linked to a Element and manages the DOM tree below
      * that element (excluding any isolated subtrees, e.g. those managed by
      * subdirectives).
      *
@@ -28,9 +29,9 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
      * Registry#link}.
      *
      * @constructs Directive
-     * @param {DOMElement} root
+     * @param {Element} root
      * @param {string} template
-     * @param {Muu} registry
+     * @param {Registry} registry
      */
     var Directive = function(root, template, registry) {
         var self = this;
@@ -81,8 +82,9 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
          *
          * @private
          * @param {string} selector
-         * @return {DOMElement[]} All child elements that match the given
+         * @return {Array.<Element>} All child elements that match the given
          *     selector and are not isolated.
+         * @nosideeffects
          */
         this.querySelectorAll = function(selector) {
             var hits = root.querySelectorAll(selector);
@@ -104,8 +106,10 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
          *
          * @private
          * @param {String} selector
-         * @return {DOMElement} First child element that matches the given
+         * @return {Element} First child element that matches the given
          *     selector and is not isolated.
+         * @nosideeffects
+         * @suppress {missingReturn}
          */
         this.querySelector = function(selector) {
             var all = self.querySelectorAll(selector);
@@ -127,9 +131,10 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
          * @param {string} name
          * @param {*} [_default]
          * @return {string|number|boolean|*}
+         * @nosideeffects
          */
         this.getModel = function(name, _default) {
-            if (name === void 0) {
+            if (name === undefined) {
                 var model = {};
                 _.forEach(self.querySelectorAll('[name]'), function(element) {
                     model[element.name] = self.getModel(element.name);
@@ -137,7 +142,7 @@ define(['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, u
                 return model;
             } else {
                 var element = self.querySelector('[name=' + name + ']');
-                if (element === void 0) {
+                if (element === undefined) {
                     return _default;
                 } else if (element.type === 'checkbox') {
                     return element.checked;

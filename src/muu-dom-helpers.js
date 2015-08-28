@@ -2,7 +2,7 @@
  * DOM related helper functions
  * @module muu-dom-helpers
  */
-define(['muu-js-helpers'], function(_) {
+define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     "use strict";
 
     var entityMap = {
@@ -22,6 +22,7 @@ define(['muu-js-helpers'], function(_) {
     /**
      * @param {string} string
      * @return {string} - escaped HTML
+     * @nosideeffects
      */
     $.escapeHtml = function(string) {
         return String(string).replace(/[&<>"'\/]/g, function(s) {
@@ -37,8 +38,9 @@ define(['muu-js-helpers'], function(_) {
      *
      * @param {string} type
      * @param {*} detail
-     * @return {DOMEvent}
+     * @return {Event}
      * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+     * @nosideeffects
      */
     $.createEvent = function(type, detail) {
         if (typeof CustomEvent === 'function') {
@@ -53,10 +55,10 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement} element
+     * @param {EventTarget} element
      * @param {string} eventName
-     * @param {function} callback
-     * @return {Function()} An unregister function
+     * @param {Function} callback
+     * @return {function()} An unregister function
      */
     $.on = function(element, eventName, callback) {
         element.addEventListener(eventName, callback, false);
@@ -66,8 +68,8 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {function} fn
-     * @return {Function()} An unregister function
+     * @param {Function} fn
+     * @return {function()} An unregister function
      */
     $.ready = function(fn) {
         var _fn = _.once(fn);
@@ -85,9 +87,10 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMNode} desc
-     * @param {DOMNode} root
+     * @param {Node} desc
+     * @param {Node} root
      * @return {boolean}
+     * @nosideeffects
      */
     $.isDescendant = function(desc, root) {
          return !!desc && (desc === root || $.isDescendant(desc.parentNode, root));
@@ -100,9 +103,9 @@ define(['muu-js-helpers'], function(_) {
      * element is removed but with a slight delay. So the only way to test this
      * is to use a timeout in the test.
      *
-     * @param {DOMElement} element
-     * @param {function} fn
-     * @return {Function()} An unregister function
+     * @param {Element} element
+     * @param {Function} fn
+     * @return {function()} An unregister function
      */
     $.destroy = function(element, fn) {
         var unregister;
@@ -141,8 +144,10 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement[]} options
+     * @param {Array.<Element>} options
      * @return {string}
+     * @suppress {missingReturn}
+     * @nosideeffects
      */
     $.getRadio = function(options) {
         for (var i = 0; i < options.length; i++) {
@@ -153,7 +158,7 @@ define(['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement[]} options
+     * @param {Array.<Element>} options
      * @param {string} value
      */
     $.setRadio = function(options, value) {

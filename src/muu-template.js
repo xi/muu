@@ -58,10 +58,11 @@
  *
  * @module muu-template
  * @param {string} template
- * @param {object} data
+ * @param {Object} data
  * @return {string}
+ * @nosideeffects
  */
-define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
+define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     "use strict";
 
     var openTag = '{{';
@@ -159,7 +160,7 @@ define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     var parseTemplate = function(template, loopName) {
         var openIndex = template.indexOf(openTag);
         if (openIndex === -1) {
-            if (loopName === void 0) {
+            if (loopName === undefined) {
                 return function() {
                     return template;
                 };

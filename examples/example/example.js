@@ -1,16 +1,16 @@
 requirejs.config({
-    baseUrl: '../../src/',
     paths: {
-        xhr: '../lib/promise-xhr/promise-xhr',
-        moment: '../lib/moment/moment',
-        'muu-moment': '../examples/example/muu-moment'
+        muu: '../../dist/muu.min',
+        xhr: '../../lib/promise-xhr/promise-xhr',
+        moment: '../../lib/moment/moment',
+        'muu-moment': './muu-moment'
     }
 });
 
-require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, muuMoment) {
+require(['xhr', 'muu', 'muu-moment'], function(xhr, muu, muuMoment) {
     "use strict";
 
-    var muu = new Muu({debug: true})
+    var registry = new muu.Registry({debug: true})
         .registerModule(muuMoment)
         .registerDirective(
             'test',
@@ -54,7 +54,7 @@ require(['xhr', 'muu', 'muu-dom-helpers', 'muu-moment'], function(xhr, Muu, $, m
                 self.update(data);
             });
 
-    $.ready(function() {
-        muu.linkAll(document);
+    muu.$.ready(function() {
+        registry.linkAll(document);
     });
 });
