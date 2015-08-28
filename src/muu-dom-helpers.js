@@ -107,7 +107,7 @@ define(['muu-js-helpers'], function(_) {
     $.destroy = function(element, fn) {
         var unregister;
 
-        if (false) {
+        if (!!window.MutationObserver) {
             var observer = new MutationObserver(function() {
                 if (!$.isDescendant(element, document)) {
                     fn();
