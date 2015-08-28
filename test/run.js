@@ -1,9 +1,11 @@
 mocha.setup('bdd');
 
-if (location.search.indexOf('coverage=no') === -1) {
-    blanket.options('filter', 'muu');
-} else {
-    blanket.options('filter', 'nonexistent');
+if (window.blanket) {
+    if (location.search.indexOf('coverage=no') === -1) {
+        blanket.options('filter', 'muu');
+    } else {
+        blanket.options('filter', 'nonexistent');
+    }
 }
 
 require({
