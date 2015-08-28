@@ -2,7 +2,7 @@
  * angular inspired location service.
  * @module muu-location
  */
-define(['muu-search'], function(q) {
+define('muu-location', ['muu-search'], function(q) {
     "use strict";
 
     /** @lends module:muu-location */

@@ -61,7 +61,7 @@
  * @param {object} data
  * @return {string}
  */
-define(['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
+define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     "use strict";
 
     var openTag = '{{';

@@ -21,7 +21,7 @@
  * @param {DOMElement} target
  * @param {DOMElement} source
  */
-define(['muu-js-helpers'], function(_) {
+define('muu-update-dom', ['muu-js-helpers'], function(_) {
     "use strict";
 
     var updateAttributes = function(target, source) {

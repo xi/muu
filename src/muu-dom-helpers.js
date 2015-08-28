@@ -2,7 +2,7 @@
  * DOM related helper functions
  * @module muu-dom-helpers
  */
-define(['muu-js-helpers'], function(_) {
+define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     "use strict";
 
     var entityMap = {

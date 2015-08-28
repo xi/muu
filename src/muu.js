@@ -7,7 +7,7 @@
  *
  * @module muu
  */
-define(['muu-registry', 'muu-dom-helpers', 'muu-location'], function(Registry, $, $location) {
+define('muu', ['muu-registry', 'muu-dom-helpers', 'muu-location'], function(Registry, $, $location) {
     "use strict";
 
     var module = {};
