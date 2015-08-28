@@ -68,26 +68,40 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
     var openTag = '{{';
     var closeTag = '}}';
 
+    /**
+     * @param {string} key
+     * @param {Object} data
+     * @return {*}
+     * @nosideeffects
+     */
     var getValue = function(key, data) {
         return key === 'this' ? data : data[key];
     };
 
-    var parseVariableTemplate = function(template) {
-        var content = template.slice(2, -2);
+    /**
+     * @param {string} tag
+     * @param {string} afterTag
+     * @param {string} loopName
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
+    var parseVariable = function(tag, afterTag, loopName) {
+        var next = parseTemplate(afterTag, loopName);
+        var render;
 
-        if (template.indexOf(':') === -1) {
-            return function(data) {
-                return $.escapeHtml(getValue(content, data) || '');
+        if (tag.indexOf(':') === -1) {
+            render = function(data) {
+                return $.escapeHtml(getValue(tag, data) || '');
             };
         } else {
-            var pairs = content.split(',').map(function(pair) {
+            var pairs = _.map(tag.split(','), function(pair) {
                 var v = pair.split(':');
                 var key = v[0].trim();
                 var value = v.slice(1).join(':').trim();
                 return [key, value];
             });
 
-            return function(data) {
+            render = function(data) {
                 var results = [];
 
                 for (var i = 0; i < pairs.length; i++) {
@@ -102,67 +116,98 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
                 return $.escapeHtml(results.join(' '));
             };
         }
-    };
 
-    var parseLoopTemplate = function(tag, afterTag, inverted) {
-        var tagName = tag.slice(3, -2);
-
-        var v = parseTemplate(afterTag, tagName);
-        var inner = v[0];
-        var afterLoop = v[1];
-
-        var render = function(data) {
-            if (inverted) {
-                if (getValue(tagName, data)) {
-                    return '';
-                } else {
-                    return inner(data);
-                }
-            } else {
-                if (_.isArray(getValue(tagName, data))) {
-                    var result = '';
-                    for (var i = 0; i < getValue(tagName, data).length; i++) {
-                        result += inner(getValue(tagName, data)[i]);
-                    }
-                    return result;
-                } else if (getValue(tagName, data)) {
-                    return inner(data);
-                } else {
-                    return '';
-                }
-            }
+        return {
+            render: function(data) {
+                return render(data) + next.render(data, loopName);
+            },
+            afterBlock: next.afterBlock
         };
-
-        return [render, afterLoop];
     };
 
-    var concat = function(a) {
-        var last = a.pop();
+    /**
+     * @param {string} tag
+     * @param {string} afterTag
+     * @param {string} loopName
+     * @param {boolean} [inverted]
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
+    var parseLoop = function(tag, afterTag, loopName, inverted) {
+        var inner = parseTemplate(afterTag, tag);
+        var next = parseTemplate(inner.afterBlock, loopName);
 
-        if (_.isArray(last)) {
-            a.push(last[0]);
-            return [concat(a), last[1]];
-        } else {
-            a.push(last);
+        return {
+            render: function(data) {
+                var value = getValue(tag, data);
+                var result = '';
 
-            return function(data) {
-                return a.map(function(item) {
-                    if (_.isString(item)) {
-                        return item;
-                    } else if (_.isFunction(item)) {
-                        return item(data);
+                if (inverted) {
+                    if (!value) {
+                        result += inner.render(data);
                     }
-                }).join('');
+                } else {
+                    if (_.isArray(value)) {
+                        for (var i = 0; i < value.length; i++) {
+                            result += inner.render(value[i]);
+                        }
+                    } else if (value) {
+                        result += inner.render(data);
+                    }
+                }
+
+                return result + next.render(data);
+            },
+            afterBlock: next.afterBlock
+        };
+    };
+
+    /**
+     * @param {string} tag
+     * @param {string} afterTag
+     * @param {string} loopName
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
+    var parseClose = function(tag, afterTag, loopName) {
+        if (tag === loopName) {
+            return {
+                render: function(data) {
+                    return '';
+                },
+                afterBlock: afterTag
             };
+        } else {
+            throw new Error('unexpected closing loop: ' + tag);
         }
     };
 
+    /**
+     * @param {string} tag
+     * @param {string} afterTag
+     * @param {string} loopName
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
+    var parseComment = function(tag, afterTag, loopName) {
+        return parseTemplate(afterTag, loopName);
+    };
+
+    /**
+     * @param {string} template
+     * @param {string} loopName
+     * @return {{render: function(*): string, afterBlock: string}}
+     * @nosideeffects
+     */
     var parseTemplate = function(template, loopName) {
         var openIndex = template.indexOf(openTag);
         if (openIndex === -1) {
             if (loopName === undefined) {
-                return function() {
-                    return template;
+                return {
+                    render: function(data) {
+                        return template;
+                    },
+                    afterBlock: ''
                 };
             } else {
                 throw new Error('unclosed loop: ' + loopName);
@@ -171,44 +216,40 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             var beforeTag = template.slice(0, openIndex);
             var tmp = template.slice(openIndex);
 
-            var closeIndex = tmp.indexOf(closeTag) + 2;
-            if (closeIndex === 1) {
+            var closeIndex = tmp.indexOf(closeTag);
+            if (closeIndex === -1) {
                 throw new Error('unclosed tag: ' + tmp);
             }
-            var tag = tmp.slice(0, closeIndex);
-            var afterTag = tmp.slice(closeIndex);
+            var tag = tmp.slice(openTag.length, closeIndex);
+            var afterTag = tmp.slice(closeIndex + closeTag.length);
 
-            if (tag.lastIndexOf('{{#', 0) === 0) {
-                var v = parseLoopTemplate(tag, afterTag);
-                var loop = v[0];
-                var after = parseTemplate(v[1], loopName);
-                return concat([beforeTag, loop, after]);
-            } else if (tag.lastIndexOf('{{^', 0) === 0) {
-                var v = parseLoopTemplate(tag, afterTag, true);
-                var loop = v[0];
-                var after = parseTemplate(v[1], loopName);
-                return concat([beforeTag, loop, after]);
-            } else if (tag.lastIndexOf('{{!', 0) === 0) {
-                var after = parseTemplate(afterTag, loopName);
-                return concat([beforeTag, after]);
-            } else if (tag.lastIndexOf('{{/', 0) === 0) {
-                if (tag.slice(3, -2) === loopName) {
-                    var render = function() {
-                        return beforeTag;
-                    };
-                    return [render, afterTag];
-                } else {
-                    throw new Error('unexpected closing loop: ' + tag);
-                }
+            var next;
+            if (tag.lastIndexOf('#', 0) === 0) {
+                next = parseLoop(tag.substr(1), afterTag, loopName);
+            } else if (tag.lastIndexOf('^', 0) === 0) {
+                next = parseLoop(tag.substr(1), afterTag, loopName, true);
+            } else if (tag.lastIndexOf('!', 0) === 0) {
+                next = parseComment(tag.substr(1), afterTag, loopName);
+            } else if (tag.lastIndexOf('/', 0) === 0) {
+                next = parseClose(tag.substr(1), afterTag, loopName);
             } else {
-                var render = parseVariableTemplate(tag);
-                var after = parseTemplate(afterTag, loopName);
-                return concat([beforeTag, render, after]);
+                next = parseVariable(tag, afterTag, loopName);
             }
+
+            return {
+                render: function(data) {
+                    return beforeTag + next.render(data);
+                },
+                afterBlock: next.afterBlock
+            };
         }
     };
 
     return function(template, data) {
-        return parseTemplate(template)(data);
+        var parsed = parseTemplate(template);
+        if (parsed.afterBlock) {
+            throw new Error('non-empty afterBlock');
+        }
+        return parsed.render(data);
     };
 });
