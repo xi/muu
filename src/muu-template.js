@@ -58,7 +58,7 @@
  *
  * @module muu-template
  * @param {string} template
- * @param {object} data
+ * @param {Object} data
  * @return {string}
  */
 define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {

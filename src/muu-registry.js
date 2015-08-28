@@ -8,12 +8,12 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
 
     /**
      * @constructs Registry
-     * @param {object} config The config object may have following properties:
+     * @param {Object} config The config object may have following properties:
      *
      * - **debug** - `{boolean}` - Enable debug mode. In debug mode,
      *   directive objects are available as properties from the DOM as
      *   `element.directive`.
-     * - **renderer** - `{Function(string, object)}` - The template renderer
+     * - **renderer** - `{function(string, Object)}` - The template renderer
      *   to be used. Defaults to {@link module:muu-template}.
      */
     var Registry = function(config) {
@@ -28,9 +28,9 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
          *
          * @param {string} type
          * @param {string} template
-         * @param {Function(Directive, DOMElement): function} link The link
+         * @param {function(Directive, Element): Function} link The link
          *   function is called with an instance of {@link Directive} and a
-         *   DOMElement when {@link Registry#link} is executed.
+         *   Element when {@link Registry#link} is executed.
          *
          *   It is the only place where you can access a directive and
          *   therefore the place where you define its behavior.
@@ -70,7 +70,7 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
          * });
          * ```
          *
-         * @param {Function(Registry)}
+         * @param {function(Registry)} module
          * @return {Registry} this
          */
         this.registerModule = function(module) {
@@ -81,7 +81,7 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
         /**
          * Create and initialise a {@link Directive} for `element`.
          *
-         * @param {DOMElement} element
+         * @param {Element} element
          * @param {string} type
          * @return {Directive}
          */
@@ -116,8 +116,8 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
         /**
          * Link all directives that can be found inside `root`.
          *
-         * @param {DOMElement} root
-         * @return {Directive[]}
+         * @param {Element} root
+         * @return {Array.<Directive>}
          */
         this.linkAll = function(root) {
             // NOTE: root may be a DOM Node or a directive

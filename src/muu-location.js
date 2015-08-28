@@ -89,7 +89,7 @@ define('muu-location', ['muu-search'], function(q) {
     };
 
     /**
-     * @return {object}
+     * @return {Object}
      *//**
      * @param {string|object} value
      * @return {muu-location}
@@ -136,7 +136,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @param {string} eventName
-     * @param {function} fn
+     * @param {Function} fn
      * @return {muu-location}
      */
     loc.addEventListener = function(eventName, fn) {
@@ -148,7 +148,7 @@ define('muu-location', ['muu-search'], function(q) {
 
     /**
      * @param {string} eventName
-     * @param {function} fn
+     * @param {Function} fn
      * @return {muu-location}
      */
     loc.removeEventListener = function(eventName, fn) {

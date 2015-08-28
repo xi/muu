@@ -37,7 +37,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
      *
      * @param {string} type
      * @param {*} detail
-     * @return {DOMEvent}
+     * @return {Event}
      * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
      */
     $.createEvent = function(type, detail) {
@@ -53,10 +53,10 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement} element
+     * @param {EventTarget} element
      * @param {string} eventName
-     * @param {function} callback
-     * @return {Function()} An unregister function
+     * @param {Function} callback
+     * @return {function()} An unregister function
      */
     $.on = function(element, eventName, callback) {
         element.addEventListener(eventName, callback, false);
@@ -66,8 +66,8 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {function} fn
-     * @return {Function()} An unregister function
+     * @param {Function} fn
+     * @return {function()} An unregister function
      */
     $.ready = function(fn) {
         var _fn = _.once(fn);
@@ -85,8 +85,8 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMNode} desc
-     * @param {DOMNode} root
+     * @param {Node} desc
+     * @param {Node} root
      * @return {boolean}
      */
     $.isDescendant = function(desc, root) {
@@ -100,9 +100,9 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
      * element is removed but with a slight delay. So the only way to test this
      * is to use a timeout in the test.
      *
-     * @param {DOMElement} element
-     * @param {function} fn
-     * @return {Function()} An unregister function
+     * @param {Element} element
+     * @param {Function} fn
+     * @return {function()} An unregister function
      */
     $.destroy = function(element, fn) {
         var unregister;
@@ -141,8 +141,9 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement[]} options
+     * @param {Array.<Element>} options
      * @return {string}
+     * @suppress {missingReturn}
      */
     $.getRadio = function(options) {
         for (var i = 0; i < options.length; i++) {
@@ -153,7 +154,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
     };
 
     /**
-     * @param {DOMElement[]} options
+     * @param {Array.<Element>} options
      * @param {string} value
      */
     $.setRadio = function(options, value) {
