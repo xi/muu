@@ -153,7 +153,7 @@ define(['muu-search'], function(q) {
      */
     loc.removeEventListener = function(eventName, fn) {
         if (eventName === 'change') {
-            window.removeEventListener('popstate', fn);
+            window.removeEventListener('popstate', fn, false);
         }
         return loc;
     };
