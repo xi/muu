@@ -39,3 +39,15 @@ node_modules/closure-compiler-jar/compiler.jar:
 
 node_modules/jsdoc/jsdoc.js:
 	npm install jsdoc
+
+push-doc: doc
+	git stash
+	cp -r doc/muu doc-tmp
+	git checkout gh-pages
+	rm -r muu
+	mv doc-tmp muu
+	git add muu
+	git commit -am "update docs"
+	git push origin gh-pages
+	git checkout master
+	git stash pop
