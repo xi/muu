@@ -1,7 +1,7 @@
 requirejs.config({
-    baseUrl: '../../src/',
     paths: {
-        xhr: '../lib/promise-xhr/promise-xhr'
+        muu: '../../dist/muu.min',
+        xhr: '../../lib/promise-xhr/promise-xhr'
     }
 });
 

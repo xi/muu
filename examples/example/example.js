@@ -1,9 +1,9 @@
 requirejs.config({
-    baseUrl: '../../src/',
     paths: {
-        xhr: '../lib/promise-xhr/promise-xhr',
-        moment: '../lib/moment/moment',
-        'muu-moment': '../examples/example/muu-moment'
+        muu: '../../dist/muu.min',
+        xhr: '../../lib/promise-xhr/promise-xhr',
+        moment: '../../lib/moment/moment',
+        'muu-moment': './muu-moment'
     }
 });
 
