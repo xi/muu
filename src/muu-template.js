@@ -80,17 +80,12 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
 
     /**
      * @param {string} tag
-     * @param {string} afterTag
-     * @param {string} loopName
-     * @return {{render: function(*): string, afterBlock: string}}
+     * @return {function(*): string}
      * @nosideeffects
      */
-    var parseVariable = function(tag, afterTag, loopName) {
-        var next = parseTemplate(afterTag, loopName);
-        var render;
-
+    var parseVariable = function(tag) {
         if (tag.indexOf(':') === -1) {
-            render = function(data) {
+            return function(data) {
                 return $.escapeHtml(getValue(tag, data) || '');
             };
         } else {
@@ -101,41 +96,27 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
                 return [key, value];
             });
 
-            render = function(data) {
-                var results = [];
-
-                for (var i = 0; i < pairs.length; i++) {
-                    var key = pairs[i][0];
-                    var value = pairs[i][1];
-
-                    if (getValue(value, data)) {
-                        results.push(key);
-                    }
-                }
+            return function(data) {
+                var results = _.map(_.filter(pairs, function(pair) {
+                    return getValue(pair[1], data);
+                }), function(pair) {
+                    return pair[0];
+                });
 
                 return $.escapeHtml(results.join(' '));
             };
         }
-
-        return {
-            render: function(data) {
-                return render(data) + next.render(data, loopName);
-            },
-            afterBlock: next.afterBlock
-        };
     };
 
     /**
      * @param {string} tag
      * @param {string} afterTag
-     * @param {string} loopName
      * @param {boolean} [inverted]
      * @return {{render: function(*): string, afterBlock: string}}
      * @nosideeffects
      */
-    var parseLoop = function(tag, afterTag, loopName, inverted) {
+    var parseLoop = function(tag, afterTag, inverted) {
         var inner = parseTemplate(afterTag, tag);
-        var next = parseTemplate(inner.afterBlock, loopName);
 
         return {
             render: function(data) {
@@ -156,46 +137,15 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
                     }
                 }
 
-                return result + next.render(data);
+                return result;
             },
-            afterBlock: next.afterBlock
+            afterBlock: inner.afterBlock
         };
     };
 
     /**
-     * @param {string} tag
-     * @param {string} afterTag
-     * @param {string} loopName
-     * @return {{render: function(*): string, afterBlock: string}}
-     * @nosideeffects
-     */
-    var parseClose = function(tag, afterTag, loopName) {
-        if (tag === loopName) {
-            return {
-                render: function(data) {
-                    return '';
-                },
-                afterBlock: afterTag
-            };
-        } else {
-            throw new Error('unexpected closing loop: ' + tag);
-        }
-    };
-
-    /**
-     * @param {string} tag
-     * @param {string} afterTag
-     * @param {string} loopName
-     * @return {{render: function(*): string, afterBlock: string}}
-     * @nosideeffects
-     */
-    var parseComment = function(tag, afterTag, loopName) {
-        return parseTemplate(afterTag, loopName);
-    };
-
-    /**
      * @param {string} template
-     * @param {string} loopName
+     * @param {string} [loopName]
      * @return {{render: function(*): string, afterBlock: string}}
      * @nosideeffects
      */
@@ -204,9 +154,7 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
         if (openIndex === -1) {
             if (loopName === undefined) {
                 return {
-                    render: function(data) {
-                        return template;
-                    },
+                    render: function() { return template; },
                     afterBlock: ''
                 };
             } else {
@@ -223,33 +171,45 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
             var tag = tmp.slice(openTag.length, closeIndex);
             var afterTag = tmp.slice(closeIndex + closeTag.length);
 
-            var next;
+            var loadNext = true;
+            var current = {
+                render: function() { return ''; },
+                afterBlock: afterTag
+            };
+
             if (tag.lastIndexOf('#', 0) === 0) {
-                next = parseLoop(tag.substr(1), afterTag, loopName);
+                current = parseLoop(tag.substr(1), afterTag);
             } else if (tag.lastIndexOf('^', 0) === 0) {
-                next = parseLoop(tag.substr(1), afterTag, loopName, true);
-            } else if (tag.lastIndexOf('!', 0) === 0) {
-                next = parseComment(tag.substr(1), afterTag, loopName);
+                current = parseLoop(tag.substr(1), afterTag, true);
             } else if (tag.lastIndexOf('/', 0) === 0) {
-                next = parseClose(tag.substr(1), afterTag, loopName);
-            } else {
-                next = parseVariable(tag, afterTag, loopName);
+                loadNext = false;
+                if (tag.substr(1) !== loopName) {
+                    throw new Error('unexpected closing loop: ' + tag);
+                }
+            } else if (tag.lastIndexOf('!', 0) !== 0) {
+                current.render = parseVariable(tag);
             }
 
-            return {
-                render: function(data) {
-                    return beforeTag + next.render(data);
-                },
-                afterBlock: next.afterBlock
-            };
+            if (loadNext) {
+                var next = parseTemplate(current.afterBlock, loopName);
+                return {
+                    render: function(data) {
+                        return beforeTag + current.render(data) + next.render(data);
+                    },
+                    afterBlock: next.afterBlock
+                };
+            } else {
+                return {
+                    render: function(data) {
+                        return beforeTag + current.render(data);
+                    },
+                    afterBlock: current.afterBlock
+                };
+            }
         }
     };
 
     return function(template, data) {
-        var parsed = parseTemplate(template);
-        if (parsed.afterBlock) {
-            throw new Error('non-empty afterBlock');
-        }
-        return parsed.render(data);
+        return parseTemplate(template).render(data);
     };
 });
