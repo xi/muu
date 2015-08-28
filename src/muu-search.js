@@ -46,7 +46,7 @@ define('muu-search', ['muu-js-helpers'], function(_) {
             return q;
         }
 
-        var a = []
+        var a = [];
         for (var key in q) {
             if (q.hasOwnProperty(key)) {
                 a = a.concat(unparseItem(key, q[key]));
