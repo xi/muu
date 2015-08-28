@@ -12,7 +12,7 @@ Muu can be installed with bower:
 
     bower install xi/muu
 
-It can be used either a AMD module or global variable.
+It can be used either as AMD module or global variable.
 
 See [this
 tutorial](https://github.com/xi/muu/blob/master/.doc/tutorials/phonecat.md) for
