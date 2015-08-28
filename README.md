@@ -6,6 +6,30 @@ of angular may be added later on.
 
 For an introduction to the concepts, see the {@tutorial phonecat} tutorial.
 
+# Getting started
+
+Muu can be installed with bower:
+
+    bower install xi/muu
+
+It can be used either a AMD module or global variable.
+
+See [this
+tutorial](https://github.com/xi/muu/blob/master/.doc/tutorials/phonecat.md) for
+what you can do once muu is loaded.
+
+## custom builds
+
+Not all parts of muu are required. This repository contains a minimal build
+in `dist/muu-core.js`. It requires [lodash](https://lodash.com) and an external
+templating system, e.g. [mustache.js](https://github.com/janl/mustache.js):
+
+    var registry = new muu.Registry({
+        renderer: Mustache.render
+    });
+
+In addition, `muu.$location` is not available.
+
 # history
 
 I have worked a bit with [angular](https://angularjs.org/) and found it to be a
