@@ -85,10 +85,12 @@
                 root.innerHTML = '';
 
                 var eventCallback = function(originalEvent) {
+                    var element = originalEvent.currentTarget;
                     var attrName = 'data-on' + originalEvent.type;
-                    if (originalEvent.target.hasAttribute(attrName)) {
-                        var eventName = originalEvent.target.getAttribute(attrName);
-                        var event = $.createEvent('muu-' + eventName, originalEvent);
+                    if (element.hasAttribute(attrName)) {
+                        var eventName = element.getAttribute(attrName);
+                        var event = $.createEvent(
+                            'muu-' + eventName, undefined, undefined, originalEvent);
                         root.dispatchEvent(event);
                     }
                 };
@@ -190,9 +192,11 @@
                         var element = self.querySelector('[name=' + name + ']');
                         if (element === undefined) {
                             return _default;
-                        } else if (element.type === 'checkbox') {
+                        } else if (element.getAttribute('type') === 'number') {
+                            return parseFloat(element.value, 10);
+                        } else if (element.getAttribute('type') === 'checkbox') {
                             return element.checked;
-                        } else if (element.type === 'radio') {
+                        } else if (element.getAttribute('type') === 'radio') {
                             var options = self.querySelectorAll('[name=' + name + ']');
                             return $.getRadio(options) || _default;
                         } else {
@@ -212,9 +216,9 @@
                  */
                 this.setModel = function(name, value) {
                     var element = self.querySelector('[name=' + name + ']');
-                    if (element.type === 'checkbox') {
+                    if (element.getAttribute('type') === 'checkbox') {
                         element.checked = value;
-                    } else if (element.type === 'radio') {
+                    } else if (element.getAttribute('type') === 'radio') {
                         var options = self.querySelectorAll('[name=' + name + ']');
                         $.setRadio(options, value);
                     } else {
@@ -264,19 +268,23 @@
              * with this.
              *
              * @param {string} type
-             * @param {*} detail
+             * @param {boolean} [bubbles]
+             * @param {boolean} [cancelable]
+             * @param {*} [detail]
              * @return {Event}
              * @see https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
              * @nosideeffects
              */
-            $.createEvent = function(type, detail) {
+            $.createEvent = function(type, bubbles, cancelable, detail) {
                 if (typeof CustomEvent === 'function') {
                     return new CustomEvent(type, {
-                        detail: detail
+                        detail: detail,
+                        bubbles: bubbles,
+                        cancelable: cancelable
                     });
                 } else {
                     var event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(type, false, true, detail);
+                    event.initCustomEvent(type, bubbles, cancelable, detail);
                     return event;
                 }
             };
