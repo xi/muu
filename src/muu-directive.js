@@ -42,7 +42,8 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
             var attrName = 'data-on' + originalEvent.type;
             if (originalEvent.target.hasAttribute(attrName)) {
                 var eventName = originalEvent.target.getAttribute(attrName);
-                var event = $.createEvent('muu-' + eventName, originalEvent);
+                var event = $.createEvent(
+                    'muu-' + eventName, undefined, undefined, originalEvent);
                 root.dispatchEvent(event);
             }
         };

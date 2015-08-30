@@ -25,8 +25,20 @@ define(['muu-dom-helpers'], function($) {
                 expect(event.type).to.equal('foobar');
             });
             it('creates an event with specified details', function() {
-                var event = $.createEvent('foobar', 37);
+                var event = $.createEvent('foobar', undefined, undefined, 37);
                 expect(event.detail).to.equal(37);
+            });
+            it('creates an event with specified bubbles', function() {
+                var event1 = $.createEvent('foobar', true);
+                expect(event1.bubbles).to.be(true);
+                var event2 = $.createEvent('foobar', false);
+                expect(event2.bubbles).to.be(false);
+            });
+            it('creates an event with specified cancelable', function() {
+                var event1 = $.createEvent('foobar', undefined, true);
+                expect(event1.cancelable).to.be(true);
+                var event2 = $.createEvent('foobar', undefined, false);
+                expect(event2.cancelable).to.be(false);
             });
         });
 
