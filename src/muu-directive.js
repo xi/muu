@@ -39,9 +39,10 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
         root.innerHTML = '';
 
         var eventCallback = function(originalEvent) {
+            var element = originalEvent.currentTarget;
             var attrName = 'data-on' + originalEvent.type;
-            if (originalEvent.target.hasAttribute(attrName)) {
-                var eventName = originalEvent.target.getAttribute(attrName);
+            if (element.hasAttribute(attrName)) {
+                var eventName = element.getAttribute(attrName);
                 var event = $.createEvent(
                     'muu-' + eventName, undefined, undefined, originalEvent);
                 root.dispatchEvent(event);

@@ -47,6 +47,26 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                 button.dispatchEvent($.createEvent('click'));
                 expect(spy.callCount).to.equal(3);
             });
+            it('registers event aliases for non-target elements', function() {
+                var element = document.createElement('div');
+                var template = '<div data-onclick="test"><a href="#" class="button"></a></div>';
+                var directive = new Directive(element, template, registry);
+                directive.update({});
+
+                var button = element.querySelector('.button');
+                var spy = sinon.spy();
+                element.addEventListener('muu-test', spy, false);
+
+                document.body.appendChild(element);
+                expect(spy.callCount).to.equal(0);
+                button.dispatchEvent($.createEvent('click', true));
+                expect(spy.callCount).to.equal(1);
+                button.dispatchEvent($.createEvent('click', true));
+                expect(spy.callCount).to.equal(2);
+                button.dispatchEvent($.createEvent('click', true));
+                expect(spy.callCount).to.equal(3);
+                document.body.removeChild(element);
+            });
             it('initialises new child directives', function() {
                 var element = document.createElement('div');
                 var template = '';
