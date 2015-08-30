@@ -25,7 +25,7 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                 expect(registry.renderer.calledWith(template, data)).to.be(true);
                 expect(element.querySelector('.test').textContent).to.equal('foo bar');
 
-                var data = 5;
+                data = 5;
                 directive.update(data);
                 expect(registry.renderer.calledWith(template, data)).to.be(true);
             });
