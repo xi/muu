@@ -133,6 +133,7 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                 template += '<input name="test-empty" />';
                 template += '<input name="yes" type="checkbox" checked="checked" /><input name="no" type="checkbox" />';
                 template += '<input name="test-radio" type="radio" checked="checked" value="foo" /><input name="test-radio" type="radio" value="bar" />';
+                template += '<input name="test-number" type="number" value="1.5" />';
                 directive = new Directive(element, template, registry);
                 directive.update({});
             });
@@ -151,8 +152,11 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                 expect(directive.getModel('yes')).to.be(true);
                 expect(directive.getModel('no')).to.be(false);
             });
-            it('returns the selected value radioboxes', function() {
+            it('returns the selected value for radioboxes', function() {
                 expect(directive.getModel('test-radio')).to.equal('foo');
+            });
+            it('returns the selected value as number for number input', function() {
+                expect(directive.getModel('test-number')).to.equal(1.5);
             });
             it('returns all formdata as a flat object if no name is specified', function() {
                 expect(directive.getModel()).to.eql({
@@ -160,7 +164,8 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                     'test-empty': '',
                     yes: true,
                     no: false,
-                    'test-radio': 'foo'
+                    'test-radio': 'foo',
+                    'test-number': 1.5
                 });
             });
         });

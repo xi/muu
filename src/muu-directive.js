@@ -146,9 +146,11 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
                 var element = self.querySelector('[name=' + name + ']');
                 if (element === undefined) {
                     return _default;
-                } else if (element.type === 'checkbox') {
+                } else if (element.getAttribute('type') === 'number') {
+                    return parseFloat(element.value, 10);
+                } else if (element.getAttribute('type') === 'checkbox') {
                     return element.checked;
-                } else if (element.type === 'radio') {
+                } else if (element.getAttribute('type') === 'radio') {
                     var options = self.querySelectorAll('[name=' + name + ']');
                     return $.getRadio(options) || _default;
                 } else {
@@ -168,9 +170,9 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          */
         this.setModel = function(name, value) {
             var element = self.querySelector('[name=' + name + ']');
-            if (element.type === 'checkbox') {
+            if (element.getAttribute('type') === 'checkbox') {
                 element.checked = value;
-            } else if (element.type === 'radio') {
+            } else if (element.getAttribute('type') === 'radio') {
                 var options = self.querySelectorAll('[name=' + name + ']');
                 $.setRadio(options, value);
             } else {
