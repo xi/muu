@@ -129,9 +129,9 @@ define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
                     }
                 } else {
                     if (_.isArray(value)) {
-                        for (var i = 0; i < value.length; i++) {
-                            result += inner.render(value[i]);
-                        }
+                        _.forEach(value, function(item) {
+                            result += inner.render(item);
+                        });
                     } else if (value) {
                         result += inner.render(data);
                     }

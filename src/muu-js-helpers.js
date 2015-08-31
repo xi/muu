@@ -106,9 +106,9 @@ define('muu-js-helpers', [], function() {
         }
 
         var results = [];
-        for (var i = 0; i < array.length; i++) {
-            results.push(fn(array[i]));
-        }
+        _.forEach(array, function(item) {
+            results.push(fn(item));
+        });
         return results;
     };
 
@@ -124,11 +124,11 @@ define('muu-js-helpers', [], function() {
         }
 
         var results = [];
-        for (var i = 0; i < array.length; i++) {
-            if (fn(array[i])) {
-                results.push(array[i]);
+        _.forEach(array, function(item) {
+            if (fn(item)) {
+                results.push(item);
             }
-        }
+        });
         return results;
     };
 
@@ -139,13 +139,13 @@ define('muu-js-helpers', [], function() {
      */
     _.union = function(arrays) {
         var results = [];
-        for (var i = 0; i < arrays.length; i++) {
-            for (var j = 0; j < arrays[i].length; j++) {
-                if (_.indexOf(results, arrays[i][j]) === -1) {
-                    results.push(arrays[i][j]);
+        _.forEach(arrays, function(array) {
+            _.forEach(array, function(item) {
+                if (_.indexOf(results, item) === -1) {
+                    results.push(item);
                 }
-            }
-        }
+            });
+        });
         return results;
     };
 
