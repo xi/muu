@@ -1,3 +1,25 @@
+0.1.1 (2015-08-31)
+==================
+
+Breaking changes
+----------------
+
+-   `$.createEvent` has now a very similar signature to
+    [`initEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/initCustomEvent),
+    i.e. `detail` is now the fourth instead of second argument.
+
+Enhancements
+------------
+
+-   `getModel()` now returns a number if the input element has type `number`.
+
+Bugfixes
+--------
+
+-   Event aliases previously only worked if the element where the alias is
+    defined is the target of that event.
+
+
 0.1.0 (2015-08-28)
 ==================
 
