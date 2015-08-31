@@ -397,13 +397,13 @@
              * @param {string} value
              */
             $.setRadio = function(options, value) {
-                for (var i = 0; i < options.length; i++) {
-                    if (options[i].value === value) {
-                        options[i].checked = true;
+                _.forEach(options, function(option) {
+                    if (option.value === value) {
+                        option.checked = true;
                     } else {
-                        options[i].checked = false;
+                        option.checked = false;
                     }
-                }
+                });
             };
 
             return $;

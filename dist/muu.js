@@ -397,13 +397,13 @@
              * @param {string} value
              */
             $.setRadio = function(options, value) {
-                for (var i = 0; i < options.length; i++) {
-                    if (options[i].value === value) {
-                        options[i].checked = true;
+                _.forEach(options, function(option) {
+                    if (option.value === value) {
+                        option.checked = true;
                     } else {
-                        options[i].checked = false;
+                        option.checked = false;
                     }
-                }
+                });
             };
 
             return $;
@@ -482,7 +482,8 @@
                     return array.indexOf(value);
                 }
 
-                for (var i = 0; i < array.length; i++) {
+                var l = array.length;
+                for (var i = 0; i < l; i++) {
                     if (array[i] === value) {
                         return i;
                     }
@@ -491,16 +492,18 @@
             };
 
             /**
-             * @param {Array} array
-             * @param {Function} fn
+             * @template T
+             * @param {Array.<T>} array
+             * @param {function(T, number, Array.<T>)} fn
              */
             _.forEach = function(array, fn) {
                 if ('forEach' in array) {
                     return array.forEach(fn);
                 }
 
-                for (var i = 0; i < array.length; i++) {
-                    fn(array[i]);
+                var l = array.length;
+                for (var i = 0; i < l; i++) {
+                    fn(array[i], i, array);
                 }
             };
 
@@ -516,9 +519,9 @@
                 }
 
                 var results = [];
-                for (var i = 0; i < array.length; i++) {
-                    results.push(fn(array[i]));
-                }
+                _.forEach(array, function(item) {
+                    results.push(fn(item));
+                });
                 return results;
             };
 
@@ -534,11 +537,11 @@
                 }
 
                 var results = [];
-                for (var i = 0; i < array.length; i++) {
-                    if (fn(array[i])) {
-                        results.push(array[i]);
+                _.forEach(array, function(item) {
+                    if (fn(item)) {
+                        results.push(item);
                     }
-                }
+                });
                 return results;
             };
 
@@ -549,13 +552,13 @@
              */
             _.union = function(arrays) {
                 var results = [];
-                for (var i = 0; i < arrays.length; i++) {
-                    for (var j = 0; j < arrays[i].length; j++) {
-                        if (_.indexOf(results, arrays[i][j]) === -1) {
-                            results.push(arrays[i][j]);
+                _.forEach(arrays, function(array) {
+                    _.forEach(array, function(item) {
+                        if (_.indexOf(results, item) === -1) {
+                            results.push(item);
                         }
-                    }
-                }
+                    });
+                });
                 return results;
             };
 
@@ -1092,9 +1095,9 @@
                             }
                         } else {
                             if (_.isArray(value)) {
-                                for (var i = 0; i < value.length; i++) {
-                                    result += inner.render(value[i]);
-                                }
+                                _.forEach(value, function(item) {
+                                    result += inner.render(item);
+                                });
                             } else if (value) {
                                 result += inner.render(data);
                             }
