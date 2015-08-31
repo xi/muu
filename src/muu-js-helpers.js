@@ -72,7 +72,8 @@ define('muu-js-helpers', [], function() {
             return array.indexOf(value);
         }
 
-        for (var i = 0; i < array.length; i++) {
+        var l = array.length;
+        for (var i = 0; i < l; i++) {
             if (array[i] === value) {
                 return i;
             }
@@ -89,7 +90,8 @@ define('muu-js-helpers', [], function() {
             return array.forEach(fn);
         }
 
-        for (var i = 0; i < array.length; i++) {
+        var l = array.length;
+        for (var i = 0; i < l; i++) {
             fn(array[i]);
         }
     };
