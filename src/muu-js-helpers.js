@@ -82,8 +82,9 @@ define('muu-js-helpers', [], function() {
     };
 
     /**
-     * @param {Array} array
-     * @param {Function} fn
+     * @template T
+     * @param {Array.<T>} array
+     * @param {function(T, number, Array.<T>)} fn
      */
     _.forEach = function(array, fn) {
         if ('forEach' in array) {
@@ -92,7 +93,7 @@ define('muu-js-helpers', [], function() {
 
         var l = array.length;
         for (var i = 0; i < l; i++) {
-            fn(array[i]);
+            fn(array[i], i, array);
         }
     };
 
