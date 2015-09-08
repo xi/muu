@@ -121,6 +121,17 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
         };
 
         /**
+         * @param {string} eventName
+         * @param {Function} callback
+         * @return {function()} An unregister function
+         */
+        this.on = function(eventName, fn) {
+            return $.on(root, 'muu-' + eventName, function(event) {
+                return fn(event.detail);
+            });
+        };
+
+        /**
          * Get all model data as a flat object.
          *
          * @return {Object.<string, string|number|boolean>}
