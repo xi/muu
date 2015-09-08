@@ -1,5 +1,5 @@
 /**
- * Recreate children of `source` in `target` by making only small adjustments.
+ * Recreate `html` in `target` by making only small adjustments.
  *
  * *The following section explains details about the current implementation.
  * These are likely to change in the future.*
@@ -20,8 +20,8 @@
  * All classes prefixed with `muu-` will be preserved.
  *
  * @module muu-update-dom
- * @param {Element} target
- * @param {Element} source
+ * @param {Node} target
+ * @param {string} html
  */
 define('muu-update-dom', ['muu-js-helpers'], function(_) {
     "use strict";
@@ -84,5 +84,10 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
         }
     };
 
-    return updateDOM;
+    return function(target, html) {
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+
+        updateDOM(target, tmp);
+    }
 });

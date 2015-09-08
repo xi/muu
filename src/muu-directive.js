@@ -57,10 +57,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @see The templating system can be defined in the {@link Registry}.
          */
         this.update = function(data) {
-            var tmp = document.createElement('div');
-            tmp.innerHTML = registry.renderer(template, data);
-
-            updateDOM(root, tmp);
+            updateDOM(root, registry.renderer(template, data));
 
             _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';
