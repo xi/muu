@@ -3,7 +3,7 @@
  * @module muu-directive
  * @ignore
  */
-define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
+define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
     "use strict";
 
     /**
@@ -57,7 +57,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @see The templating system can be defined in the {@link Registry}.
          */
         this.update = function(data) {
-            updateDOM(root, registry.renderer(template, data));
+            registry.updateDOM(root, registry.renderer(template, data));
 
             _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                 var selector = '[data-on' + eventType + ']';

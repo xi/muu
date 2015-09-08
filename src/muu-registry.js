@@ -3,7 +3,7 @@
  * @module muu-registry
  * @ignore
  */
-define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, Directive, _, $) {
+define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
     "use strict";
 
     /**
@@ -15,6 +15,8 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
      *   `element.directive`.
      * - **renderer** - `{function(string, Object): string}` - The template
      *   renderer to be used. Defaults to {@link module:muu-template}.
+     * - **updateDOM** - `{function(Node, string)}` - The DOM updater to be
+     *   used. Defaults to {@link module:muu-update-dom}.
      */
     var Registry = function(config) {
         var self = this;
@@ -22,6 +24,7 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
 
         this.config = config || {};
         this.renderer = self.config.renderer || muuTemplate;
+        this.updateDOM = self.config.updateDOM || muuUpdateDOM
 
         /**
          * Register a new type of {@link Directive}

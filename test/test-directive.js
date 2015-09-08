@@ -1,5 +1,5 @@
 /* global define, describe, it, expect, beforeEach, sinon */
-define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directive, _, $) {
+define(['muu-directive', 'muu-update-dom', 'muu-js-helpers', 'muu-dom-helpers'], function(Directive, updateDOM, _, $) {
     "use strict";
 
     describe('muuDirective', function() {
@@ -10,7 +10,8 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
                 linkAll: sinon.spy(),
                 renderer: sinon.spy(function(template) {
                     return template;
-                })
+                }),
+                updateDOM: updateDOM
             };
         });
 
