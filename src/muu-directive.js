@@ -70,7 +70,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
             });
 
             var updateEvent = $.createEvent('muu-parent-update');
-            var subDirectives = this.querySelectorAll('muu.muu-initialised');
+            var subDirectives = self.querySelectorAll('muu.muu-initialised');
             _.forEach(subDirectives, function(element) {
                 element.dispatchEvent(updateEvent);
             });
