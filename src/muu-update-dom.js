@@ -6,16 +6,18 @@
  *
  * The algorithms is relatively simple. It just iterates through all top level
  * nodes. If a node has a different `nodeType` (e.g. text or element) or a
- * different `nodeName` (e.g. div or ul) it is replaced completely and the
- * algorithm proceeds with the node's children recursively.  Otherwise, only
- * the nodes's attributes are updated.
+ * different `nodeName` (e.g. div or ul) it is replaced completely. Otherwise,
+ * only the nodes's attributes are updated and the algorithm proceeds with the
+ * node's children recursively.
  *
- * Note that non-attribute properties (e.g. value) are lost in the first case
+ * Note that non-attribute properties (e.g. `value`) are lost in the first case
  * and preserved in the second.
  *
  * If the algorithm encounters an element with the class `muu-isolate` it does
  * not recurse into its children. This way, you can protect dynamically
  * generated content from being overwritten.
+ *
+ * All classes prefixed with `muu-` will be preserved.
  *
  * @module muu-update-dom
  * @param {Element} target
