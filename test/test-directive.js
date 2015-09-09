@@ -124,6 +124,73 @@ define(['muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(Directiv
             });
         });
 
+        describe('on', function() {
+            var directive;
+            var button;
+
+            beforeEach(function() {
+                var element = document.createElement('div');
+                var template = '<a class="button" data-onclick="test"></a>';
+                directive = new Directive(element, template, registry);
+                directive.update({});
+                button = element.querySelector('.button');
+            });
+
+            it('registers an event listener for an event alias', function() {
+                var spy = sinon.spy();
+                directive.on('test', spy);
+
+                expect(spy.callCount).to.equal(0);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(1);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(2);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(3);
+            });
+            it('calls callback with original event', function() {
+                var spy = sinon.spy();
+                directive.on('test', spy);
+
+                button.dispatchEvent($.createEvent('click', undefined, undefined, 'asd'));
+                expect(spy.firstCall.args[0].detail).to.equal('asd');
+            });
+            it('can register more than one event listener', function() {
+                var spy1 = sinon.spy();
+                directive.on('test', spy1);
+
+                expect(spy1.callCount).to.equal(0);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy1.callCount).to.equal(1);
+
+                var spy2 = sinon.spy();
+                directive.on('test', spy2);
+
+                expect(spy2.callCount).to.equal(0);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy1.callCount).to.equal(2);
+                expect(spy2.callCount).to.equal(1);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy1.callCount).to.equal(3);
+                expect(spy2.callCount).to.equal(2);
+            });
+            it('returns an unregister function', function() {
+                var spy = sinon.spy();
+                var unregister = directive.on('test', spy);
+
+                expect(spy.callCount).to.equal(0);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(1);
+
+                unregister();
+
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(1);
+                button.dispatchEvent($.createEvent('click'));
+                expect(spy.callCount).to.equal(1);
+            });
+        });
+
         describe('getModel', function() {
             var directive;
 

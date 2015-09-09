@@ -16,14 +16,14 @@ require(['xhr', 'muu', 'muu-moment'], function(xhr, muu, muuMoment) {
             'test',
             '<ul>{{#elements}}<li>{{name}}</li><muu type="moment"></muu>{{/elements}}</ul>' +
                 '<input name="input" data-onkeydown="push" />',
-            function(self, element) {
+            function(self) {
                 var data = {
                     elements: [{
                         name: 'hugo'
                     }]
                 };
 
-                element.addEventListener('muu-push', function(event) {
+                self.on('push', function(event) {
                     if (event.detail.keyCode === 13) {
                         data.elements.push({
                             name: self.getModel('input') || ''
@@ -31,7 +31,7 @@ require(['xhr', 'muu', 'muu-moment'], function(xhr, muu, muuMoment) {
                         self.update(data);
                         self.setModel('input', '');
                     }
-                }, false);
+                });
 
                 self.update(data);
             })
@@ -43,13 +43,13 @@ require(['xhr', 'muu', 'muu-moment'], function(xhr, muu, muuMoment) {
                     name: element.getAttribute('data-name')
                 };
 
-                element.addEventListener('muu-update', function(event) {
+                self.on('update', function(event) {
                     if (event.detail.keyCode === 13) {
                         var input = self.getModel('input');
                         data.result = eval(input);
                         self.update(data);
                     }
-                }, false);
+                });
 
                 self.update(data);
             });

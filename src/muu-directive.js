@@ -22,8 +22,8 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
      * - You can react to DOM events by specifying an alias for them. In the
      *   template, you might for example add the attribute
      *   `data-onclick="custom"` to an element. When there is `click` event on
-     *   that element, a `muu-custom` event will be triggered on the
-     *   directive's root element.
+     *   that element, a `custom` event will be triggered on the directive. See
+     *   {@link Directive#on}.
      *
      * Directives are typically not created directly but via {@link
      * Registry#link}.
@@ -118,6 +118,17 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
             if (all.length > 0) {
                 return all[0];
             }
+        };
+
+        /**
+         * @param {string} eventName
+         * @param {Function} callback
+         * @return {function()} An unregister function
+         */
+        this.on = function(eventName, fn) {
+            return $.on(root, 'muu-' + eventName, function(event) {
+                return fn(event.detail);
+            });
         };
 
         /**
