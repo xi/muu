@@ -180,6 +180,10 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
          * @param {string|number|boolean} value
          */
         this.setModel = function(name, value) {
+            if (self.getModel(name) === value) {
+                return;
+            }
+
             var element = self.querySelector('[name=' + name + ']');
             if (element.getAttribute('type') === 'checkbox') {
                 element.checked = value;
