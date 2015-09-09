@@ -61,7 +61,7 @@ We can start off with this simple template:
         {"age": 3, "name": "Nexus S", "snippet": "Fast just got faster with ..."}
     ];
 
-    registry.registerDirective('phonecat', template, function(self, element) {
+    registry.registerDirective('phonecat', template, function(self) {
         self.update({
             phones: phones
         });
@@ -81,11 +81,10 @@ create a button like this:
     <a href="#" class="button" data-onclick="reverse"></a>
 
 Any `click` event that is now triggered on this element will be forwarded to
-the *directive element* as a `muu-reverse` event. So in your link function you
-can do something like this:
+the directive. So in your link function you can do something like this:
 
-    registry.registerDirective('phonecat', template, function(self, element) {
-        element.addEventListener('muu-reverse', function() {
+    registry.registerDirective('phonecat', template, function(self) {
+        self.on('reverse', function() {
             self.update({
                 phones: phones.reverse()
             });
@@ -107,8 +106,8 @@ form inputs. So lets first add a search input to the template:
 Next, we can register a handler for the new `muu-filter` event in the link
 function:
 
-    registry.registerDirective('phonecat', template, function(self, element) {
-        element.addEventListener('muu-filter', function() {
+    registry.registerDirective('phonecat', template, function(self) {
+        self.on('filter', function() {
             var query = self.getModel('query', '');
             self.update({
                 phones: phones.filter(function(phone) {
@@ -139,8 +138,8 @@ own directive.
             '{{/phones}}' +
         '</ul>' +
         '<input type="search" name="query" data-onsearch="filter" />';
-    registry.registerDirective('phonecat', listTemplate, function(self, element) {
-        element.addEventListener('muu-filter', function() {
+    registry.registerDirective('phonecat', listTemplate, function(self) {
+        self.on('filter', function() {
             var query = self.getModel('query', '');
             self.update({
                 phones: phones.filter(function(phone) {
@@ -185,7 +184,7 @@ to the directive. This can easily be done by returning a *unlink* function from
 your link function:
 
     var template = 'This is a great joke {{#showit}}NOT{{/showit}}';
-    registry.registerDirective('joke', template, function(self, element) {
+    registry.registerDirective('joke', template, function(self) {
         var timeoutID = setTimeout(function() {
             self.update({
                 showit: true

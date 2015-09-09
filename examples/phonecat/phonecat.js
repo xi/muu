@@ -16,8 +16,8 @@ require(['xhr', 'muu'], function(xhr, muu) {
         var phones = args[1];
 
         var registry = new muu.Registry()
-            .registerDirective('phonecat', template, function(self, element) {
-                element.addEventListener('muu-filter', function() {
+            .registerDirective('phonecat', template, function(self) {
+                self.on('filter', function() {
                     var query = self.getModel('query', '').toLowerCase();
                     var orderProp = self.getModel('orderProp');
 
@@ -30,7 +30,7 @@ require(['xhr', 'muu'], function(xhr, muu) {
                                 return a[orderProp] > b[orderProp];
                             })
                     });
-                }, false);
+                });
 
                 self.update({phones: phones});
                 self.setModel('query', '');
