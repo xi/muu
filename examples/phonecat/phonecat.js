@@ -27,7 +27,7 @@ require(['xhr', 'muu'], function(xhr, muu) {
                                 return phone.name.toLowerCase().match(query);
                             })
                             .sort(function(a, b) {
-                                return a[orderProp] > b[orderProp];
+                                return a[orderProp] > b[orderProp] ? 1 : -1;
                             })
                     });
                 });
