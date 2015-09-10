@@ -53,6 +53,12 @@ define(['muu-update-dom'], function(updateDOM) {
             updateDOM(target, source);
             expect(n(target.innerHTML)).to.equal('<div>1</div> <div>2</div>');
         });
+        it('can replace more than one element in the same parent', function() {
+            source.innerHTML = '<div>1</div> <div>2</div>';
+            target.innerHTML = '<span>1</span> <span>2</span>';
+            updateDOM(target, source);
+            expect(n(target.innerHTML)).to.equal('<div>1</div> <div>2</div>');
+        });
         it('can replace and remove elements in the same parent', function() {
             source.innerHTML = '<div>1</div>';
             target.innerHTML = '<span>1</span> <div>2</div>';

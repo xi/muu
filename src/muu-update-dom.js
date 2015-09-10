@@ -50,6 +50,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
     var updateDOM = function(target, source) {
         var nt = target.childNodes.length;
         var ns = source.childNodes.length;
+        var offset = 0;
 
         for (var i = ns; i < nt; i++) {
             target.removeChild(target.childNodes[ns]);
@@ -59,7 +60,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
         }
         for (i = 0; i < nt && i < ns; i++) {
             var tchild = target.childNodes[i];
-            var schild = source.childNodes[i];
+            var schild = source.childNodes[i - offset];
 
             if (tchild.nodeType === schild.nodeType && tchild.nodeName === schild.nodeName && tchild.type === schild.type) {
                 if (tchild.nodeType === 1) {
@@ -78,6 +79,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
                 }
             } else {
                 tchild.parentNode.replaceChild(schild, tchild);
+                offset += 1;
             }
         }
     };
