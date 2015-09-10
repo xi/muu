@@ -161,18 +161,16 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
 
         // insert
         forOwn(stree, function(spos, s) {
+            var parent = getSource(s.parent);
             if (!s.target) {
-                s.node.innerHTML = '';
-                if (s.parent === '0') {
-                    target.appendChild(s.node);
-                } else {
-                    // FIXME: is it guaranteed that parent is not undefined?
-                    // yes if stree is iterated alphanumerically
-                    var parent = getSource(s.parent).target;
-                    parent.node.appendChild(s.node);
+                if (!parent.inserted) {
+                    parent.target.node.appendChild(s.node);
                 }
                 s.target = s;
+                s.inserted = true;
                 s.node.__index = s.index;
+            } else if (parent.inserted) {
+                s.node.parentNode.removeChild(s.node);
             }
         });
 
