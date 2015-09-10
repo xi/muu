@@ -103,7 +103,7 @@ define(['muu-update-dom'], function(updateDOM) {
             source.innerHTML = '<div class="muu-isolate"><span>huhu</span></div>';
             target.innerHTML = '<div class="muu-isolate"><div>haha</div></div>';
             updateDOM(target, source);
-            expect(n(target.innerHTML)).to.be('<div class="muu-isolate"><div>haha</div></div>');
+            expect(n(target.innerHTML)).to.contain('<div>haha</div>');
         });
         it('does change attributes of .muu-isolate', function() {
             source.innerHTML = '<div class="muu-isolate" data-name="foo"></div>';
