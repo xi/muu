@@ -26,6 +26,17 @@
 define('muu-update-dom', ['muu-js-helpers'], function(_) {
     "use strict";
 
+    var forOwn = function(obj, fn) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var result = fn(key, obj[key]);
+                if (result === false) {
+                    break;
+                }
+            }
+        }
+    };
+
     var updateAttributes = function(target, source) {
         var muuClasses = _.filter(target.classList, function(cls) {
             return cls.lastIndexOf('muu-', 0) === 0;
@@ -53,35 +64,139 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
         });
     };
 
-    var updateDOM = function(target, source) {
-        var nt = target.childNodes.length;
-        var ns = source.childNodes.length;
-        var offset = 0;
+    var equivalent = function(a, b) {
+        return a.nodeType === b.nodeType
+            && a.nodeName === b.nodeName
+            && a.type === b.type
+            && a.id === b.id
+            && a.name === b.name;
+    };
 
-        for (var i = ns; i < nt; i++) {
-            target.removeChild(target.childNodes[ns]);
-        }
-        for (i = nt; i < ns; i++) {
-            target.appendChild(source.childNodes[nt]);
-        }
-        for (i = 0; i < nt && i < ns; i++) {
-            var tchild = target.childNodes[i];
-            var schild = source.childNodes[i - offset];
+    var buildTree = function(node, tree, position) {
+        position = position || '0';
+        tree = tree || {};
 
-            if (tchild.nodeType === schild.nodeType && tchild.nodeName === schild.nodeName && tchild.type === schild.type) {
-                if (tchild.nodeType === 1) {
-                    updateAttributes(tchild, schild);
-                } else if (tchild.nodeType === 3) {
-                    tchild.nodeValue = schild.nodeValue;
+        _.forEach(node.childNodes, function(child, i) {
+            var p = position + '.' + i;
+            tree[p] = {
+                node: child,
+                parent: position,
+                index: i
+            };
+            if (child.nodeType !== 3 && !child.classList.contains('muu-isolate')) {
+                buildTree(child, tree, p);
+            }
+        });
+
+        return tree;
+    };
+
+    var match = function(ttree, stree) {
+        forOwn(stree, function(spos, s) {
+            forOwn(ttree, function(tpos, t) {
+                if (!t.source && equivalent(t.node, s.node)) {
+                    t.source = s;
+                    s.target = t;
+                    t.node.__index = s.index;
+                    return false;
                 }
-                if (tchild.nodeType !== 3 && !tchild.classList.contains('muu-isolate')) {
-                    updateDOM(tchild, schild);
+            });
+        });
+    };
+
+    var sortDOM = function(parent) {
+        var getPosition = function(index) {
+            for (var i = 0; i < parent.childNodes.length; i++) {
+                var child = parent.childNodes[i];
+                if (child.__index > index) {
+                    return i;
                 }
+            }
+        };
+
+        var max = -1;
+        for (var i = 0; i < parent.childNodes.length; i++) {
+            var child = parent.childNodes[i];
+            if (child.__index < max) {
+                var j = getPosition(child.__index)
+                parent.insertBefore(child, parent.childNodes[j]);
             } else {
-                tchild.parentNode.replaceChild(schild, tchild);
-                offset += 1;
+                max = child.__index;
             }
         }
+
+        _.forEach(parent.childNodes, function(child) {
+            delete child.__index;
+        });
+    };
+
+    var updateDOM = function(target, source) {
+        var ttree = buildTree(target);
+        var stree = buildTree(source);
+        match(ttree, stree);
+
+        var s0 = {
+            node: source
+        };
+        var t0 = {
+            node: target
+        };
+        s0.target = t0;
+        t0.source = s0;
+
+        var getSource = function(spos) {
+            return spos === '0' ? s0 : stree[spos];
+        };
+
+        var getTarget = function(tpos) {
+            return tpos === '0' ? t0 : ttree[tpos];
+        };
+
+        // delete
+        forOwn(ttree, function(tpos, t) {
+            if (!t.source) {
+                t.node.parentNode.removeChild(t.node);
+            }
+        });
+
+        // insert
+        forOwn(stree, function(spos, s) {
+            if (!s.target) {
+                s.node.innerHTML = '';
+                if (s.parent === '0') {
+                    target.appendChild(s.node);
+                } else {
+                    // FIXME: is it guaranteed that parent is not undefined?
+                    // yes if stree is iterated alphanumerically
+                    var parent = getSource(s.parent).target;
+                    parent.node.appendChild(s.node);
+                }
+                s.target = s;
+                s.node.__index = s.index;
+            }
+        });
+
+        // move
+        forOwn(ttree, function(tpos, t) {
+            if (t.source) {
+                if (getTarget(t.parent).source !== getSource(t.source.parent)) {
+                    var parent = getSource(t.source.parent).target;
+                    parent.node.appendChild(t.node);
+                }
+
+                if (t.node.nodeType === 1) {
+                    updateAttributes(t.node, t.source.node);
+                } else if (t.node.nodeType === 3) {
+                    t.node.nodeValue = t.source.node.nodeValue;
+                }
+            }
+        });
+
+        // sort
+        sortDOM(target);
+        forOwn(stree, function(spos, s) {
+            sortDOM(s.target.node);
+        });
     };
 
     return function(target, html) {
