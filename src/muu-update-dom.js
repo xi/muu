@@ -26,15 +26,10 @@
 define('muu-update-dom', ['muu-js-helpers'], function(_) {
     "use strict";
 
-    var forOwn = function(obj, fn) {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                var result = fn(key, obj[key]);
-                if (result === false) {
-                    break;
-                }
-            }
-        }
+    var forOwn = function(tree, fn) {
+        _.forEach(tree.keys, function(pos) {
+            fn(pos, tree[pos]);
+        });
     };
 
     var updateAttributes = function(target, source) {
@@ -74,7 +69,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
 
     var buildTree = function(node, tree, position) {
         position = position || '0';
-        tree = tree || {};
+        tree = tree || {keys: []};
 
         _.forEach(node.childNodes, function(child, i) {
             var p = position + '.' + i;
@@ -83,6 +78,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
                 parent: position,
                 index: i
             };
+            tree.keys.push(p);
             if (child.nodeType !== 3 && !child.classList.contains('muu-isolate')) {
                 buildTree(child, tree, p);
             }
@@ -92,15 +88,19 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
     };
 
     var match = function(ttree, stree) {
+        var ttreeKeysClone = ttree.keys.concat();
         forOwn(stree, function(spos, s) {
-            forOwn(ttree, function(tpos, t) {
-                if (!t.source && equivalent(t.node, s.node)) {
+            var l = ttreeKeysClone.length;
+            for (var i = 0; i < l; i++) {
+                var t = ttree[ttreeKeysClone[i]];
+                if (equivalent(t.node, s.node)) {
                     t.source = s;
                     s.target = t;
                     t.node.__index = s.index;
-                    return false;
+                    ttreeKeysClone.splice(i, 1);
+                    break;
                 }
-            });
+            }
         });
     };
 
