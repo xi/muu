@@ -99,5 +99,17 @@ define(['muu-update-dom'], function(updateDOM) {
             expect(n(target.innerHTML)).to.contain('class="test"');
             expect(target.querySelector('input').checked).to.be.ok();
         });
+        it('does not change children of .muu-isolate', function() {
+            source.innerHTML = '<div class="muu-isolate"><span>huhu</span></div>';
+            target.innerHTML = '<div class="muu-isolate"><div>haha</div></div>';
+            updateDOM(target, source);
+            expect(n(target.innerHTML)).to.be('<div class="muu-isolate"><div>haha</div></div>');
+        });
+        it('does change attributes of .muu-isolate', function() {
+            source.innerHTML = '<div class="muu-isolate" data-name="foo"></div>';
+            target.innerHTML = '<div class="muu-isolate" data-name="bar"></div>';
+            updateDOM(target, source);
+            expect(n(target.innerHTML)).to.be('<div class="muu-isolate" data-name="foo"></div>');
+        });
     });
 });
