@@ -13,8 +13,8 @@ define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-
      * - **debug** - `{boolean}` - Enable debug mode. In debug mode,
      *   directive objects are available as properties from the DOM as
      *   `element.directive`.
-     * - **renderer** - `{function(string, Object)}` - The template renderer
-     *   to be used. Defaults to {@link module:muu-template}.
+     * - **renderer** - `{function(string, Object): string}` - The template
+     *   renderer to be used. Defaults to {@link module:muu-template}.
      */
     var Registry = function(config) {
         var self = this;
