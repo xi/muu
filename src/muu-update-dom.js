@@ -27,6 +27,9 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
     "use strict";
 
     var updateAttributes = function(target, source) {
+        var muuClasses = _.filter(target.classList, function(cls) {
+            return cls.lastIndexOf('muu-', 0) === 0;
+        });
         var targetAttrNames = _.map(target.attributes, function(item) {
             return item.name;
         });
@@ -44,6 +47,9 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
             if (target.getAttribute(name) !== source.getAttribute(name)) {
                 target.setAttribute(name, source.getAttribute(name));
             }
+        });
+        _.forEach(muuClasses, function(cls) {
+            target.classList.add(cls);
         });
     };
 
@@ -64,13 +70,7 @@ define('muu-update-dom', ['muu-js-helpers'], function(_) {
 
             if (tchild.nodeType === schild.nodeType && tchild.nodeName === schild.nodeName && tchild.type === schild.type) {
                 if (tchild.nodeType === 1) {
-                    var muuClasses = _.filter(tchild.classList, function(cls) {
-                        return cls.lastIndexOf('muu-', 0) === 0;
-                    });
                     updateAttributes(tchild, schild);
-                    _.forEach(muuClasses, function(cls) {
-                        tchild.classList.add(cls);
-                    });
                 } else if (tchild.nodeType === 3) {
                     tchild.nodeValue = schild.nodeValue;
                 }
