@@ -155,7 +155,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'],
                 if (element === undefined) {
                     return _default;
                 } else if (element.getAttribute('type') === 'number') {
-                    return parseFloat(element.value, 10);
+                    return parseFloat(element.value);
                 } else if (element.getAttribute('type') === 'checkbox') {
                     return element.checked;
                 } else if (element.getAttribute('type') === 'radio') {
