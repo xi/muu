@@ -68,8 +68,8 @@
              * - You can react to DOM events by specifying an alias for them. In the
              *   template, you might for example add the attribute
              *   `data-onclick="custom"` to an element. When there is `click` event on
-             *   that element, a `muu-custom` event will be triggered on the
-             *   directive's root element.
+             *   that element, a `custom` event will be triggered on the directive. See
+             *   {@link Directive#on}.
              *
              * Directives are typically not created directly but via {@link
              * Registry#link}.
@@ -103,10 +103,7 @@
                  * @see The templating system can be defined in the {@link Registry}.
                  */
                 this.update = function(data) {
-                    var tmp = document.createElement('div');
-                    tmp.innerHTML = registry.renderer(template, data);
-
-                    updateDOM(root, tmp);
+                    updateDOM(root, registry.renderer(template, data));
 
                     _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
                         var selector = '[data-on' + eventType + ']';
@@ -116,7 +113,7 @@
                     });
 
                     var updateEvent = $.createEvent('muu-parent-update');
-                    var subDirectives = this.querySelectorAll('muu.muu-initialised');
+                    var subDirectives = self.querySelectorAll('muu.muu-initialised');
                     _.forEach(subDirectives, function(element) {
                         element.dispatchEvent(updateEvent);
                     });
@@ -167,6 +164,17 @@
                 };
 
                 /**
+                 * @param {string} eventName
+                 * @param {Function} callback
+                 * @return {function()} An unregister function
+                 */
+                this.on = function(eventName, fn) {
+                    return $.on(root, 'muu-' + eventName, function(event) {
+                        return fn(event.detail);
+                    });
+                };
+
+                /**
                  * Get all model data as a flat object.
                  *
                  * @return {Object.<string, string|number|boolean>}
@@ -193,7 +201,7 @@
                         if (element === undefined) {
                             return _default;
                         } else if (element.getAttribute('type') === 'number') {
-                            return parseFloat(element.value, 10);
+                            return parseFloat(element.value);
                         } else if (element.getAttribute('type') === 'checkbox') {
                             return element.checked;
                         } else if (element.getAttribute('type') === 'radio') {
@@ -215,6 +223,10 @@
                  * @param {string|number|boolean} value
                  */
                 this.setModel = function(name, value) {
+                    if (self.getModel(name) === value) {
+                        return;
+                    }
+
                     var element = self.querySelector('[name=' + name + ']');
                     if (element.getAttribute('type') === 'checkbox') {
                         element.checked = value;
@@ -782,8 +794,8 @@
              * - **debug** - `{boolean}` - Enable debug mode. In debug mode,
              *   directive objects are available as properties from the DOM as
              *   `element.directive`.
-             * - **renderer** - `{function(string, Object)}` - The template renderer
-             *   to be used. Defaults to {@link module:muu-template}.
+             * - **renderer** - `{function(string, Object): string}` - The template
+             *   renderer to be used. Defaults to {@link module:muu-template}.
              */
             var Registry = function(config) {
                 var self = this;
@@ -1185,32 +1197,37 @@
             };
         });
         /**
-         * Recreate children of `source` in `target` by making only small adjustments.
+         * Recreate `html` in `target` by making only small adjustments.
          *
          * *The following section explains details about the current implementation.
          * These are likely to change in the future.*
          *
          * The algorithms is relatively simple. It just iterates through all top level
          * nodes. If a node has a different `nodeType` (e.g. text or element) or a
-         * different `nodeName` (e.g. div or ul) it is replaced completely and the
-         * algorithm proceeds with the node's children recursively.  Otherwise, only
-         * the nodes's attributes are updated.
+         * different `nodeName` (e.g. div or ul) it is replaced completely. Otherwise,
+         * only the nodes's attributes are updated and the algorithm proceeds with the
+         * node's children recursively.
          *
-         * Note that non-attribute properties (e.g. value) are lost in the first case
+         * Note that non-attribute properties (e.g. `value`) are lost in the first case
          * and preserved in the second.
          *
          * If the algorithm encounters an element with the class `muu-isolate` it does
          * not recurse into its children. This way, you can protect dynamically
          * generated content from being overwritten.
          *
+         * All classes prefixed with `muu-` will be preserved.
+         *
          * @module muu-update-dom
-         * @param {Element} target
-         * @param {Element} source
+         * @param {Node} target
+         * @param {string} html
          */
         _define('muu-update-dom', ['muu-js-helpers'], function(_) {
             "use strict";
 
             var updateAttributes = function(target, source) {
+                var muuClasses = _.filter(target.classList, function(cls) {
+                    return cls.lastIndexOf('muu-', 0) === 0;
+                });
                 var targetAttrNames = _.map(target.attributes, function(item) {
                     return item.name;
                 });
@@ -1229,11 +1246,15 @@
                         target.setAttribute(name, source.getAttribute(name));
                     }
                 });
+                _.forEach(muuClasses, function(cls) {
+                    target.classList.add(cls);
+                });
             };
 
             var updateDOM = function(target, source) {
                 var nt = target.childNodes.length;
                 var ns = source.childNodes.length;
+                var offset = 0;
 
                 for (var i = ns; i < nt; i++) {
                     target.removeChild(target.childNodes[ns]);
@@ -1243,17 +1264,11 @@
                 }
                 for (i = 0; i < nt && i < ns; i++) {
                     var tchild = target.childNodes[i];
-                    var schild = source.childNodes[i];
+                    var schild = source.childNodes[i - offset];
 
                     if (tchild.nodeType === schild.nodeType && tchild.nodeName === schild.nodeName && tchild.type === schild.type) {
                         if (tchild.nodeType === 1) {
-                            var muuClasses = _.filter(tchild.classList, function(cls) {
-                                return cls.lastIndexOf('muu-', 0) === 0;
-                            });
                             updateAttributes(tchild, schild);
-                            _.forEach(muuClasses, function(cls) {
-                                tchild.classList.add(cls);
-                            });
                         } else if (tchild.nodeType === 3) {
                             tchild.nodeValue = schild.nodeValue;
                         }
@@ -1262,11 +1277,17 @@
                         }
                     } else {
                         tchild.parentNode.replaceChild(schild, tchild);
+                        offset += 1;
                     }
                 }
             };
 
-            return updateDOM;
+            return function(target, html) {
+                var tmp = document.createElement('div');
+                tmp.innerHTML = html;
+
+                updateDOM(target, tmp);
+            }
         });
         /**
          * This module gives access to the following objects:

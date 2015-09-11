@@ -1,3 +1,43 @@
+0.1.2 (2015-09-11)
+==================
+
+Breaking changes
+----------------
+
+-   The interface to register event listeners has been simplified. Before you
+    had to write this:
+
+        muu.$.on(element, 'muu-event-name', function(wrapperEvent) {
+            var event = wrapperEvent.detail;
+            ...
+        });
+
+    Now you should use this instead:
+
+        directive.on('event-name', function(event) {
+            ...
+        });
+
+    The old interface is deprecated, but guranteed to work until the next minor
+    release.
+
+-   The interface of `updateDOM()` has been changed to take a HTML string
+    instead of a DOM node. This will make it easier to exchange it by third
+    party libraries in the future.
+
+Enhancements
+------------
+
+-   `Directive.setModel()` now only changes the DOM if the value has actually
+    changed. This way, selection is preserved in more cases.
+
+Bugfixes
+--------
+
+-   A bug in `updateDOM()` has been fixed where replacing more than one node in a
+    parent threw an exception.
+
+
 0.1.1 (2015-08-31)
 ==================
 
