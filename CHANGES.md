@@ -1,3 +1,14 @@
+0.1.3 (2015-11-07)
+==================
+
+Bugfixes
+--------
+
+-   ``{{x}}`` was an empty string if ``x`` was falsy in muu-template. This
+    broke cases like ``<div style="width: {{x}}px"></div>``. The new behavior
+    is to replace all falsy values except ``0`` by empty string.
+
+
 0.1.2 (2015-09-11)
 ==================
 

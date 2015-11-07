@@ -1064,7 +1064,11 @@
             var parseVariable = function(tag) {
                 if (tag.indexOf(':') === -1) {
                     return function(data) {
-                        return $.escapeHtml(getValue(tag, data) || '');
+                        var v = getValue(tag, data);
+                        if (!v && v !== 0) {
+                            v = '';
+                        }
+                        return $.escapeHtml(v);
                     };
                 } else {
                     var pairs = _.map(tag.split(','), function(pair) {
