@@ -46,7 +46,7 @@ module.exports = function (grunt) {
     var browsers = [{
         browserName: 'firefox',
         platform: 'XP',
-        version: '31'
+        version: '38'  // esr
     }, {
         browserName: 'firefox',
         platform: 'linux'
@@ -68,6 +68,8 @@ module.exports = function (grunt) {
     }, {
         browserName: 'internet explorer',
         version: '11'
+    }, {
+        browserName: 'microsoftedge'
     }, {
         browserName: 'iphone'
     }, {
