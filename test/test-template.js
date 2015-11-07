@@ -8,6 +8,22 @@ define(['muu-template'], function(muuTemplate) {
             var result = muuTemplate(template, {asd: 'huhu'});
             expect(result).to.equal('huhu');
         });
+        it('replaces falsy values by empty string', function() {
+            var template = '{{asd}}';
+            var result = muuTemplate(template, {asd: false});
+            expect(result).to.equal('');
+            result = muuTemplate(template, {asd: NaN});
+            expect(result).to.equal('');
+            result = muuTemplate(template, {asd: null});
+            expect(result).to.equal('');
+            result = muuTemplate(template, {asd: undefined});
+            expect(result).to.equal('');
+        });
+        it('does not replace 0 by empty string', function() {
+            var template = '{{asd}}';
+            var result = muuTemplate(template, {asd: 0});
+            expect(result).to.equal('0');
+        });
         it('does loops', function() {
             var template = '{{#loop}}test{{/loop}}';
             var result = muuTemplate(template, {loop: [1,2,3]});
