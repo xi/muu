@@ -1,3 +1,19 @@
+0.1.4 (2016-01-24)
+==================
+
+Enhancements
+------------
+
+-   muu does only support a limited range of event types by default. This list
+    is now available for modification as ``registry.events``.
+
+Bugfixes
+--------
+
+-   ``_.union`` was not compatible with its lodash counterpart.
+-   events that originated from subdirectives were not ignored.
+
+
 0.1.3 (2015-11-07)
 ==================
 
