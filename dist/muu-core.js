@@ -49,7 +49,7 @@
          * @module muu-directive
          * @ignore
          */
-        _define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers', 'muu-update-dom'], function($, _, updateDOM) {
+        _define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
             "use strict";
 
             /**
@@ -87,7 +87,8 @@
                 var eventCallback = function(originalEvent) {
                     var element = originalEvent.currentTarget;
                     var attrName = 'data-on' + originalEvent.type;
-                    if (element.hasAttribute(attrName)) {
+                    var selector = '[' + attrName + ']';
+                    if (_.indexOf(self.querySelectorAll(selector), element) !== -1) {
                         var eventName = element.getAttribute(attrName);
                         var event = $.createEvent(
                             'muu-' + eventName, undefined, undefined, originalEvent);
@@ -103,9 +104,9 @@
                  * @see The templating system can be defined in the {@link Registry}.
                  */
                 this.update = function(data) {
-                    updateDOM(root, registry.renderer(template, data));
+                    registry.updateDOM(root, registry.renderer(template, data));
 
-                    _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
+                    _.forEach(registry.events, function(eventType) {
                         var selector = '[data-on' + eventType + ']';
                         _.forEach(self.querySelectorAll(selector), function(element) {
                             element.addEventListener(eventType, eventCallback, false);
@@ -138,7 +139,7 @@
                     // match the given selector.  findAll does the same with *relative
                     // selectors* but does not seem to be available yet.
                     var isolations = root.querySelectorAll('.muu-isolate');
-                    var isolated = _.union(_.map(isolations, function(isolation) {
+                    var isolated = _.union.apply(_, _.map(isolations, function(isolation) {
                         return isolation.querySelectorAll(selector);
                     }));
 
@@ -445,7 +446,7 @@
          * @module muu-registry
          * @ignore
          */
-        _define('muu-registry', ['muu-template', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, Directive, _, $) {
+        _define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
             "use strict";
 
             /**
@@ -457,6 +458,8 @@
              *   `element.directive`.
              * - **renderer** - `{function(string, Object): string}` - The template
              *   renderer to be used. Defaults to {@link module:muu-template}.
+             * - **updateDOM** - `{function(Node, string)}` - The DOM updater to be
+             *   used. Defaults to {@link module:muu-update-dom}.
              */
             var Registry = function(config) {
                 var self = this;
@@ -464,6 +467,8 @@
 
                 this.config = config || {};
                 this.renderer = self.config.renderer || muuTemplate;
+                this.updateDOM = self.config.updateDOM || muuUpdateDOM;
+                this.events = ['keydown', 'keyup', 'click', 'change', 'search'];
 
                 /**
                  * Register a new type of {@link Directive}
