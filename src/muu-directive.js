@@ -92,7 +92,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
             // match the given selector.  findAll does the same with *relative
             // selectors* but does not seem to be available yet.
             var isolations = root.querySelectorAll('.muu-isolate');
-            var isolated = _.union(_.map(isolations, function(isolation) {
+            var isolated = _.union.apply(_, _.map(isolations, function(isolation) {
                 return isolation.querySelectorAll(selector);
             }));
 

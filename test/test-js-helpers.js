@@ -206,7 +206,7 @@ define(['muu-js-helpers'], function(_) {
         describe('union', function() {
             it('returns the set union of all passed lists', function() {
                 var input = [[1,1,2,3], [2,3,4], [4,5,3]];
-                expect(_.union(input)).to.eql([1,2,3,4,5]);
+                expect(_.union.apply(_, input)).to.eql([1,2,3,4,5]);
             });
         });
 

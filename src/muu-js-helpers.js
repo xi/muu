@@ -136,13 +136,13 @@ define('muu-js-helpers', [], function() {
     };
 
     /**
-     * @param {Array.<Array>} arrays
+     * @param {...Array} arrays
      * @return {Array}
      * @nosideeffects
      */
     _.union = function(arrays) {
         var results = [];
-        _.forEach(arrays, function(array) {
+        _.forEach(arguments, function(array) {
             _.forEach(array, function(item) {
                 if (_.indexOf(results, item) === -1) {
                     results.push(item);
