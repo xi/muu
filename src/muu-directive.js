@@ -59,7 +59,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
         this.update = function(data) {
             registry.updateDOM(root, registry.renderer(template, data));
 
-            _.forEach(['keydown', 'keyup', 'click', 'change', 'search'], function(eventType) {
+            _.forEach(registry.events, function(eventType) {
                 var selector = '[data-on' + eventType + ']';
                 _.forEach(self.querySelectorAll(selector), function(element) {
                     element.addEventListener(eventType, eventCallback, false);

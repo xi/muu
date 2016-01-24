@@ -24,7 +24,8 @@ define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-
 
         this.config = config || {};
         this.renderer = self.config.renderer || muuTemplate;
-        this.updateDOM = self.config.updateDOM || muuUpdateDOM
+        this.updateDOM = self.config.updateDOM || muuUpdateDOM;
+        this.events = ['keydown', 'keyup', 'click', 'change', 'search'];
 
         /**
          * Register a new type of {@link Directive}

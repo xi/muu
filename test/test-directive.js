@@ -11,7 +11,8 @@ define(['muu-directive', 'muu-update-dom', 'muu-js-helpers', 'muu-dom-helpers'],
                 renderer: sinon.spy(function(template) {
                     return template;
                 }),
-                updateDOM: updateDOM
+                updateDOM: updateDOM,
+                events: ['keydown', 'keyup', 'click', 'change', 'search'],
             };
         });
 
