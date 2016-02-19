@@ -1,5 +1,5 @@
 /* global define, describe, it, expect, beforeEach, sinon */
-define(['muu-directive', 'muu-update-dom', 'muu-js-helpers', 'muu-dom-helpers'], function(Directive, updateDOM, _, $) {
+define(['directive', 'update-dom', 'js-helpers', 'dom-helpers'], function(Directive, updateDOM, _, $) {
     "use strict";
 
     describe('muuDirective', function() {

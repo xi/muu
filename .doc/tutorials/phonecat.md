@@ -41,7 +41,7 @@ written on your screen.
 
 *muu can work with any templating system. See {@link Registry} on that. By
 default (and in this tutorial), the minimal build-in templating engine is used.
-For details on that, see {@link module:muu-template}.*
+For details on that, see {@link module:template}.*
 
 In this example, we want to create a catalog that displays a list of phones.
 We can start off with this simple template:

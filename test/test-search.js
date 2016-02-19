@@ -1,5 +1,5 @@
 /* global define, describe, it, expect */
-define(['muu-search'], function(q) {
+define(['search'], function(q) {
     "use strict";
 
     describe('search', function() {

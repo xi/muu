@@ -98,7 +98,7 @@ basically a mere methodology rather than code*.
 I started out using [lodash](https://lodash.com/) for JavaScript helpers,
 [jquery](https://jquery.com/) for DOM helpers and
 [mustache](mustache.github.io) as templating system. I later switched to custom
-code ({@link module:muu-js-helpers}, {@link module:muu-dom-helpers} and {@link
-module:muu-template}). But switching back to more stable libraries should be fairly
+code ({@link module:js-helpers}, {@link module:dom-helpers} and {@link
+module:template}). But switching back to more stable libraries should be fairly
 simple. In the case of templating, you can even select an engine in the {@link
 Registry} configuration.

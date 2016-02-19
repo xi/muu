@@ -1,5 +1,5 @@
 /* global define, describe, it, beforeEach, expect */
-define(['muu-update-dom'], function(updateDOM) {
+define(['update-dom'], function(updateDOM) {
     "use strict";
 
     var n = function(s) {

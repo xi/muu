@@ -1,5 +1,5 @@
 /* global define, describe, it, expect */
-define(['muu-template'], function(muuTemplate) {
+define(['template'], function(muuTemplate) {
     "use strict";
 
     describe('muuTemplate', function() {

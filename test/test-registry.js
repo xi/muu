@@ -1,5 +1,5 @@
 /* global define, describe, it, expect, beforeEach, sinon */
-define(['muu-registry', 'muu-directive', 'muu-js-helpers'], function(Registry, Directive, _) {
+define(['registry', 'directive', 'js-helpers'], function(Registry, Directive, _) {
     "use strict";
 
     describe('Registry', function() {

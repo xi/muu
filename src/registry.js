@@ -1,9 +1,9 @@
 /**
  * Exports the {@link Registry} class.
- * @module muu-registry
+ * @module registry
  * @ignore
  */
-define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
+define('registry', ['template', 'update-dom', 'directive', 'js-helpers', 'dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
     "use strict";
 
     /**
@@ -14,9 +14,9 @@ define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-
      *   directive objects are available as properties from the DOM as
      *   `element.directive`.
      * - **renderer** - `{function(string, Object): string}` - The template
-     *   renderer to be used. Defaults to {@link module:muu-template}.
+     *   renderer to be used. Defaults to {@link module:template}.
      * - **updateDOM** - `{function(Node, string)}` - The DOM updater to be
-     *   used. Defaults to {@link module:muu-update-dom}.
+     *   used. Defaults to {@link module:update-dom}.
      */
     var Registry = function(config) {
         var self = this;

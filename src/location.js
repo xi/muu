@@ -1,11 +1,11 @@
 /**
  * angular inspired location service.
- * @module muu-location
+ * @module location
  */
-define('muu-location', ['muu-search'], function(q) {
+define('location', ['search'], function(q) {
     "use strict";
 
-    /** @lends module:muu-location */
+    /** @lends module:location */
     var loc = {};
 
     /**
@@ -22,7 +22,7 @@ define('muu-location', ['muu-search'], function(q) {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
-     * @return {muu-location}
+     * @return {location}
      */
     loc.url = function(value, replace) {
         if (value === undefined) {
@@ -65,7 +65,7 @@ define('muu-location', ['muu-search'], function(q) {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
-     * @return {muu-location}
+     * @return {location}
      */
     loc.path = function(value, replace) {
         if (value === undefined) {
@@ -99,12 +99,12 @@ define('muu-location', ['muu-search'], function(q) {
      * @nosideeffects
      *//**
      * @param {string|object} value
-     * @return {muu-location}
+     * @return {location}
      *//**
      * @param {string} key
      * @param {*} value
      * @param {boolean} [replace]
-     * @return {muu-location}
+     * @return {location}
      */
     loc.search = function(key, value, replace) {
         if (key !== undefined) {
@@ -126,7 +126,7 @@ define('muu-location', ['muu-search'], function(q) {
      *//**
      * @param {string} value
      * @param {boolean} [replace]
-     * @return {muu-location}
+     * @return {location}
      */
     loc.hash = function(value, replace) {
         if (value === undefined) {
@@ -145,7 +145,7 @@ define('muu-location', ['muu-search'], function(q) {
     /**
      * @param {string} eventName
      * @param {Function} fn
-     * @return {muu-location}
+     * @return {location}
      */
     loc.addEventListener = function(eventName, fn) {
         if (eventName === 'change') {
@@ -157,7 +157,7 @@ define('muu-location', ['muu-search'], function(q) {
     /**
      * @param {string} eventName
      * @param {Function} fn
-     * @return {muu-location}
+     * @return {location}
      */
     loc.removeEventListener = function(eventName, fn) {
         if (eventName === 'change') {

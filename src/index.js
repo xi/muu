@@ -2,12 +2,12 @@
  * This module gives access to the following objects:
  *
  * -   `Registry` - {@link Registry}
- * -   `$` - {@link module:muu-dom-helpers}
- * -   `$location` - {@link module:muu-location}
+ * -   `$` - {@link module:dom-helpers}
+ * -   `$location` - {@link module:location}
  *
  * @module muu
  */
-define('muu', ['muu-registry', 'muu-dom-helpers', 'muu-location'], function(Registry, $, $location) {
+define('muu', ['registry', 'dom-helpers', 'location'], function(Registry, $, $location) {
     "use strict";
 
     var module = {};

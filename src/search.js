@@ -1,4 +1,4 @@
-define('muu-search', ['muu-js-helpers'], function(_) {
+define('search', ['js-helpers'], function(_) {
     "use strict";
 
     var q = {};

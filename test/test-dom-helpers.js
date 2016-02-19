@@ -1,5 +1,5 @@
 /* global define, describe, it, beforeEach, expect, sinon */
-define(['muu-dom-helpers'], function($) {
+define(['dom-helpers'], function($) {
     "use strict";
 
     describe('muuDomHelpers', function() {

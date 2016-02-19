@@ -11,7 +11,7 @@ if (window.blanket) {
 require({
     baseUrl: '../src/'
 }, [
-    'muu-dom-helpers',
+    'dom-helpers',
     '../test/test-dom-helpers',
     '../test/test-js-helpers.js',
     '../test/test-template.js',

@@ -1,8 +1,8 @@
 /**
  * DOM related helper functions
- * @module muu-dom-helpers
+ * @module dom-helpers
  */
-define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
+define("dom-helpers", ['js-helpers'], function(_) {
     "use strict";
 
     var entityMap = {
@@ -14,7 +14,7 @@ define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
         '/': '&#x2F;'
     };
 
-    /** @lends module:muu-dom-helpers */
+    /** @lends module:dom-helpers */
     var $ = {};
 
     $.DELAY = 1000;

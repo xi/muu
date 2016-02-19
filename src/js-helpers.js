@@ -1,11 +1,11 @@
 /**
  * Minimal implementation of an underscore/lodash subset.
- * @module muu-js-helpers
+ * @module js-helpers
  */
-define('muu-js-helpers', [], function() {
+define('js-helpers', [], function() {
     "use strict";
 
-    /** @lends module:muu-js-helpers */
+    /** @lends module:js-helpers */
     var _ = {};
 
     /**

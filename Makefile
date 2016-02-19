@@ -1,6 +1,6 @@
 dist/muu.js: JS := src/*.js
 dist/muu-core.js: LODASH := 1
-dist/muu-core.js: JS := src/muu-directive.js src/muu-dom-helpers.js src/muu.js src/muu-registry.js src/muu-update-dom.js
+dist/muu-core.js: JS := src/index.js src/directive.js src/dom-helpers.js src/registry.js src/update-dom.js
 
 all: dist/muu.min.js dist/muu-core.min.js
 

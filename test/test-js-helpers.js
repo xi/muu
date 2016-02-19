@@ -1,5 +1,5 @@
 /* global define, describe, it, beforeEach, afterEach, expect, sinon */
-define(['muu-js-helpers'], function(_) {
+define(['js-helpers'], function(_) {
     "use strict";
 
     var monkeyPatchArray = function(feature, tests) {

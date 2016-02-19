@@ -19,11 +19,11 @@
  *
  * All classes prefixed with `muu-` will be preserved.
  *
- * @module muu-update-dom
+ * @module update-dom
  * @param {Node} target
  * @param {string} html
  */
-define('muu-update-dom', ['muu-js-helpers'], function(_) {
+define('update-dom', ['js-helpers'], function(_) {
     "use strict";
 
     var updateAttributes = function(target, source) {

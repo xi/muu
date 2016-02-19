@@ -56,13 +56,13 @@
  * muuTemplate('{{#this}}{{this}}{{/this}}', [1, 2]);
  * ```
  *
- * @module muu-template
+ * @module template
  * @param {string} template
  * @param {Object} data
  * @return {string}
  * @nosideeffects
  */
-define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
+define('template', ['js-helpers', 'dom-helpers'], function(_, $) {
     "use strict";
 
     var openTag = '{{';

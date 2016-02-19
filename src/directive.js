@@ -1,9 +1,9 @@
 /**
  * Exports the {@link Directive} class.
- * @module muu-directive
+ * @module directive
  * @ignore
  */
-define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
+define('directive', ['dom-helpers', 'js-helpers'], function($, _) {
     "use strict";
 
     /**
@@ -54,7 +54,7 @@ define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
          * Rerender `template` with `data` and push the changes to the DOM.
          *
          * @param {Object.<string, *>} data
-         * @see {@link module:muu-update-dom} for details.
+         * @see {@link module:update-dom} for details.
          * @see The templating system can be defined in the {@link Registry}.
          */
         this.update = function(data) {
