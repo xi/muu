@@ -2,7 +2,9 @@
     var name = 'muu';
 
     (function(factory) {
-        if (typeof define === 'function' && define.amd) {
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            module.exports = factory(require('lodash'));
+        } else if (typeof define === 'function' && define.amd) {
             define(name, ['lodash'], factory);
         } else {
             window[name] = factory(window._);
@@ -45,11 +47,31 @@
         };
 
         /**
+         * This module gives access to the following objects:
+         *
+         * -   `Registry` - {@link Registry}
+         * -   `$` - {@link module:dom-helpers}
+         * -   `$location` - {@link module:location}
+         *
+         * @module muu
+         */
+        _define('muu', ['registry', 'dom-helpers', 'location'], function(Registry, $, $location) {
+            "use strict";
+
+            var module = {};
+
+            module.Registry = Registry;
+            module.$ = $;
+            module.$location = $location;
+
+            return module;
+        });
+        /**
          * Exports the {@link Directive} class.
-         * @module muu-directive
+         * @module directive
          * @ignore
          */
-        _define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
+        _define('directive', ['dom-helpers', 'js-helpers'], function($, _) {
             "use strict";
 
             /**
@@ -100,7 +122,7 @@
                  * Rerender `template` with `data` and push the changes to the DOM.
                  *
                  * @param {Object.<string, *>} data
-                 * @see {@link module:muu-update-dom} for details.
+                 * @see {@link module:update-dom} for details.
                  * @see The templating system can be defined in the {@link Registry}.
                  */
                 this.update = function(data) {
@@ -244,9 +266,9 @@
         });
         /**
          * DOM related helper functions
-         * @module muu-dom-helpers
+         * @module dom-helpers
          */
-        _define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
+        _define("dom-helpers", ['js-helpers'], function(_) {
             "use strict";
 
             var entityMap = {
@@ -258,7 +280,7 @@
                 '/': '&#x2F;'
             };
 
-            /** @lends module:muu-dom-helpers */
+            /** @lends module:dom-helpers */
             var $ = {};
 
             $.DELAY = 1000;
@@ -422,31 +444,11 @@
             return $;
         });
         /**
-         * This module gives access to the following objects:
-         *
-         * -   `Registry` - {@link Registry}
-         * -   `$` - {@link module:muu-dom-helpers}
-         * -   `$location` - {@link module:muu-location}
-         *
-         * @module muu
-         */
-        _define('muu', ['muu-registry', 'muu-dom-helpers', 'muu-location'], function(Registry, $, $location) {
-            "use strict";
-
-            var module = {};
-
-            module.Registry = Registry;
-            module.$ = $;
-            module.$location = $location;
-
-            return module;
-        });
-        /**
          * Exports the {@link Registry} class.
-         * @module muu-registry
+         * @module registry
          * @ignore
          */
-        _define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
+        _define('registry', ['template', 'update-dom', 'directive', 'js-helpers', 'dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
             "use strict";
 
             /**
@@ -457,9 +459,9 @@
              *   directive objects are available as properties from the DOM as
              *   `element.directive`.
              * - **renderer** - `{function(string, Object): string}` - The template
-             *   renderer to be used. Defaults to {@link module:muu-template}.
+             *   renderer to be used. Defaults to {@link module:template}.
              * - **updateDOM** - `{function(Node, string)}` - The DOM updater to be
-             *   used. Defaults to {@link module:muu-update-dom}.
+             *   used. Defaults to {@link module:update-dom}.
              */
             var Registry = function(config) {
                 var self = this;
@@ -600,11 +602,11 @@
          *
          * All classes prefixed with `muu-` will be preserved.
          *
-         * @module muu-update-dom
+         * @module update-dom
          * @param {Node} target
          * @param {string} html
          */
-        _define('muu-update-dom', ['muu-js-helpers'], function(_) {
+        _define('update-dom', ['js-helpers'], function(_) {
             "use strict";
 
             var updateAttributes = function(target, source) {

@@ -2,7 +2,9 @@
     var name = 'muu';
 
     (function(factory) {
-        if (typeof define === 'function' && define.amd) {
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            module.exports = factory();
+        } else if (typeof define === 'function' && define.amd) {
             define(name, [], factory);
         } else {
             window[name] = factory(window._);
@@ -46,10 +48,10 @@
 
         /**
          * Exports the {@link Directive} class.
-         * @module muu-directive
+         * @module directive
          * @ignore
          */
-        _define('muu-directive', ['muu-dom-helpers', 'muu-js-helpers'], function($, _) {
+        _define('directive', ['dom-helpers', 'js-helpers'], function($, _) {
             "use strict";
 
             /**
@@ -100,7 +102,7 @@
                  * Rerender `template` with `data` and push the changes to the DOM.
                  *
                  * @param {Object.<string, *>} data
-                 * @see {@link module:muu-update-dom} for details.
+                 * @see {@link module:update-dom} for details.
                  * @see The templating system can be defined in the {@link Registry}.
                  */
                 this.update = function(data) {
@@ -244,9 +246,9 @@
         });
         /**
          * DOM related helper functions
-         * @module muu-dom-helpers
+         * @module dom-helpers
          */
-        _define("muu-dom-helpers", ['muu-js-helpers'], function(_) {
+        _define("dom-helpers", ['js-helpers'], function(_) {
             "use strict";
 
             var entityMap = {
@@ -258,7 +260,7 @@
                 '/': '&#x2F;'
             };
 
-            /** @lends module:muu-dom-helpers */
+            /** @lends module:dom-helpers */
             var $ = {};
 
             $.DELAY = 1000;
@@ -422,13 +424,33 @@
             return $;
         });
         /**
-         * Minimal implementation of an underscore/lodash subset.
-         * @module muu-js-helpers
+         * This module gives access to the following objects:
+         *
+         * -   `Registry` - {@link Registry}
+         * -   `$` - {@link module:dom-helpers}
+         * -   `$location` - {@link module:location}
+         *
+         * @module muu
          */
-        _define('muu-js-helpers', [], function() {
+        _define('muu', ['registry', 'dom-helpers', 'location'], function(Registry, $, $location) {
             "use strict";
 
-            /** @lends module:muu-js-helpers */
+            var module = {};
+
+            module.Registry = Registry;
+            module.$ = $;
+            module.$location = $location;
+
+            return module;
+        });
+        /**
+         * Minimal implementation of an underscore/lodash subset.
+         * @module js-helpers
+         */
+        _define('js-helpers', [], function() {
+            "use strict";
+
+            /** @lends module:js-helpers */
             var _ = {};
 
             /**
@@ -612,12 +634,12 @@
         });
         /**
          * angular inspired location service.
-         * @module muu-location
+         * @module location
          */
-        _define('muu-location', ['muu-search'], function(q) {
+        _define('location', ['search'], function(q) {
             "use strict";
 
-            /** @lends module:muu-location */
+            /** @lends module:location */
             var loc = {};
 
             /**
@@ -634,7 +656,7 @@
              *//**
              * @param {string} value
              * @param {boolean} [replace]
-             * @return {muu-location}
+             * @return {location}
              */
             loc.url = function(value, replace) {
                 if (value === undefined) {
@@ -677,7 +699,7 @@
              *//**
              * @param {string} value
              * @param {boolean} [replace]
-             * @return {muu-location}
+             * @return {location}
              */
             loc.path = function(value, replace) {
                 if (value === undefined) {
@@ -711,12 +733,12 @@
              * @nosideeffects
              *//**
              * @param {string|object} value
-             * @return {muu-location}
+             * @return {location}
              *//**
              * @param {string} key
              * @param {*} value
              * @param {boolean} [replace]
-             * @return {muu-location}
+             * @return {location}
              */
             loc.search = function(key, value, replace) {
                 if (key !== undefined) {
@@ -738,7 +760,7 @@
              *//**
              * @param {string} value
              * @param {boolean} [replace]
-             * @return {muu-location}
+             * @return {location}
              */
             loc.hash = function(value, replace) {
                 if (value === undefined) {
@@ -757,7 +779,7 @@
             /**
              * @param {string} eventName
              * @param {Function} fn
-             * @return {muu-location}
+             * @return {location}
              */
             loc.addEventListener = function(eventName, fn) {
                 if (eventName === 'change') {
@@ -769,7 +791,7 @@
             /**
              * @param {string} eventName
              * @param {Function} fn
-             * @return {muu-location}
+             * @return {location}
              */
             loc.removeEventListener = function(eventName, fn) {
                 if (eventName === 'change') {
@@ -782,10 +804,10 @@
         });
         /**
          * Exports the {@link Registry} class.
-         * @module muu-registry
+         * @module registry
          * @ignore
          */
-        _define('muu-registry', ['muu-template', 'muu-update-dom', 'muu-directive', 'muu-js-helpers', 'muu-dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
+        _define('registry', ['template', 'update-dom', 'directive', 'js-helpers', 'dom-helpers'], function(muuTemplate, muuUpdateDOM, Directive, _, $) {
             "use strict";
 
             /**
@@ -796,9 +818,9 @@
              *   directive objects are available as properties from the DOM as
              *   `element.directive`.
              * - **renderer** - `{function(string, Object): string}` - The template
-             *   renderer to be used. Defaults to {@link module:muu-template}.
+             *   renderer to be used. Defaults to {@link module:template}.
              * - **updateDOM** - `{function(Node, string)}` - The DOM updater to be
-             *   used. Defaults to {@link module:muu-update-dom}.
+             *   used. Defaults to {@link module:update-dom}.
              */
             var Registry = function(config) {
                 var self = this;
@@ -918,7 +940,7 @@
 
             return Registry;
         });
-        _define('muu-search', ['muu-js-helpers'], function(_) {
+        _define('search', ['js-helpers'], function(_) {
             "use strict";
 
             var q = {};
@@ -1039,13 +1061,13 @@
          * muuTemplate('{{#this}}{{this}}{{/this}}', [1, 2]);
          * ```
          *
-         * @module muu-template
+         * @module template
          * @param {string} template
          * @param {Object} data
          * @return {string}
          * @nosideeffects
          */
-        _define('muu-template', ['muu-js-helpers', 'muu-dom-helpers'], function(_, $) {
+        _define('template', ['js-helpers', 'dom-helpers'], function(_, $) {
             "use strict";
 
             var openTag = '{{';
@@ -1226,11 +1248,11 @@
          *
          * All classes prefixed with `muu-` will be preserved.
          *
-         * @module muu-update-dom
+         * @module update-dom
          * @param {Node} target
          * @param {string} html
          */
-        _define('muu-update-dom', ['muu-js-helpers'], function(_) {
+        _define('update-dom', ['js-helpers'], function(_) {
             "use strict";
 
             var updateAttributes = function(target, source) {
@@ -1297,26 +1319,6 @@
 
                 updateDOM(target, tmp);
             }
-        });
-        /**
-         * This module gives access to the following objects:
-         *
-         * -   `Registry` - {@link Registry}
-         * -   `$` - {@link module:muu-dom-helpers}
-         * -   `$location` - {@link module:muu-location}
-         *
-         * @module muu
-         */
-        _define('muu', ['muu-registry', 'muu-dom-helpers', 'muu-location'], function(Registry, $, $location) {
-            "use strict";
-
-            var module = {};
-
-            module.Registry = Registry;
-            module.$ = $;
-            module.$location = $location;
-
-            return module;
         });
 
         return _require(name);
