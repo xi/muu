@@ -1,0 +1,26 @@
+{
+  "name": "muu",
+  "version": "0.1.4",
+  "description": "lightweight JS framework",
+  "main": "dist/muu.js",
+  "directories": {
+    "doc": "doc",
+    "example": "examples",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xi/muu.git"
+  },
+  "author": "Tobias Bengfort <tobias.bengfort@posteo.de>",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/xi/muu/issues"
+  },
+  "homepage": "https://github.com/xi/muu#readme"
+}
