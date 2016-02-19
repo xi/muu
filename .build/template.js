@@ -2,7 +2,9 @@
     var name = 'muu';
 
     (function(factory) {
-        if (typeof define === 'function' && define.amd) {
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            module.exports = factory(require('lodash'));
+        } else if (typeof define === 'function' && define.amd) {
             define(name, ['lodash'], factory);
         } else {
             window[name] = factory(window._);

@@ -17,3 +17,12 @@ var define = function(name, deps, factory) {};
 
 /** @type {boolean} */
 define.amd = false;
+
+/** @type {Object} */
+var module;
+
+/**
+ * @param {string} name
+ * @return {*}
+ */
+var require = function(name) {};

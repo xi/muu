@@ -18,6 +18,7 @@ dist/%.min.js: dist/%.js node_modules/closure-compiler-jar/compiler.jar .build/e
 dist/%.js: .build/template.js src/*.js
 	mkdir -p dist
 	head -n -3 $< > .build/head.js
+	if [ -z ${LODASH} ]; then sed -i "s/require('lodash')//g" .build/head.js; fi
 	if [ -z ${LODASH} ]; then sed -i "s/'lodash'//g" .build/head.js; fi
 	tail -n 4 $< > .build/tail.js
 	cat ${JS} |\
