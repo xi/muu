@@ -1,3 +1,14 @@
+0.1.5 (2016-02-20)
+==================
+
+Enhancements
+------------
+
+-   Add support for browserify and similar tools:
+    -   Add support for CommonJS systems in UMD output.
+    -   Add a basic ``package.json`` for npm.
+
+
 0.1.4 (2016-01-24)
 ==================
 
