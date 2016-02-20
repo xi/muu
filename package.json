@@ -3,11 +3,7 @@
   "version": "0.1.4",
   "description": "lightweight JS framework",
   "main": "dist/muu.js",
-  "directories": {
-    "doc": "doc",
-    "example": "examples",
-    "test": "test"
-  },
+  "directories": {},
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
