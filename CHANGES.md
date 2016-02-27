@@ -1,3 +1,12 @@
+0.1.6 (2016-02-27)
+==================
+
+Bugfixes
+--------
+
+-   Fix regression in the core build where lodash could not be found.
+
+
 0.1.5 (2016-02-20)
 ==================
 
