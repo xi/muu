@@ -2,7 +2,7 @@
   "name": "muu",
   "version": "0.1.6",
   "description": "lightweight JS framework",
-  "main": "dist/muu.js",
+  "main": "dist/muu-core.js",
   "directories": {},
   "dependencies": {},
   "devDependencies": {},
