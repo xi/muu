@@ -12,7 +12,7 @@
     })(function(lodash) {
         var modules = {};
 
-        modules['muu-js-helpers'] = {
+        modules['js-helpers'] = {
             instance: lodash
         };
 
