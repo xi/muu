@@ -1,3 +1,11 @@
+# Deprecated
+
+I have switched to a simpler system based directly on
+[virtual-dom](https://github.com/Matt-Esch/virtual-dom). I still like many of
+the ideas from this project, it will no longer be maintained.
+
+---
+
 muu offers angular inspired directives, but with a strong focus on simplicity
 and modularity rather than performance and completeness.
 
